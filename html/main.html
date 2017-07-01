@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/aui-slide.css"/>
+
+    <style>
+        .aui-grid-label1 {
+            width: 65%;
+            font-size: 12px;
+        }
+
+        .aui-grid-label {
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="aui-slide1">
+    <div class="aui-slide-wrap">
+        <div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center">
+            <img src="../image/banner1.jpeg"/>
+        </div>
+        <div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center">
+            <img src="../image/banner0.jpeg"/>
+        </div>
+    </div>
+    <div class="aui-slide-page-wrap"><!--分页容器--></div>
+</div>
+
+<div id="app" v-cloak>
+    <!--热门推荐-->
+    <section class="aui-grid" style="margin-top: 15px;">
+        <div style="text-align: center;margin-top: 10px;">
+            <p style="font-size: 16px;color: black;">热门应用推荐</p>
+            <p style="font-size: 14px;color: #959595">为你推荐每日人气良品</p>
+        </div>
+        <div class="aui-row">
+            <div class="aui-col-xs-3" v-for="item in items">
+                <img :src="item.img" class="img-responsive " @click="detail(item.title)">
+                <div class="aui-grid-label">{{item.title}}</div>
+                <div class="aui-grid-label1 aui-btn aui-btn-info"
+                     @click="open(item.url)" v-if="checkpackages(item.package)">安装
+                </div>
+                <div class="aui-grid-label1 aui-btn  aui-btn-yj"
+                     @click="openapp(item.package)" v-else>打开
+                </div>
+            </div>
+            <!--<div class="aui-col-xs-3">-->
+            <!--<img src="../image/douqu.png" class="img-responsive " @click="detail('逗趣')">-->
+            <!--<div class="aui-grid-label">逗趣</div>-->
+            <!--<div class="aui-grid-label1 aui-btn aui-btn-info"-->
+            <!--@click="open('http://7jprve.com1.z0.glb.clouddn.com/douqutv_1.2.1.apk')">安装-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="aui-col-xs-3">-->
+            <!--<img src="../image/meme.png" class="img-responsive " @click="detail('么么直播')">-->
+            <!--<div class="aui-grid-label">么么直播</div>-->
+            <!--<div class="aui-grid-label1 aui-btn aui-btn-info"-->
+            <!--@click="open('http://7jprve.com1.z0.glb.clouddn.com/memezhibo.apk')">安装-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="aui-col-xs-3">-->
+            <!--<img src="../image/xm.png" class="img-responsive " @click="detail('熊猫直播')">-->
+            <!--<div class="aui-grid-label">熊猫直播</div>-->
+            <!--<div class="aui-grid-label1 aui-btn aui-btn-yj" @click="openapp()">已安装</div>-->
+            <!--</div>-->
+
+        </div>
+    </section>
+    <!-----------------------------------------end-------------------------------------->
+
+    <div class="aui-card-list">
+
+
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-slide.js"></script>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/zepto.min.js"></script>
+<script type="text/javascript">
+
+    var vm = null;
+    var packages = null;
+    var packagesList = [];
+
+    var slide = new auiSlide({
+        container: document.getElementById("aui-slide1"),
+        // "width":300,
+        "height": 200,
+        "speed": 300,
+        "autoPlay": 3000, //自动播放
+        "pageShow": true,
+        "pageStyle": 'dot',
+        "loop": true,
+        'dotPosition': 'center'
+    });
+
+
+    apiready = function () {
+
+    };
+
+
+</script>
+</html>

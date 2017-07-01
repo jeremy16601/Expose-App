@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>我的</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+        body {
+            background: white;
+        }
+
+        img {
+            width: auto;
+            margin-top: 14px;
+            display: inline;
+        }
+
+        .aui-list .aui-list-item-inner {
+            min-height: 2.6rem;
+        }
+
+        .aui-btn-block {
+            width: 95%;
+            margin-left: 10px;
+            margin-right: 10px;
+            height: 2.2rem;
+            line-height: 2.2rem;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="aui-text-center">
+        <img src="../image/douqu.png" class="aui-img-round"><br>
+        <span style="font-size: 16px;  ">落基小编</span>
+    </div>
+
+    <div class="aui-content aui-margin-b-15" style="margin-top: 15px;">
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-header" style="color: #666666;">下载与升级</li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    下载完成后自动安装 <br>
+                    <input type="checkbox" class="aui-switch" v-model="checks" value="false" checked="checked">
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    下载完成后删除安装包 <br>
+                    <input type="checkbox" class="aui-switch" checked="checked">
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    自动检测可以升级的应用 <br>
+                    <input type="checkbox" class="aui-switch" checked="checked">
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">安装包下载位置</div>
+                    <br>
+                    <div class="aui-list-item-text">默认位置</div>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="aui-content aui-margin-b-15" style="margin-top: 15px;">
+        <ul class="aui-list aui-list-in" style="background-color:white;">
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    反馈 <br>
+
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">关于我们</div>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+    <div class="aui-btn aui-btn-danger aui-btn-block">退出登录</div>
+</div>
+
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {checks: false},
+        methos: {}
+    });
+</script>
+</html>

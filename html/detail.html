@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>内容</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        img {
+            width: auto;
+            margin-top: 14px;
+            display: inline;
+        }
+
+        .aui-label {
+            margin-top: 10px;
+        }
+
+        .detai-text {
+            color: black;
+        }
+
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <header id="header" class="aui-bar aui-bar-nav" style="padding-top:25px;">
+        <a class="aui-pull-left aui-btn" @click="back()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div id="title" style="text-align: center;margin-left: -15px;">详情</div>
+    </header>
+
+    <div class="aui-content-padded">
+        <div class="aui-text-center">
+            <img :src="'../image/'+img" class="aui-img-round"><br>
+            <span style="font-size: 16px;color: #ababb3  ">直播联盟平台</span><br>
+            <span style="font-size: 12px;color: #b1b1b1  ">12万人安装  · 53.1M · 5天前更新</span>
+            <div class="  aui-btn aui-btn-block aui-btn-sm" @click="open()">安装
+            </div>
+
+            <div class="aui-label aui-label-danger aui-label-outlined">直播</div>
+
+        </div>
+
+        <section class="aui-content-padded">
+            <h2 style="text-align: center">应用描述</h2>
+            <h6 v-html="content"></h6>
+        </section>
+
+        <section class="aui-content-padded">
+            <h2 style="text-align: center;margin: 25px;">详细信息</h2>
+            <p>更新时间：<span class="detai-text">2017年4月6日</span></p>
+            <p>最新版本：<span class="detai-text">2.1.3</span></p>
+            <p>应用来源：<span class="detai-text">官方</span></p>
+            <p>开发者：<span class="detai-text">直播联盟平台</span></p>
+            <p>可用测试：<span class="detai-text">编辑亲测基本可以用，无明显恶意行为。</span></p>
+        </section>
+
+
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script>
+    var vm = null;
+    vm = new Vue({
+        el: '#app',
+        data: {name: '', content: '', img: ''},
+        methods: {
+            back: function () {
+                api.closeWin();
+            },
+            open: function () {
+                api.showProgress();
+                api.download({
+                    url: package,
+                    report: true,
+                    cache: true,
+                    allowResume: true
+                }, function (ret, err) {
+                    if (ret.state == 1) {
+                        api.hideProgress();
+                        //下载成功
+                        api.installApp({
+                            appUri: ret.savePath
+                        });
+                    } else {
+
+                    }
+                });
+            }
+        }
+    });
+    apiready = function () {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        $api.text($api.byId('title'), api.pageParam.name);
+        vm.name = api.pageParam.name;
+        if (vm.name == '熊猫直播') {
+            vm.img = 'xm.png';
+            vm.content = '<br>KPL大幕拉开！熊猫直播引领观赛热潮。<br>《来吃来吃大胃王》一档由你来决定规则和玩法的竞吃节目，更有明星大咖陪你一吃到底。<br>快乐尽在熊猫直播，云集LOL、Dota2、炉石传说等游戏当红明星主播，24小时直播内容不打烊。<br>PDD：人气大神、骚猪与你不见不散！<br>林俊杰：不会打DOTA的主播不是好歌王，游戏、音乐、生活、好基友，林俊杰直播五好男人的日常！<br>Misaya若风：横跨电竞圈和娱乐圈，中路人气爆棚！<br>自主超级赛事，磅自制节目，满足你对新鲜的渴望！';
+        }
+
+        if (vm.name == '斗鱼') {
+            vm.img = 'douyu.png';
+            vm.content = '王者荣耀直播:手速流?意识流?看我精妙走位,吊打王者,凭实力carry全场！<br/>LCK直播:看SKT VS KT传奇之战,谁才是头名?<br>传奇战队SKT强势入驻：看明星战队和斗鱼梦之队狂虐水友你想看的都在这里!斗鱼直播-主播水友互撩神器;<br>[热门推荐]<br>王者荣耀/LOL直播/CF直播/DOTA2等各类热门游戏/赛事直播尽在斗鱼耀战区:谁是朝阳区王者李白 <br>LCK直播:还有谁能阻止SKT <br>八分音符酱:看我用笑声破解游戏 <br>狼人杀直播:就不告诉你,我是深水狼 <br>[搞笑我们是认真的] <br>王尼玛带你摆脱"被剧透"的命运,暴走大事件根本停不下来奔波儿灞与灞波儿奔:我们的主角是妖怪 <br>[全民视频直播] <br> 全天24小时,20000直播间,200000000用户随心交流热门游戏/手游休闲/鱼秀/颜值/户外...全方位覆盖 ';
+        }
+
+        if (vm.name == '逗趣') {
+            vm.img = 'douyu.png';
+            vm.content = '王者荣耀直播:手速流?意识流?看我精妙走位,吊打王者,凭实力carry全场！<br/>LCK直播:看SKT VS KT传奇之战,谁才是头名?<br>传奇战队SKT强势入驻：看明星战队和斗鱼梦之队狂虐水友你想看的都在这里!斗鱼直播-主播水友互撩神器;<br>[热门推荐]<br>王者荣耀/LOL直播/CF直播/DOTA2等各类热门游戏/赛事直播尽在斗鱼耀战区:谁是朝阳区王者李白 <br>LCK直播:还有谁能阻止SKT <br>八分音符酱:看我用笑声破解游戏 <br>狼人杀直播:就不告诉你,我是深水狼 <br>[搞笑我们是认真的] <br>王尼玛带你摆脱"被剧透"的命运,暴走大事件根本停不下来奔波儿灞与灞波儿奔:我们的主角是妖怪 <br>[全民视频直播] <br> 全天24小时,20000直播间,200000000用户随心交流热门游戏/手游休闲/鱼秀/颜值/户外...全方位覆盖 ';
+        }
+
+        if (vm.name == '么么直播') {
+            vm.img = 'meme.png';
+            vm.content = '全民开启手机直播时代! <br>手机播：看户外，健身，街头秀，直播美女日常，从此没有地域限制。<br>开直播：随时随地拿出手机，直播你的精彩生活，分享你的每个时刻，你就是舞台的主角。<br>全网火爆的真人美女视频交友直播神器，随时随地与美女面对面劲爆畅聊。这是一个追求刺激和快乐的乐园， 这是属于';
+        }
+
+        if (vm.name == 'YY直播') {
+            vm.img = 'yy.png';
+            vm.content = 'YY 直播 - 映客 美女 热舞伊甸园 <br>才情主播 陌陌 等你来玩，邂逅你的网络红颜 <br>17女神视频陌陌勾搭，激情热舞，比快手美拍更劲爆，秒拍小咖秀更有趣 ！熊猫TV算什么，国民老公也挡不住强大的美女后备团。<br>        *全民直播，人人都是大明星，快，拿起你的手机开播！';
+        }
+
+        if (vm.name == '映客直播') {
+            vm.img = 'yingke.png';
+            vm.content = '映客直播 - 映客 美女 热舞伊甸园 <br>才情主播 陌陌 等你来玩，邂逅你的网络红颜 <br>17女神视频陌陌勾搭，激情热舞，比快手美拍更劲爆，秒拍小咖秀更有趣 ！熊猫TV算什么，国民老公也挡不住强大的美女后备团。<br>        *全民直播，人人都是大明星，快，拿起你的手机开播！';
+        }
+
+        if (vm.name == '虎牙直播') {
+            vm.img = 'huya.png';
+            vm.content = '虎牙直播—中国领先的互动直播平台<br>          2017KPL职业联赛 虎牙独家视角全程直播! <br>【顶尖赛事 火热盛典】 <br>KPL：最高规格赛事            英雄联盟LPL：2017年春季赛，国内豪强对决';
+        }
+        if (vm.name == '哔哩哔哩') {
+            vm.img = 'bili.png';
+            vm.content = '哔哩哔哩是国内知名的弹幕视频分享站，常被动漫迷们昵称为bilibili，B站，大型同性社交网站…（划掉。哔哩哔哩动画是哔哩哔哩(bilibili.com)的官客户端，专注ACG领域视频分享，许多原创作品也在此诞生。 目前有番剧、动画、音乐、舞蹈、游戏、科技、生活、鬼畜、时尚、娱乐、影视等众多分区。';       }
+
+        if (vm.name == '触手直播') {
+            vm.img = 'chushou.png';
+            vm.content = '手游直播开触手，KPL职业联赛火热开播<br>#张艺兴代言触手# <br>触手一哥张艺兴首次开播！主播套路深，战队队员爱无限，艺兴疯狂输出carry全场！ <br>史无前例福利大派送，“甜菜”or“盐菜”? 带你见识不一样的一哥不一样的手游，尽在触手直播！<br>        #顶尖赛事尽在触手#';       }
+
+    };
+</script>
+</html>

@@ -1,0 +1,32 @@
+
+[v-cloak] { display: none }
+ul {
+    margin-bottom: 10px;
+}
+
+ul li {
+    margin: 5px 10px;
+    padding: 5px;
+    color: #000;
+    word-wrap: break-word;
+}
+
+.img-responsive {
+    height: auto;
+    margin-left: 15px;
+    width: 65%;
+}
+
+.aui-card-list-user-avatar img {
+    width: 50%;
+    display: block;
+}
+
+.img-content {
+    width: 100px;
+}
+
+.aui-btn-yj {
+    background-color: #959595;
+    color: white;
+}
