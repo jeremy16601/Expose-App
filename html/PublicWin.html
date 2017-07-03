@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>曝光吧</title>
+		<link rel="stylesheet" type="text/css" href="../css/ciacloud.css" />
+		<link rel="stylesheet" type="text/css" href="../css/publicWin.css" />
+
+		
+	</head>
+	<body>
+		
+		<!-- DefaultHeader 公共头部-->
+		<header id="DefaultHeader" class="cia-bar cia-bar-nav DefaultHeader none">
+			<!-- 窗口名称 -->
+			<div class="cia-title" id="DefaultHeadertitle">新窗口</div>
+			<!-- 左侧返回按钮 -->
+			<a class="cia-btn cia-pull-left" tapmode onclick="_CloseWin()">
+			<span class="CIACloud-font icon-zuojiantou"></span></a>
+			<!-- 右侧分享按钮 -->
+			<a class="cia-btn cia-pull-right HeaderBtn-Share none" tapmode onclick="showPopup()">
+			<span class="CIACloud-font icon-share"></span></a>
+			<!-- 右侧新增按钮 -->
+			<a class="cia-btn cia-pull-right HeaderBtn-FeedBackAdd none" onclick="openWin(this);" type="Submit" Path="Setting" name="FeedBack_Add" title="意见反馈">新增</a>
+			<!-- 右侧发送按钮 -->
+			<a class="cia-btn cia-pull-right HeaderBtn-Submit none" tapmode onclick="SubmitBtn()">发送</a>
+		</header>
+	</body>
+	<!--APICloud自带前端脚本-->
+	<script type="text/javascript" src="../script/api.js"></script>
+	<!--中科云牧API接口脚本库-->
+	<script type="text/javascript" src="../script/API_Config.js"></script>
+	<!--中科云牧基础脚本库-->
+	<script type="text/javascript" src="../script/Base.js"></script> 
+	<script type="text/javascript">
+	
+		apiready = function() {
+			api.parseTapmode();
+			//获取新窗口属性
+			var type = api.pageParam.type;
+			//选择新窗口容器
+			SelectWinHeaderInfo(type);
+		};
+		
+		//打开新窗口
+		function SelectWinHeaderInfo(type) {
+			//显示头部
+			switch(type) {
+				case 'Search':
+				    //搜索窗口
+					$api.removeCls($api.dom('.SearchHeader'), 'none');
+					var headerPos = $api.offset(SearchHeader);
+					var frameheight = api.winHeight - headerPos.h;
+					openFrame(headerPos,frameheight);
+					break;
+			  default:
+				    //常规窗口
+					$api.removeCls($api.dom('.DefaultHeader'), 'none');
+					var headerPos = $api.offset(DefaultHeader);
+					var frameheight = api.winHeight - headerPos.h;
+					openFrame(headerPos,frameheight);
+					break;
+			}			
+		}
+		
+		//======================= 封装窗口方法  =======================//
+		
+		//封装openFrame方法
+		function openFrame(headerPos,frameheight,pageParamData){
+		    //获取窗口数据
+			var title = api.pageParam.title;	
+			var frameurl = api.pageParam.frameurl;		
+		    //更改窗口头部信息
+			$api.text($api.byId("DefaultHeadertitle"), title);
+			api.openFrame({
+				name : api.winName,
+				url : frameurl,
+				bounces : false,
+				rect : {
+					x : 0,
+					y : headerPos.h,
+					w : api.winWidth,
+					h : frameheight
+				},
+				pageParam : pageParamData,
+			});	
+		}//openFrame end
+		
+	</script>

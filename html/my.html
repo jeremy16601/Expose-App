@@ -47,7 +47,7 @@
             <li class="aui-list-item">
                 <div class="aui-list-item-inner">
                     下载完成后自动安装 <br>
-                    <input type="checkbox" class="aui-switch" v-model="checks" value="false" checked="checked">
+                    <!--<input type="checkbox" class="aui-switch" v-model="checks" value="false" checked="checked">-->
                 </div>
             </li>
             <li class="aui-list-item">
@@ -91,17 +91,29 @@
             </li>
         </ul>
     </div>
-    <div class="aui-btn aui-btn-danger aui-btn-block">退出登录</div>
+    <div class="aui-btn aui-btn-danger aui-btn-block" @click="tologin()">退出登录</div>
 </div>
 
 </body>
 <script type="text/javascript" src="../script/vue.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/commjs/common.js"></script>
+<script type="text/javascript" src="../script/zepto.min.js"></script>
 <script>
     var vm = new Vue({
         el: '#app',
-        data: {checks: false},
-        methos: {}
+        data: {},
+        methods: {
+            tologin:function () {
+                api.openWin({
+                    name: 'user/login_head',
+                    url: 'user/login_head.html',
+                    pageParam: {
+                        name: name
+                    }
+                });
+            }
+        }
     });
 </script>
 </html>

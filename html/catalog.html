@@ -14,7 +14,7 @@
 <body>
 <div id="app" v-cloak>
     <div class="aui-content aui-margin-b-15">
-        <ul class="aui-list aui-media-list">
+        <ul class="aui-list aui-media-list" v-for="data in datas">
             <li class="aui-list-item">
                 <div class="aui-media-list-item-inner">
                     <div class="aui-list-item-media" @click="openDetail('熊猫直播')">
@@ -22,10 +22,10 @@
                     </div>
                     <div class="aui-list-item-inner">
                         <div class="aui-list-item-text">
-                            <div class="aui-list-item-title" style="margin-top: -11px;">熊猫直播</div>
+                            <div class="aui-list-item-title" style="margin-top: -11px;">{{data.name}}</div>
                             <div class="aui-list-item-right" style="margin-top: 21px;">
                                 <div class="aui-grid-label1 aui-btn aui-btn-info"
-                                     @click="openapp()">打开
+                                     @click="openapp()">
                                 </div>
                             </div>
                         </div>
@@ -35,188 +35,68 @@
                     </div>
                 </div>
             </li>
-
-            <li class="aui-list-item">
-                <div class="aui-media-list-item-inner">
-                    <div class="aui-list-item-media" @click="openDetail('虎牙直播')">
-                        <img src="../image/huya.png">
-                    </div>
-                    <div class="aui-list-item-inner">
-                        <div class="aui-list-item-text">
-                            <div class="aui-list-item-title" style="margin-top: -11px;">虎牙直播</div>
-                            <div class="aui-list-item-right" style="margin-top: 21px;">
-                                <div class="aui-grid-label1 aui-btn aui-btn-info"
-                                     @click="open('http://rel.huya.com/apk/live.apk')">安装
-                                </div>
-                            </div>
-                        </div>
-                        <div class="aui-list-item-text">
-                            影视视听 26.09M
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="aui-list-item">
-                <div class="aui-media-list-item-inner">
-                    <div class="aui-list-item-media" @click="openDetail('映客直播')">
-                        <img src="../image/yingke.png">
-                    </div>
-                    <div class="aui-list-item-inner">
-                        <div class="aui-list-item-text">
-                            <div class="aui-list-item-title" style="margin-top: -11px;">映客直播</div>
-                            <div class="aui-list-item-right" style="margin-top: 21px;">
-                                <div class="aui-grid-label1 aui-btn aui-btn-info"
-                                     @click="open('http://app.inke.cn/spread/inkeguanwang.apk')">安装
-                                </div>
-                            </div>
-                        </div>
-                        <div class="aui-list-item-text">
-                            影视视听 43.09M
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="aui-list-item">
-                <div class="aui-media-list-item-inner">
-                    <div class="aui-list-item-media" @click="openDetail('触手直播')">
-                        <img src="../image/chushou.png">
-                    </div>
-                    <div class="aui-list-item-inner">
-                        <div class="aui-list-item-text">
-                            <div class="aui-list-item-title" style="margin-top: -11px;">触手直播</div>
-                            <div class="aui-list-item-right" style="margin-top: 21px;">
-                                <div class="aui-grid-label1 aui-btn aui-btn-info" @click="open()">安装</div>
-                            </div>
-                        </div>
-                        <div class="aui-list-item-text">
-                            影视视听 23.09M
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="aui-list-item">
-                <div class="aui-media-list-item-inner">
-                    <div class="aui-list-item-media" @click="openDetail('YY直播')">
-                        <img src="../image/yy.png">
-                    </div>
-                    <div class="aui-list-item-inner">
-                        <div class="aui-list-item-text">
-                            <div class="aui-list-item-title" style="margin-top: -11px;">YY直播</div>
-                            <div class="aui-list-item-right" style="margin-top: 21px;">
-                                <div class="aui-grid-label1 aui-btn aui-btn-info"
-                                     @click="open('http://yydl.duowan.com/mobile/yymobile_client-android/6.1.5/yymobile_client-6.1.5.apk')">
-                                    安装
-                                </div>
-                            </div>
-                        </div>
-                        <div class="aui-list-item-text">
-                            影视视听 53.09M
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-
-            <li class="aui-list-item">
-                <div class="aui-media-list-item-inner">
-                    <div class="aui-list-item-media" @click="openDetail('哔哩哔哩')">
-                        <img src="../image/bili.png">
-                    </div>
-                    <div class="aui-list-item-inner">
-                        <div class="aui-list-item-text">
-                            <div class="aui-list-item-title" style="margin-top: -11px;">哔哩哔哩</div>
-                            <div class="aui-list-item-right" style="margin-top: 21px;">
-                                <div class="aui-grid-label1 aui-btn aui-btn-info"
-                                     @click="open('http://dl.hdslb.com/mobile/latest/iBiliPlayer-bili.apk')">安装
-                                </div>
-                            </div>
-                        </div>
-                        <div class="aui-list-item-text">
-                            影视视听 43.09M
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="aui-list-item">
-                <div class="aui-media-list-item-inner">
-                    <div class="aui-list-item-media" @click="openDetail('意直播')">
-                        <img src="../image/yzb.png">
-                    </div>
-                    <div class="aui-list-item-inner">
-                        <div class="aui-list-item-text">
-                            <div class="aui-list-item-title" style="margin-top: -11px;">意直播</div>
-                            <div class="aui-list-item-right" style="margin-top: 21px;">
-                                <div class="aui-grid-label1 aui-btn aui-btn-info"
-                                     @click="open('http://7jprve.com1.z0.glb.clouddn.com/easylive-v4.5.5.apk')">安装
-                                </div>
-                            </div>
-                        </div>
-                        <div class="aui-list-item-text">
-                            影视视听 23.09M
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-
         </ul>
     </div>
 </div>
 </body>
+<script type="text/javascript" src="../script/commjs/common.js"></script>
+<script type="text/javascript" src="../script/zepto.min.js"></script>
+<script type="text/javascript" src="../script/commjs/router.js"></script>
 <script type="text/javascript" src="../script/vue.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
+
 <script>
-    var vm = new Vue({
-        el: '#app',
-        data: {},
-        methods: {
-            open: function (package) {
-                api.showProgress();
-                api.download({
-                    url: package,
-                    report: true,
-                    cache: true,
-                    allowResume: true
-                }, function (ret, err) {
-                    if (ret.state == 1) {
+    var vm=null;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {datas:[]},
+            mounted:function(){
+                this.initd();
+            },
+            methods: {
+                //初始化数据
+                initd:function () {
+                    api.showProgress();
+                    $.ajax({
+                        "url": UrlRouter.catalog,
+                        "cache": false,
+                        "type": "GET"
+                    }).done(function (data, status, header) {
                         api.hideProgress();
-                        //下载成功
-                        api.installApp({
-                            appUri: ret.savePath
-                        });
-                    } else {
+                       vm.datas=data;
 
-                    }
-                });
-            },
-            openapp: function () {
-                //打开app
+                    }).fail(function (header, status, errorThrown) {
+                        api.hideProgress();
+                        alert(errorThrown);
+                    })
+                },
+                open: function (package) {
+                    api.showProgress();
+                    api.download({
+                        url: package,
+                        report: true,
+                        cache: true,
+                        allowResume: true
+                    }, function (ret, err) {
+                        if (ret.state == 1) {
+                            api.hideProgress();
+                            //下载成功
+                            api.installApp({
+                                appUri: ret.savePath
+                            });
+                        } else {
 
-                api.openApp({
-                    androidPkg: 'com.panda.videoliveplatform',
-                    mimeType: 'text/html'
-                }, function (ret, err) {
-                    if (ret) {
-                        alert(JSON.stringify(ret));
-                    } else {
-                        alert(JSON.stringify(err));
-                    }
-                });
-            },
-            openDetail: function (name) {
-                api.openWin({
-                    name: 'detail',
-                    url: 'detail.html',
-                    pageParam: {
-                        name: name
-                    }
-                });
+                        }
+                    });
+                },
+                openapp: function () {
+                    //打开app
+
+                },
             }
-        }
-    });
+        });
+    }
+
 </script>
 </html>
