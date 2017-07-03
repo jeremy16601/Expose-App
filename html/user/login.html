@@ -54,7 +54,7 @@
 	</body>
 	<script type="text/javascript" src="../../script/api.js"></script>
 	<script type="text/javascript" src="../../script/Base.js"></script>
-	<script type="text/javascript" src="../../script/API_Config.js"></script>
+	<script type="text/javascript" src="../../script/commjs/router.js"></script>
 	<script type="text/javascript">
 		apiready = function() {
 			api.parseTapmode();
@@ -103,10 +103,11 @@
 		    //.更改按钮状态
 		    _ChangeBtn('status');
 			//.MD5加密
-			var MD5_pwd = hex_md5(pwd);
-			_Ajax( window.APIServer.Login, "post", {
-			       values : {phone : phone,pwd : MD5_pwd}
+//			var MD5_pwd = hex_md5(pwd);
+			_Ajax(UrlRouter.login, "post", {
+			       values : {mobile : phone,pwd : pwd}
 			}, "json", function(ret) {
+			    alert(JSON.stringify(ret));
 			    switch(ret.code) {
 					case 401:
 					     _toast('密码错误！');
