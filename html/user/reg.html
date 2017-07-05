@@ -40,14 +40,14 @@
 					<span class="input_title">密&emsp;码</span>
 					<input type="password" id="pwd" class="login_input" placeholder="请设置登录密码" maxlength="16">
 				</div>
-				<div class="login_input_div">
-					<span class="input_title">类&emsp;型</span>
-					<select id="mtypeid" name="mtypeid">
-                        <option value="1">个人用户</option>
-                        <option value="2">机构用户</option>
-                        <option value="3">专家用户</option>
-                    </select>
-				</div>
+				<!--<div class="login_input_div">-->
+					<!--<span class="input_title">类&emsp;型</span>-->
+					<!--<select id="mtypeid" name="mtypeid">-->
+                        <!--<option value="1">个人用户</option>-->
+                        <!--<option value="2">机构用户</option>-->
+                        <!--<option value="3">专家用户</option>-->
+                    <!--</select>-->
+				<!--</div>-->
 				<p class="login_content_foot_tip">
 					<span class="login_protocol_check checked"><label></label>同意</span>
 					<a onclick="">《曝光吧服务协议》</a>
@@ -68,6 +68,7 @@
 	<script type="text/javascript" src="../../script/api.js"></script>
 	<script type="text/javascript" src="../../script/Base.js"></script>
 	<script type="text/javascript" src="../../script/SMSVerify.js"></script>
+    <script type="text/javascript" src="../../script/commjs/router.js"></script>
 	<script type="text/javascript">
 		var smsVerify = null;
 		apiready = function() {
@@ -102,14 +103,14 @@
 		}
 		
 		function IsMerber(phone,type){
-		    _Ajax( window.APIServer.IsMerber,"post", {
-			       values : {phone : phone}
+		    _Ajax(UrlRouter.user+'/new',"get", {
+			       values : {mobile : phone}
 			}, "json", function(ret){
 			    switch(ret.code) {
-					case 200:
+					case -1:
                          _toast('该手机号已被注册');
 					     break;
-					case 404:
+					case 200:
                          if (type == 'SMS') 
 				         {//.短信验证
 					         _SendSmsPIN(phone,function(){showtime(60);});
@@ -153,7 +154,7 @@
 			var PIN = $api.byId('PIN').value;
 			var pwd = $api.byId('pwd').value;
 			//.选择账户类型
-			var mtypeid = $api.byId('mtypeid').value;
+			var mtypeid = 1;
 			if( phone.length <= 0 )
 			{//.
 			    _toast('请输入手机号码'); 
@@ -192,37 +193,22 @@
 		}
 		
 		//.注册代码
-		function Reg(phone,pwd,mtypeid){
+		function Reg(phone,pwd){
 		    //.更改按钮状态
 		    _ChangeBtn('status');
 		    //.随机生成userid字符串
 			var userid = _GetSalt();
-			//.获取当前时间戳(注册时间)
-			var jointime = _GetNowDate();
-			//.默认头像 临时
-			var face = '/dfboy.png';
-			var uname = userid;
-			var MD5_pwd = hex_md5(pwd);
-			switch (mtypeid) {
-				case '1':
-					var mtype = "个人";
-					break;
-				case '2':
-					var mtype = "机构";
-					break;
-				case '3':
-					var mtype = "专家";
-					break;
-				default:
-					break;
-			}
-			_Ajax( window.APIServer.Reg, "post", {
+//			//.获取当前时间戳(注册时间)
+//			var jointime = _GetNowDate();
+
+//			var MD5_pwd = hex_md5(pwd);
+			_Ajax(UrlRouter.user, "post", {
 			       values : {
-			           userid:userid, mtype:mtype, mtypeid:mtypeid, uname:uname,
-					   phone:phone, pwd:MD5_pwd, face:face, jointime:jointime  }
+			           name:userid, password:pwd, mobile:phone}
 			}, "json", function(ret) {
+			    alert(JSON.stringify(ret))
 			    switch(ret.code) {
-				    case 402:
+				    case -1:
 					     _toast('该用户名已被注册！');
 						 //.更改按钮状态
 		                 _ChangeBtn('err');
@@ -254,7 +240,7 @@
 			    name:  'login',
 			    url: 'widget://html/PublicWin.html',
 			    pageParam:{
-				    frameurl : 'widget://html/User/login.html',
+				    frameurl : 'widget://html/user/login.html',
 				    title : '登录'
 			    },
 		    });

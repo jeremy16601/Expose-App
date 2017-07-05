@@ -42,7 +42,7 @@
 						<span class="login_input_clear_icon"></span>
 					</div>
 				</div>
-				<div onclick="openWin(this)" Path="User" name="reg" title="注册">
+				<div onclick="openWin(this)" Path="user" name="reg" title="注册">
 					<p class="login_content_foot_tip rel r_txt">
 						<a class="login_no_request_code_link">还没有账号？</a>
 					</p>
@@ -53,9 +53,11 @@
 		</div>
 	</body>
 	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/vue.js"></script>
 	<script type="text/javascript" src="../../script/Base.js"></script>
 	<script type="text/javascript" src="../../script/commjs/router.js"></script>
 	<script type="text/javascript">
+		var vm=null;
 		apiready = function() {
 			api.parseTapmode();
 			//加载用户账号缓存
