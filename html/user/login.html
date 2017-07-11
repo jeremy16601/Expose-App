@@ -47,17 +47,15 @@
 						<a class="login_no_request_code_link">还没有账号？</a>
 					</p>
 				</div>
-				<a class="btnok" onclick="CheckSubmit()">立即登录</a>
+				<a id="login" class="btnok" onclick="login_1()">立即登录</a>
 				<a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 登陆中</a>
 			</div>
 		</div>
 	</body>
 	<script type="text/javascript" src="../../script/api.js"></script>
-	<script type="text/javascript" src="../../script/vue.js"></script>
 	<script type="text/javascript" src="../../script/Base.js"></script>
 	<script type="text/javascript" src="../../script/commjs/router.js"></script>
 	<script type="text/javascript">
-		var vm=null;
 		apiready = function() {
 			api.parseTapmode();
 			//加载用户账号缓存
@@ -79,22 +77,22 @@
 		}
 
 		//.表单验证
-		function CheckSubmit() {
+		function login_1() {
 			var phone = $api.byId('phone').value;
 			var pwd = $api.byId('pwd').value;
-			if (phone.length <= 0) 
+			if (phone.length <= 0)
 			{//.账号为空
 				_toast('请输入手机号');
-			} 
-			else if (phone.length != 11) 
+			}
+			else if (phone.length != 11)
 			{//.账号格式不正确
 				_toast('手机号格式不正确');
-			} 
-			else if (pwd.length <= 0) 
+			}
+			else if (pwd.length <= 0)
 			{//.密码为空
 				_toast('请输入密码');
-			} 
-			else 
+			}
+			else
 			{//.开始登录
 				login(phone,pwd);
 			}

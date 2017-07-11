@@ -57,26 +57,26 @@ function openWinto(name, url) {//打开新窗口
     });
 }
 
-function openWin(name, url, islogin) {//打开新窗口并且需要验证登录
-
-    if (islogin) {//判断是否需要登录验证
-        var user = $api.getStorage('user');
-        if (!user) {
-            api.alert({
-                title: '提示',
-                msg: '请先登录',
-                buttons: ['确定']
-            });
-            return;
-        } else {
-            api.openWin({
-                name: name,
-                url: url + '.html',
-                slidBackType: 'edge'
-            });
-        }
-    }
-}
+// function openWin(name, url, islogin) {//打开新窗口并且需要验证登录
+//
+//     if (islogin) {//判断是否需要登录验证
+//         var user = $api.getStorage('user');
+//         if (!user) {
+//             api.alert({
+//                 title: '提示',
+//                 msg: '请先登录',
+//                 buttons: ['确定']
+//             });
+//             return;
+//         } else {
+//             api.openWin({
+//                 name: name,
+//                 url: url + '.html',
+//                 slidBackType: 'edge'
+//             });
+//         }
+//     }
+// }
 
 function toast(text, location, time) {
     api.toast({
