@@ -1,152 +1,136 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<title>用户登录</title>
-		<link type="text/css" rel="stylesheet" href="../../css/reg_login.css">
-		<style type="text/css">
-			html, body {
-				height: 100%;
-			}
-			.btnok .CIACloud-font{
-			    font-size: 20px;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="login_content_wrapper" style="display: block; opacity: 1;">
-			<div id="login_tele_wrapper" style="display: block; opacity: 1;">
-				<h3 class="login_content_h3 none">手机号登录</h3>
-				<div class="login_input_div">
-					<div id="login_tele_left" class="left">
-						+
-						<input type="tel" readonly="readonly" class="login_tele_code_input" id="cdm" maxlength="4" value="86">
-					</div>
-					<div id="CountriesRegions" class="right rel" onclick="CountrySelect()">
-						中国
-					</div>
-					<div class="clear"></div>
-				</div>
-				<div class="login_input_div">
-					<span class="input_title">手机号</span>
-					<input type="tel" id="phone" class="login_input" placeholder="填写手机号码"maxlength="11">
-					<div class="login_input_clear">
-						<span class="login_input_clear_icon"></span>
-					</div>
-				</div>
-				<div class="login_input_div">
-					<span class="input_title">密&emsp;码</span>
-					<input type="password" id="pwd" class="login_input" placeholder="请输入登录密码" maxlength="16">
-					<div class="login_input_clear" style="display: none;">
-						<span class="login_input_clear_icon"></span>
-					</div>
-				</div>
-				<div onclick="openWin(this)" Path="user" name="reg" title="注册">
-					<p class="login_content_foot_tip rel r_txt">
-						<a class="login_no_request_code_link">还没有账号？</a>
-					</p>
-				</div>
-				<a id="login" class="btnok" onclick="login_1()">立即登录</a>
-				<a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 登陆中</a>
-			</div>
-		</div>
-	</body>
-	<script type="text/javascript" src="../../script/api.js"></script>
-	<script type="text/javascript" src="../../script/Base.js"></script>
-	<script type="text/javascript" src="../../script/commjs/router.js"></script>
-	<script type="text/javascript">
-		apiready = function() {
-			api.parseTapmode();
-			//加载用户账号缓存
-			loadphone();
-		}
-		
-		//.加载用户手机号
-		function loadphone() {
-			var phone = _GetStorage('phone');
-			if (phone != null) 
-			{//.填充手机号码到登录表单
-				$api.attr($api.byId("phone"), 'value', phone);
-			}
-		}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>用户登录</title>
+    <link type="text/css" rel="stylesheet" href="../../css/reg_login.css">
+    <style type="text/css">
+        html, body {
+            height: 100%;
+        }
 
-		//.选择国家地区代码
-		function CountrySelect() {
-			_toast("当前仅支持中国大陆手机用户");
-		}
+        .btnok .CIACloud-font {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="login_content_wrapper" style="display: block; opacity: 1;">
+    <div id="login_tele_wrapper" style="display: block; opacity: 1;">
+        <h3 class="login_content_h3 none">手机号登录</h3>
+        <div class="login_input_div">
+            <div id="login_tele_left" class="left">
+                +
+                <input type="tel" readonly="readonly" class="login_tele_code_input" id="cdm" maxlength="4" value="86">
+            </div>
+            <div id="CountriesRegions" class="right rel" onclick="CountrySelect()">
+                中国
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="login_input_div">
+            <span class="input_title">手机号</span>
+            <input type="tel" id="phone" class="login_input" placeholder="填写手机号码" maxlength="11">
+            <div class="login_input_clear">
+                <span class="login_input_clear_icon"></span>
+            </div>
+        </div>
+        <div class="login_input_div">
+            <span class="input_title">密&emsp;码</span>
+            <input type="password" id="pwd" class="login_input" placeholder="请输入登录密码" maxlength="16">
+            <div class="login_input_clear" style="display: none;">
+                <span class="login_input_clear_icon"></span>
+            </div>
+        </div>
+        <div onclick="openWin(this)" Path="user" name="reg" title="注册">
+            <p class="login_content_foot_tip rel r_txt">
+                <a class="login_no_request_code_link">还没有账号？</a>
+            </p>
+        </div>
+        <a id="login" class="btnok" onclick="login_1()">立即登录</a>
+        <a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 登陆中</a>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/Base.js"></script>
+<script type="text/javascript" src="../../script/commjs/router.js"></script>
+<script type="text/javascript">
+    apiready = function () {
+        api.parseTapmode();
+        //加载用户账号缓存
+        loadphone();
+    }
 
-		//.表单验证
-		function login_1() {
-			var phone = $api.byId('phone').value;
-			var pwd = $api.byId('pwd').value;
-			if (phone.length <= 0)
-			{//.账号为空
-				_toast('请输入手机号');
-			}
-			else if (phone.length != 11)
-			{//.账号格式不正确
-				_toast('手机号格式不正确');
-			}
-			else if (pwd.length <= 0)
-			{//.密码为空
-				_toast('请输入密码');
-			}
-			else
-			{//.开始登录
-				login(phone,pwd);
-			}
-		}
-		
-		//.登录代码
-		function login(phone,pwd){
-		    //.更改按钮状态
-		    _ChangeBtn('status');
-			//.MD5加密
+    //.加载用户手机号
+    function loadphone() {
+        var phone = _GetStorage('phone');
+        if (phone != null) {//.填充手机号码到登录表单
+            $api.attr($api.byId("phone"), 'value', phone);
+        }
+    }
+
+    //.选择国家地区代码
+    function CountrySelect() {
+        _toast("当前仅支持中国大陆手机用户");
+    }
+
+    //.表单验证
+    function login_1() {
+        var phone = $api.byId('phone').value;
+        var pwd = $api.byId('pwd').value;
+        if (phone.length <= 0) {//.账号为空
+            _toast('请输入手机号');
+        }
+        else if (phone.length != 11) {//.账号格式不正确
+            _toast('手机号格式不正确');
+        }
+        else if (pwd.length <= 0) {//.密码为空
+            _toast('请输入密码');
+        }
+        else {//.开始登录
+            login(phone, pwd);
+        }
+    }
+
+    //.登录代码
+    function login(phone, pwd) {
+        //.更改按钮状态
+        _ChangeBtn('status');
+        //.MD5加密
 //			var MD5_pwd = hex_md5(pwd);
-			_Ajax(UrlRouter.login, "post", {
-			       values : {mobile : phone,pwd : pwd}
-			}, "json", function(ret) {
-			    alert(JSON.stringify(ret));
-			    switch(ret.code) {
-					case 401:
-					     _toast('密码错误！');
-						 //.更改按钮状态
-						 _ChangeBtn('err');
-						 break;
-					case 402:
-					   	 _toast('账号错误！');
-					   	 //.更改按钮状态
-					   	 _ChangeBtn('err');
-					   	 break;
-					case 200:
-						 //存储用户信息
-						 _SetStorage('token', ret.token);
-						 _SetStorage('mid', ret.mid);
-						 _SetStorage('mtypeid', ret.mtypeid);
-						 _SetStorage('phone', phone);
-						 _SetStorage('name', ret.name);
-						 _SetStorage('face', ret.face);
-						 //广播事件：用户登录成功
-						 _SendEvent('UserLogin', ret.mtypeid);
-						 setTimeout(function() {
-						     _toast('登录成功！');
-						 }, 2000)
-						 setTimeout(function() {
-						     api.closeToWin({
-						         name : 'root'
-							 });
-						 }, 3000)
-					   	 break;
-					default:
-					   	 break;
-			    }
-			},function(){ 
-			      setTimeout(function() { 
-			         _ChangeBtn('err'); 
-			      }, 1000) 
-			});
-		}
-		
-	</script>
+        _Ajax(UrlRouter.login, "post", {
+            values: {mobile: phone, password: pwd}
+        }, "json", function (ret) {
+            if (ret.code == 401) {
+                _toast('账号或密码错误！');
+                //.更改按钮状态
+                _ChangeBtn('err');
+                return;
+            }
+            if (ret[0]) {
+                //存储用户信息
+                _SetStorage('user', ret[0]);
+                //广播事件：用户登录成功
+                _SendEvent('UserLogin', ret.mtypeid);
+                setTimeout(function () {
+                    _toast('登录成功！');
+                }, 2000)
+                setTimeout(function () {
+                    api.closeToWin({
+                        name: 'root'
+                    });
+                }, 3000)
+            }
+        }, function (err) {
+            alert(JSON.stringify(err))
+            setTimeout(function () {
+                _ChangeBtn('err');
+            }, 1000)
+        });
+    }
+
+</script>
 </html>
