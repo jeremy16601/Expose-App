@@ -25,6 +25,11 @@
             min-height: 2.6rem;
         }
 
+        .headimg {
+            max-height: 128px;
+            max-width: 128px;
+        }
+
         .aui-btn-block {
             width: 95%;
             margin-left: 10px;
@@ -37,39 +42,35 @@
 <body>
 <div id="app" v-cloak>
     <div class="aui-text-center">
-        <img src="../image/douqu.png" class="aui-img-round"><br>
-        <span style="font-size: 16px;  ">落基小编</span>
+        <img :src="user.headimg" class="aui-img-round headimg"><br>
+        <span style="font-size: 16px;  ">{{user.name}}</span>
     </div>
 
     <div class="aui-content aui-margin-b-15" style="margin-top: 15px;">
         <ul class="aui-list aui-list-in">
-            <li class="aui-list-header" style="color: #666666;">下载与升级</li>
+            <li class="aui-list-header" ></li>
             <li class="aui-list-item">
                 <div class="aui-list-item-inner">
-                    下载完成后自动安装 <br>
-                    <!--<input type="checkbox" class="aui-switch" v-model="checks" value="false" checked="checked">-->
+                    我的发布 <br>
                 </div>
             </li>
             <li class="aui-list-item">
                 <div class="aui-list-item-inner">
-                    下载完成后删除安装包 <br>
-                    <input type="checkbox" class="aui-switch" checked="checked">
+                    我的关注 <br>
                 </div>
             </li>
             <li class="aui-list-item">
                 <div class="aui-list-item-inner">
                     自动检测可以升级的应用 <br>
-                    <input type="checkbox" class="aui-switch" checked="checked">
                 </div>
             </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-title">安装包下载位置</div>
-                    <br>
-                    <div class="aui-list-item-text">默认位置</div>
-                </div>
+            <!--<li class="aui-list-item">-->
+                <!--<div class="aui-list-item-inner">-->
+                    <!--<div class="aui-list-item-title">安装包下载位置</div>-->
+                    <!--<br>-->
+                <!--</div>-->
 
-            </li>
+            <!--</li>-->
         </ul>
     </div>
 
@@ -80,7 +81,6 @@
             <li class="aui-list-item">
                 <div class="aui-list-item-inner aui-list-item-arrow">
                     反馈 <br>
-
                 </div>
             </li>
             <li class="aui-list-item">
@@ -92,12 +92,9 @@
         </ul>
     </div>
 
-    <div class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin(this)" Path="user" name="login" title="登录">退出登录</div>
-    <div class="cia-content-padded">
-        <div class="cia-btn cia-btn-block cia-btn-info" onclick="openWin(this)" Path="user" name="login" title="登录">
-            请登录
-        </div>
+    <div class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin(this)" Path="user" name="login" title="登录">退出登录
     </div>
+
 </div>
 
 </body>
@@ -107,12 +104,34 @@
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript" src="../script/Base.js"></script>
 <script>
-    var vm = new Vue({
-        el: '#app',
-        data: {},
-        methods: {
+    var vm = null;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {user: ""},
+            mounted: function () {
+                this.init();
+            },
+            methods: {
+                init: function () {
+//                    alert(JSON.stringify(_GetStorage("user")));
+                    if (_GetStorage("user")) {
+                        //判断是否登陆状态
+                        this.user = _GetStorage("user");
+                    } else {
+                        alert("请登录!");
+                        var pageParamData = {
+                            name : "login",
+                            title : "登录",
+                            frameurl : 'widget://html/user/login.html'
+                        };
+                        LoadNewWin("login",pageParamData);
+                    }
+                }
+            }
+        })
+        ;
+    }
 
-        }
-    });
 </script>
 </html>
