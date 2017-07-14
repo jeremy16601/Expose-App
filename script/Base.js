@@ -119,7 +119,7 @@ function _Ajax(url, method, data, dataType, _callback, _callbackerr, headers, ca
 			   if ( typeof _callbackerr == "function") 
 			   {
 				  _callbackerr(err);
-				  _toast("连接服务器失败");
+				  _toast("连接服务器失败"+JSON.stringify(err));
 			   }
 		   }
 	});
@@ -217,13 +217,14 @@ function _GetNowDate() {
 
 //.处理时间日期函数
 function _GetDateDiff(dateTimeStamp) {
+    var timestamp4 = new Date(dateTimeStamp);
 	var minute = 1000 * 60;
 	var hour = minute * 60;
 	var day = hour * 24;
 	var halfamonth = day * 15;
 	var month = day * 30;
 	var now = new Date().getTime();
-	var diffValue = now - dateTimeStamp;
+	var diffValue = now - timestamp4;
 	if (diffValue < 0) {//.若日期不符则弹出窗口告之
 		//.alert("结束日期不能小于开始日期！");
 	}

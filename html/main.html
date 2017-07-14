@@ -12,104 +12,268 @@
     <link rel="stylesheet" type="text/css" href="../css/aui-slide.css"/>
 
     <style>
-        .aui-grid-label1 {
-            width: 65%;
-            font-size: 12px;
+        .content {
+            box-sizing: border-box;
+            padding: 0 15px;
         }
 
-        .aui-grid-label {
-            font-size: 12px;
+        .content .text {
+            width: 100%;
+            line-height: 20px;
+            font-size: 16px;
+            color: #444;
+            padding-top: 15px;
+            padding-bottom: 21px;
         }
 
+        .content .text2 {
+            width: 100%;
+            height: 24px;
+            line-height: 22px;
+            font-size: 12px;
+            color: #888;
+            box-sizing: border-box;
+            background-size: 16px 16px;
+            background-repeat: no-repeat;
+            background-position: left center;
+            position: relative;
+        }
+
+        .content .arrow {
+            width: 44px;
+            height: 8px;
+            display: inline-block;
+            box-sizing: border-box;
+            padding-right: 6px;
+            background-image: url(../image/pic5.png);
+            background-size: 8px 4px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            position: absolute;
+            right: 0;
+            bottom: 8px;
+        }
+
+        .content .section1 {
+            width: 100%;
+            height: 120px;
+            position: relative;
+            box-sizing: border-box;
+            padding-right: 120px;
+        }
+
+        .content .section1 .from {
+            float: left;
+        }
+
+        .content .img {
+            position: absolute;
+            right: 3px;
+            top: 10px;
+        }
+
+        .content .img img {
+            width: 100px;
+            max-height: 100px;
+        }
+
+        .content .section2 .text2 {
+            width: 100%;
+            height: 24px;
+            line-height: 22px;
+            font-size: 12px;
+            color: #888;
+            box-sizing: border-box;
+            padding-left: 23px;
+            background-size: 16px 16px;
+            background-repeat: no-repeat;
+            background-position: left center;
+            position: relative;
+        }
+
+        .content2,
+        .content3 {
+            box-sizing: border-box;
+            padding: 0 15px;
+        }
+
+        .content2 .section,
+        .content3 .section {
+            width: 100%;
+            box-sizing: border-box;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .content2 .title,
+        .content3 .title {
+            font-size: 16px;
+            color: #444;
+            line-height: 20px;
+            padding-top: 1rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .content2 .pic_ul {
+            display: flex;
+            display: -webkit-flex;
+            display: -webkit-box;
+            flex-flow: row;
+            -webkit-flex-flow: row;
+            -webkit-box-orient: horizontal;
+        }
+
+        .content2 .pic {
+            flex: 1;
+            -webkit-flex: 1;
+            -webkit-box-flex: 1;
+            box-sizing: border-box;
+            width: 33%;
+            margin-right: 3px;
+        }
+
+        .content2 .pic img,
+        .content3 .pic img {
+            width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .content2 .text,
+        .content3 .text {
+            color: #888;
+            font-size: 12px;
+            position: relative;
+            padding-left: 22px;
+            padding-bottom: 8px;
+            line-height: 38px;
+        }
+
+        .content2 .icon,
+        .content3 .icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .content2 .icon img,
+        .content3 .icon img {
+            width: 50%;
+            margin-top: 11px;
+        }
+
+        .content2 .arrow,
+        .content3 .arrow {
+            position: absolute;
+            bottom: 8px;
+            right: 0px;
+            width: 38px;
+            height: 38px;
+            box-sizing: border-box;
+            background-image: url(../image/pic5.png);
+            background-size: 8px 4px;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        em {
+            padding-right: 4px;
+        }
     </style>
 </head>
 <body>
-
-<div id="aui-slide1">
-    <div class="aui-slide-wrap">
-        <div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center">
-            <img src="../image/banner1.jpeg"/>
-        </div>
-        <div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center">
-            <img src="../image/banner0.jpeg"/>
-        </div>
-    </div>
-    <div class="aui-slide-page-wrap"><!--分页容器--></div>
-</div>
-
 <div id="app" v-cloak>
-    <!--热门推荐-->
-    <section class="aui-grid" style="margin-top: 15px;">
-        <div style="text-align: center;margin-top: 10px;">
-            <p style="font-size: 16px;color: black;">热门应用推荐</p>
-            <p style="font-size: 14px;color: #959595">为你推荐每日人气良品</p>
-        </div>
-        <div class="aui-row">
-            <div class="aui-col-xs-3" v-for="item in items">
-                <img :src="item.img" class="img-responsive " @click="detail(item.title)">
-                <div class="aui-grid-label">{{item.title}}</div>
-                <div class="aui-grid-label1 aui-btn aui-btn-info"
-                     @click="open(item.url)" v-if="checkpackages(item.package)">安装
-                </div>
-                <div class="aui-grid-label1 aui-btn  aui-btn-yj"
-                     @click="openapp(item.package)" v-else>打开
-                </div>
+
+    <div id="aui-slide1">
+        <div class="aui-slide-wrap">
+            <div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center" v-for=" item in banners">
+                <img :src="item.image"/>
             </div>
-            <!--<div class="aui-col-xs-3">-->
-            <!--<img src="../image/douqu.png" class="img-responsive " @click="detail('逗趣')">-->
-            <!--<div class="aui-grid-label">逗趣</div>-->
-            <!--<div class="aui-grid-label1 aui-btn aui-btn-info"-->
-            <!--@click="open('http://7jprve.com1.z0.glb.clouddn.com/douqutv_1.2.1.apk')">安装-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="aui-col-xs-3">-->
-            <!--<img src="../image/meme.png" class="img-responsive " @click="detail('么么直播')">-->
-            <!--<div class="aui-grid-label">么么直播</div>-->
-            <!--<div class="aui-grid-label1 aui-btn aui-btn-info"-->
-            <!--@click="open('http://7jprve.com1.z0.glb.clouddn.com/memezhibo.apk')">安装-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="aui-col-xs-3">-->
-            <!--<img src="../image/xm.png" class="img-responsive " @click="detail('熊猫直播')">-->
-            <!--<div class="aui-grid-label">熊猫直播</div>-->
-            <!--<div class="aui-grid-label1 aui-btn aui-btn-yj" @click="openapp()">已安装</div>-->
-            <!--</div>-->
 
         </div>
-    </section>
-    <!-----------------------------------------end-------------------------------------->
+        <div class="aui-slide-page-wrap"><!--分页容器--></div>
+    </div>
 
-    <div class="aui-card-list">
-
+    <div id="headlist">
+        <div class="content" tapmode="" @click="openDetail()" v-for="article in articles">
+            <div class="section1">
+                <div class="from">
+                    <div class="text">{{article.title}}</div>
+                    <div>
+                        <div class="text2">{{article.author}}&nbsp;  <em>阅读 {{article.view_times}}</em> <em>赞{{article.zan}}</em> <em>{{article.created_at | time}}</em>
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="img">
+                    <img :src="article.small_image"></div>
+            </div>
+        </div>
 
     </div>
+
 </div>
 </body>
-<script type="text/javascript" src="../script/api.js"></script>
-<script type="text/javascript" src="../script/aui-slide.js"></script>
 <script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/commjs/router.js"></script>
+<script type="text/javascript" src="../script/Base.js"></script>
 <script type="text/javascript" src="../script/zepto.min.js"></script>
+<script type="text/javascript" src="../script/aui-slide.js"></script>
 <script type="text/javascript">
-
     var vm = null;
-    var packages = null;
-    var packagesList = [];
-
-    var slide = new auiSlide({
-        container: document.getElementById("aui-slide1"),
-        // "width":300,
-        "height": 200,
-        "speed": 300,
-        "autoPlay": 3000, //自动播放
-        "pageShow": true,
-        "pageStyle": 'dot',
-        "loop": true,
-        'dotPosition': 'center'
-    });
-
 
     apiready = function () {
-
+        Vue.filter('time', function (value) {
+            return _GetDateDiff(value);
+        });
+        vm = new Vue({
+            el: '#app',
+            data: {banners: '', articles: []},
+            mounted: function () {
+                api.showProgress({
+                    title: '加载中',
+                    modal: false
+                });
+                this.initBanner();
+            },
+            methods: {
+                //banner加载
+                initBanner: function () {
+                    _Ajax(UrlRouter.banner, "get", {}, "json", function (ret) {
+                        if (ret) {
+                            vm.banners = ret;
+                            Vue.nextTick(function () {
+                                new auiSlide({
+                                    container: document.getElementById("aui-slide1"),
+                                    // "width":300,
+                                    "height": 200,
+                                    "speed": 300,
+                                    "autoPlay": 3000, //自动播放
+                                    "pageShow": true,
+                                    "pageStyle": 'dot',
+                                    "loop": true,
+                                    'dotPosition': 'center'
+                                });
+                            });
+                        }
+                    },function(){
+                        api.hideProgress();
+                    });
+                    this.initData();
+                },
+                //加载首页数据
+                initData: function () {
+                    _Ajax(UrlRouter.article+ '?type=2', "get", {}, "json", function (ret) {
+                        api.hideProgress();
+                        if (ret) {
+                            vm.articles = ret;
+                        }
+                    },function(){
+                        api.hideProgress();
+                    });
+                }
+            }
+        })
     };
 
 
