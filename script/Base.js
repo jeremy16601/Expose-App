@@ -87,7 +87,12 @@ function _AddEventListener(eventName, _call, extra) {
 	});
 }
 
-
+function _Alert(info) {
+    api.alert({
+        msg : JSON.stringify(info)
+        //location: 'middle'
+    });
+}
 // 异步请求
 function _Ajax(url, method, data, dataType, _callback, _callbackerr, headers, cache, timeout, tag) {
 	var _data = ( typeof arguments[2] == "undefined" || arguments[2] == null) ? {} : arguments[2];

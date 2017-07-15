@@ -40,11 +40,11 @@
 			//获取新窗口属性
 			var type = api.pageParam.type;
 			//选择新窗口容器
-			SelectWinHeaderInfo(type);
+			SelectWinHeaderInfo(type,api.pageParam);
 		};
 		
 		//打开新窗口
-		function SelectWinHeaderInfo(type) {
+		function SelectWinHeaderInfo(type,pageParamData) {
 			//显示头部
 			switch(type) {
 				case 'Search':
@@ -52,14 +52,14 @@
 					$api.removeCls($api.dom('.SearchHeader'), 'none');
 					var headerPos = $api.offset(SearchHeader);
 					var frameheight = api.winHeight - headerPos.h;
-					openFrame(headerPos,frameheight);
+					openFrame(headerPos,frameheight,pageParamData);
 					break;
 			  default:
 				    //常规窗口
 					$api.removeCls($api.dom('.DefaultHeader'), 'none');
 					var headerPos = $api.offset(DefaultHeader);
 					var frameheight = api.winHeight - headerPos.h;
-					openFrame(headerPos,frameheight);
+					openFrame(headerPos,frameheight,pageParamData);
 					break;
 			}			
 		}

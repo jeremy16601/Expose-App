@@ -7,7 +7,6 @@
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
     <title>首页</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/aui-slide.css"/>
 
@@ -192,14 +191,14 @@
         </div>
         <div class="aui-slide-page-wrap"><!--分页容器--></div>
     </div>
-
     <div id="headlist">
-        <div class="content" tapmode="" @click="openDetail()" v-for="article in articles">
-            <div class="section1">
+        <div class="content" tapmode="" v-for="article in articles">
+            <div class="section1" @click="openDetail(article)">
                 <div class="from">
                     <div class="text">{{article.title}}</div>
                     <div>
-                        <div class="text2">{{article.author}}&nbsp;  <em>阅读 {{article.view_times}}</em> <em>赞{{article.zan}}</em> <em>{{article.created_at | time}}</em>
+                        <div class="text2">{{article.author}}&nbsp; <em>阅读 {{article.view_times}}</em> <em>赞{{article.zan}}</em>
+                            <em>{{article.created_at | time}}</em>
                             <div class="arrow"></div>
                         </div>
                     </div>
@@ -235,6 +234,7 @@
                     modal: false
                 });
                 this.initBanner();
+
             },
             methods: {
                 //banner加载
@@ -242,6 +242,7 @@
                     _Ajax(UrlRouter.banner, "get", {}, "json", function (ret) {
                         if (ret) {
                             vm.banners = ret;
+//                            alert(JSON.stringify(ret))
                             Vue.nextTick(function () {
                                 new auiSlide({
                                     container: document.getElementById("aui-slide1"),
@@ -255,22 +256,33 @@
                                     'dotPosition': 'center'
                                 });
                             });
+                            //加载首页数据
+                            Vue.nextTick(function () {
+                                _Ajax(UrlRouter.article + '?type=2', "get", {}, "json", function (ret) {
+                                    api.hideProgress();
+                                    if (ret) {
+                                        vm.articles = ret;
+                                    }
+                                }, function () {
+                                    api.hideProgress();
+                                });
+                            })
                         }
-                    },function(){
+                    }, function (err) {
+                        alert(JSON.stringify(err))
                         api.hideProgress();
                     });
-                    this.initData();
+
                 },
-                //加载首页数据
-                initData: function () {
-                    _Ajax(UrlRouter.article+ '?type=2', "get", {}, "json", function (ret) {
-                        api.hideProgress();
-                        if (ret) {
-                            vm.articles = ret;
-                        }
-                    },function(){
-                        api.hideProgress();
-                    });
+                //打开详情
+                openDetail:function (article) {
+                    var pageParamData = {
+                        name : "article_detail",
+                        title :"文章详情",
+                        aid:article.id,
+                        frameurl : 'widget://html/article_detail.html'
+                    };
+                    LoadNewWin("article_detail",pageParamData);
                 }
             }
         })

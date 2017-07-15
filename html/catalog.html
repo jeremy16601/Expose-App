@@ -10,6 +10,9 @@
     <link rel="stylesheet" type="text/css" href="../css/api.css"/>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+
+    </style>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -18,19 +21,18 @@
             <li class="aui-list-item">
                 <div class="aui-media-list-item-inner">
                     <div class="aui-list-item-media" @click="openDetail('熊猫直播')">
-                        <img src="../image/xm.png">
+                        <img :src="data.img">
                     </div>
-                    <div class="aui-list-item-inner">
+                    <div class="aui-list-item-inner" style="padding-top: 1.5rem;">
                         <div class="aui-list-item-text">
                             <div class="aui-list-item-title" style="margin-top: -11px;">{{data.name}}</div>
                             <div class="aui-list-item-right" style="margin-top: 21px;">
-                                <div class="aui-grid-label1 aui-btn aui-btn-info"
-                                     @click="openapp()">
+                                <div class="aui-grid-label1 ">
                                 </div>
                             </div>
                         </div>
                         <div class="aui-list-item-text">
-                            影视视听 29.09M
+                            总帖： 2390
                         </div>
                     </div>
                 </div>
@@ -46,17 +48,17 @@
 <script type="text/javascript" src="../script/api.js"></script>
 
 <script>
-    var vm=null;
+    var vm = null;
     apiready = function () {
         vm = new Vue({
             el: '#app',
-            data: {datas:[]},
-            mounted:function(){
+            data: {datas: []},
+            mounted: function () {
                 this.initd();
             },
             methods: {
                 //初始化数据
-                initd:function () {
+                initd: function () {
                     api.showProgress();
                     $.ajax({
                         "url": UrlRouter.catalog,
@@ -64,7 +66,7 @@
                         "type": "GET"
                     }).done(function (data, status, header) {
                         api.hideProgress();
-                       vm.datas=data;
+                        vm.datas = data;
 
                     }).fail(function (header, status, errorThrown) {
                         api.hideProgress();

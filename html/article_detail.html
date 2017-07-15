@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>headcontent</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            font-family: helvetica;
+        }
+
+        .toutiaoBar {
+            height: 40px;
+            background-color: #fff;
+        }
+
+        .toutiaoBar img {
+            margin: 0 15px;
+            display: block;
+            height: 40px;
+        }
+
+        .title {
+            margin: 0 15px;
+            padding: 10px 0;
+            display: block;
+        }
+
+        .title h1 {
+            display: block;
+            font-size: 21px;
+            font-weight: bolder;
+            color: #000;
+            margin: 0 0 5px;
+            line-height: 26px;
+            word-wrap: break-word;
+        }
+
+        .title .subtitle {
+            position: relative;
+            font-size: 11px;
+            color: #747474;
+        }
+
+        .subtitle > div {
+            display: inline-block;
+        }
+
+        .title .time {
+            padding-left: 6px;
+        }
+
+        .article {
+            margin: 0 15px;
+            line-height: 1.5em;
+            word-wrap: break-word;
+            text-align: justify;
+            overflow: hidden;
+            color: #303030;
+        }
+
+        .p {
+            word-wrap: break-word;
+            margin-top: 0;
+            text-align: justify;
+            margin-bottom: 14px;
+        }
+
+        .collect {
+            width: 90px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            border-radius: 23px;
+            line-height: 45px;
+            padding: 0 20px;
+        }
+
+        .collect-img {
+            width: 45px;
+            height: 45px;
+            display: inline-block;
+            float: left;
+            background: url('../image/shouye/collect.png') center no-repeat;
+        }
+
+        .num {
+            display: inline-block;
+            float: left;
+            line-height: 45px;
+        }
+
+        .guanzhu {
+            font-size: 11px;
+            color: #747474;
+            line-height: 35px;
+            margin: 0 16px;
+        }
+
+        .section {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        .section .title {
+            font-size: 11px;
+            color: #747474;
+        }
+
+        .section .message {
+            font-size: 15px;
+            line-height: 45px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .message.last {
+            border-bottom: none;
+        }
+
+        .comment {
+            line-height: 46px;
+        }
+
+        .comment .tit {
+            width: 40px;
+            text-align: center;
+            border-bottom: 1px solid red;
+        }
+
+        .comment .comment_content {
+            text-align: center;
+            height: 100px;
+            line-height: 100px;
+            border: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+
+        .pic img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="title">
+        <h1>{{article.title}}</h1>
+        <div class="subtitle">
+            <div id="source">人民网-环球时报</div>
+            <div class="time">2016-05-17 00:13:51</div>
+        </div>
+    </div>
+    <div class="article">
+        <div id="list" v-html="article.content"></div>
+        <div class="collect">
+            <div class="collect-img"></div>
+            <div class="num">{{article.view_times}}</div>
+        </div>
+    </div>
+
+    <div class="comment">
+        <div class="tit">评论</div>
+        <div class="comment_content">
+            暂无评论，点击抢沙发
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/commjs/router.js"></script>
+<script type="text/javascript" src="../script/Base.js"></script>
+<script type="text/javascript" src="../script/zepto.min.js"></script>
+<script>
+    var vm = null;
+    apiready = function () {
+        vm = new Vue({
+            el: '#app',
+            data: {article: ''},
+            mounted: function () {
+                this.initData();
+                api.showProgress();
+            },
+            methods: {
+                initData: function () {
+                    _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "get", {}, "json", function (ret) {
+                        api.hideProgress();
+//                        _Alert(ret[0])
+                        if (ret) {
+                            vm.article = ret[0];
+                        }
+                    }, function () {
+                        api.hideProgress();
+                    });
+                }
+            }
+        })
+    };
+</script>
+</html>
