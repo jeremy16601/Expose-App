@@ -197,8 +197,8 @@
                 <div class="from">
                     <div class="text">{{article.title}}</div>
                     <div>
-                        <div class="text2">{{article.author}}&nbsp; <em>阅读 {{article.view_times}}</em> <em>赞{{article.zan}}</em>
-                            <em>{{article.created_at | time}}</em>
+                        <div class="text2">{{article.author}}&nbsp; <span> {{article.view_times}}阅读</span> <span>{{article.zan}}赞</span>
+                            <span>&nbsp; {{article.created_at | time}}</span>
                             <div class="arrow"></div>
                         </div>
                     </div>
@@ -275,14 +275,16 @@
 
                 },
                 //打开详情
-                openDetail:function (article) {
+                openDetail: function (article) {
+
                     var pageParamData = {
-                        name : "article_detail",
-                        title :"文章详情",
-                        aid:article.id,
-                        frameurl : 'widget://html/article_detail.html'
+                        name: "article_detail",
+                        title: "文章详情",
+                        type:'Detail',
+                        aid: article.id,
+                        frameurl: 'widget://html/article_detail.html'
                     };
-                    LoadNewWin("article_detail",pageParamData);
+                    LoadNewWin("article_detail", pageParamData);
                 }
             }
         })

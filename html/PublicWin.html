@@ -1,90 +1,234 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<title>曝光吧</title>
-		<link rel="stylesheet" type="text/css" href="../css/ciacloud.css" />
-		<link rel="stylesheet" type="text/css" href="../css/publicWin.css" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>曝光吧</title>
+    <link rel="stylesheet" type="text/css" href="../css/ciacloud.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/publicWin.css"/>
+    <style>
+        .footer {
+            width: 100%;
+            height: 37px;
+            background-color: #f4f5f6;
+            box-sizing: border-box;
+            padding-left: 16px;
+            padding-right: 155px;
+            position: fixed;
+            bottom: 0;
+            border-top: 1px solid #b4b4b4;
+        }
 
-		
-	</head>
-	<body>
-		
-		<!-- DefaultHeader 公共头部-->
-		<header id="DefaultHeader" class="cia-bar cia-bar-nav DefaultHeader none">
-			<!-- 窗口名称 -->
-			<div class="cia-title" id="DefaultHeadertitle">新窗口</div>
-			<!-- 左侧返回按钮 -->
-			<a class="cia-btn cia-pull-left" tapmode onclick="_CloseWin()">
-			<span class="CIACloud-font icon-zuojiantou"></span></a>
-			<!-- 右侧分享按钮 -->
-			<a class="cia-btn cia-pull-right HeaderBtn-Share none" tapmode onclick="showPopup()">
-			<span class="CIACloud-font icon-share"></span></a>
-			<!-- 右侧新增按钮 -->
-			<a class="cia-btn cia-pull-right HeaderBtn-FeedBackAdd none" onclick="openWin(this);" type="Submit" Path="Setting" name="FeedBack_Add" title="意见反馈">新增</a>
-			<!-- 右侧发送按钮 -->
-			<a class="cia-btn cia-pull-right HeaderBtn-Submit none" tapmode onclick="SubmitBtn()">发送</a>
-		</header>
-	</body>
-	<!--APICloud自带前端脚本-->
-	<script type="text/javascript" src="../script/api.js"></script>
-	<!--中科云牧API接口脚本库-->
-	<script type="text/javascript" src="../script/API_Config.js"></script>
-	<!--中科云牧基础脚本库-->
-	<script type="text/javascript" src="../script/Base.js"></script> 
-	<script type="text/javascript">
-	
-		apiready = function() {
-			api.parseTapmode();
-			//获取新窗口属性
-			var type = api.pageParam.type;
-			//选择新窗口容器
-			SelectWinHeaderInfo(type,api.pageParam);
-		};
-		
-		//打开新窗口
-		function SelectWinHeaderInfo(type,pageParamData) {
-			//显示头部
-			switch(type) {
-				case 'Search':
-				    //搜索窗口
-					$api.removeCls($api.dom('.SearchHeader'), 'none');
-					var headerPos = $api.offset(SearchHeader);
-					var frameheight = api.winHeight - headerPos.h;
-					openFrame(headerPos,frameheight,pageParamData);
-					break;
-			  default:
-				    //常规窗口
-					$api.removeCls($api.dom('.DefaultHeader'), 'none');
-					var headerPos = $api.offset(DefaultHeader);
-					var frameheight = api.winHeight - headerPos.h;
-					openFrame(headerPos,frameheight,pageParamData);
-					break;
-			}			
-		}
-		
-		//======================= 封装窗口方法  =======================//
-		
-		//封装openFrame方法
-		function openFrame(headerPos,frameheight,pageParamData){
-		    //获取窗口数据
-			var title = api.pageParam.title;	
-			var frameurl = api.pageParam.frameurl;		
-		    //更改窗口头部信息
-			$api.text($api.byId("DefaultHeadertitle"), title);
-			api.openFrame({
-				name : api.winName,
-				url : frameurl,
-				bounces : false,
-				rect : {
-					x : 0,
-					y : headerPos.h,
-					w : api.winWidth,
-					h : frameheight
-				},
-				pageParam : pageParamData,
-			});	
-		}//openFrame end
-		
-	</script>
+        .footer .input {
+            width: 100%;
+            height: 28px;
+            line-height: 28px;
+            border-radius: 14px;
+            background-color: #fff;
+            color: #7c7c7c;
+            font-size: 12px;
+            box-sizing: border-box;
+            padding-left: 13px;
+            margin-top: 4px;
+        }
+
+        .footer .box {
+            position: fixed;
+            right: 7px;
+            bottom: 0;
+            width: 129px;
+            height: 37px;
+        }
+
+        .footer .icn {
+            float: left;
+            height: 37px;
+        }
+
+        .footer .collect2 {
+            width: 37px;
+            background-image: url(../image/head/collect2.png);
+            background-size: 21px 20px;
+            background-repeat: no-repeat;
+            background-position: center 8px;
+            margin: 0 6px;
+        }
+
+        .icon {
+            width: 1.2em;
+            height: 1.2em;
+            vertical-align: -0.25em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- DefaultHeader 公共头部-->
+<header id="DefaultHeader" class="cia-bar cia-bar-nav DefaultHeader none">
+    <!-- 窗口名称 -->
+    <div class="cia-title" id="DefaultHeadertitle">新窗口</div>
+    <!-- 左侧返回按钮 -->
+    <a class="cia-btn cia-pull-left" tapmode onclick="_CloseWin()">
+        <span class="CIACloud-font icon-zuojiantou"></span></a>
+    <!-- 右侧分享按钮 -->
+    <a id="ShareBtn" class="cia-btn cia-pull-right HeaderBtn-Share none" tapmode onclick="actionMenu()">
+        <span class="CIACloud-font icon-share"></span></a>
+    <!-- 右侧新增按钮 -->
+    <a class="cia-btn cia-pull-right HeaderBtn-FeedBackAdd none" onclick="openWin(this);" type="Submit" Path="Setting"
+       name="FeedBack_Add" title="意见反馈">新增</a>
+    <!-- 右侧发送按钮 -->
+    <a class="cia-btn cia-pull-right HeaderBtn-Submit none" tapmode onclick="SubmitBtn()">发送</a>
+</header>
+
+<footer class="footer " id=footer>
+    <div class="input">写评论...</div>
+    <div class="box"> 111
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-comments"></use>
+            </svg>
+
+        <div class="icn collect2"></div>
+        <div class="icn share2" tapmode onclick="actionMenu()"></div>
+    </div>
+</footer>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/API_Config.js"></script>
+<script type="text/javascript" src="../script/Base.js"></script>
+<script src="./script/font_ali.js"></script>
+<script type="text/javascript">
+    var dialogBox;
+    apiready = function () {
+        api.parseTapmode();
+        //获取新窗口属性
+        var type = api.pageParam.type;
+        //选择新窗口容器
+        SelectWinHeaderInfo(type, api.pageParam);
+        dialogBox = api.require('dialogBox');
+    };
+
+    //打开新窗口
+    function SelectWinHeaderInfo(type, pageParamData) {
+        //显示头部
+        switch (type) {
+            case 'Search':
+                //搜索窗口
+                $api.removeCls($api.dom('.SearchHeader'), 'none');
+                var headerPos = $api.offset(SearchHeader);
+                var frameheight = api.winHeight - headerPos.h;
+                openFrame(headerPos, frameheight, pageParamData);
+                break;
+            case 'Detail':
+                $api.removeCls($api.dom('.DefaultHeader'), 'none');
+                $api.removeCls($api.dom('#ShareBtn'), 'none');
+                $api.removeCls($api.dom('#footer'), 'none');
+                var headerPos = $api.offset(DefaultHeader);
+                var frameheight = api.winHeight - headerPos.h - 37;
+                openFrame(headerPos, frameheight, pageParamData);
+                break;
+            default:
+                //常规窗口
+                $api.removeCls($api.dom('.DefaultHeader'), 'none');
+                var headerPos = $api.offset(DefaultHeader);
+                var frameheight = api.winHeight - headerPos.h;
+                openFrame(headerPos, frameheight, pageParamData);
+                break;
+        }
+    }
+
+    //======================= 封装窗口方法  =======================//
+
+    //封装openFrame方法
+    function openFrame(headerPos, frameheight, pageParamData) {
+        //获取窗口数据
+        var title = api.pageParam.title;
+        var frameurl = api.pageParam.frameurl;
+        //更改窗口头部信息
+        $api.text($api.byId("DefaultHeadertitle"), title);
+        api.openFrame({
+            name: api.winName,
+            url: frameurl,
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerPos.h,
+                w: api.winWidth,
+                h: frameheight
+            },
+            pageParam: pageParamData,
+        });
+    }
+    //openFrame end
+    function actionMenu() {
+        dialogBox.actionMenu({
+            rect: {
+                h: 200
+            },
+            texts: {
+                cancel: '取消'
+            },
+            items: [{
+                text: '微信朋友圈',
+                icon: 'widget://image/shouye/wk.png'
+            }, {
+                text: '微信好友',
+                icon: 'widget://image/shouye/wx.png'
+            }, {
+                text: 'QQ好友',
+                icon: 'widget://image/shouye/qq.png'
+            }, {
+                text: 'QQ空间',
+                icon: 'widget://image/shouye/qk.png'
+            }, {
+                text: '微博',
+                icon: 'widget://image/shouye/wb.png'
+            }, {
+                text: '支付宝',
+                icon: 'widget://image/shouye/zfb.png'
+            }],
+
+            styles: {
+                bg: '#f4f4f4',
+                corner: 6,
+                column: 4,
+                itemText: {
+                    color: '#888',
+                    size: 10,
+                    marginT: 9
+                },
+                itemIcon: {
+                    size: 60
+                },
+                cancel: {
+                    bg: '#f8f8f8',
+                    color: '#222',
+                    h: 48,
+                    size: 16
+                }
+            },
+            tapClose: true
+        }, function (ret) {
+            switch (ret.index) {
+                case 0:
+                    alert('weixin')
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+
+            }
+            if (ret.eventType == 'cancel') {
+                dialogBox.close();
+            }
+
+        });
+    }
+</script>

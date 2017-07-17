@@ -145,6 +145,7 @@
         }
     </style>
 </head>
+
 <body>
 <div id="app" v-cloak>
     <div class="title">
@@ -168,6 +169,7 @@
             暂无评论，点击抢沙发
         </div>
     </div>
+
 </div>
 </body>
 <script type="text/javascript" src="../script/vue.js"></script>
@@ -187,11 +189,24 @@
             },
             methods: {
                 initData: function () {
+
                     _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "get", {}, "json", function (ret) {
                         api.hideProgress();
 //                        _Alert(ret[0])
                         if (ret) {
                             vm.article = ret[0];
+                            //阅读数+1
+                            $.ajax({
+                                "url": UrlRouter.article + '/' + ret[0].id,
+                                "cache": false,
+                                data: {
+                                    id: ret[0].id,
+                                    view_times: parseInt(ret[0].view_times + 1)
+                                },
+                                "type": "PUT"
+                            }).done(function (data, status, header) {
+//                        _Alert(data);
+                            });
                         }
                     }, function () {
                         api.hideProgress();

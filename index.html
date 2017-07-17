@@ -7,13 +7,24 @@
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>首页</title>
     <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/ciacloud.css"/>
     <link rel="stylesheet" type="text/css" href="./css/aui.css"/>
-
 </head>
+<style>
+    .icon {
+        width: 1.2em; height: 1.2em;
+        vertical-align: -0.25em;
+        fill: currentColor;
+        overflow: hidden;
+    }
+</style>
 <body>
 
-<header id="header" class="aui-bar aui-bar-nav" style="padding-top:25px;">
-    <div id="title">曝光平台</div>
+<header id="header" class="cia-bar cia-bar-nav DefaultHeader">
+    <div class="cia-title" id="DefaultHeadertitle">曝光平台</div>
+    <!-- 右侧新增按钮 -->
+    <a class="cia-btn cia-pull-right HeaderBtn-FeedBackAdd " onclick="add()"> <i
+            class="aui-iconfont aui-icon-plus"></i></a>
 </header>
 
 <div id="main">
@@ -22,27 +33,36 @@
 
 <footer class="aui-bar aui-bar-tab" id="footer">
     <div class="aui-bar-tab-item aui-active" tapmode>
-        <i class="aui-iconfont aui-icon-home"></i>
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-home"></use>
+        </svg>
         <div class="aui-bar-tab-label">首页</div>
     </div>
     <div class="aui-bar-tab-item" tapmode>
-        <div class="aui-badge">99</div>
-        <i class="aui-iconfont aui-icon-star"></i>
-        <div class="aui-bar-tab-label">发现</div>
-    </div>
-    <div class="aui-bar-tab-item" tapmode>
-        <i class="aui-iconfont aui-icon-cart"></i>
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-category"></use>
+        </svg>
         <div class="aui-bar-tab-label">分类</div>
     </div>
     <div class="aui-bar-tab-item" tapmode>
-        <!--<div class="aui-badge">8</div>-->
-        <i class="aui-iconfont aui-icon-my"></i>
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-faxian"></use>
+        </svg>
+        <div class="aui-bar-tab-label">发现</div>
+    </div>
+    <div class="aui-bar-tab-item" tapmode>
+        <div class="aui-badge">99</div>
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-account"></use>
+        </svg>
         <div class="aui-bar-tab-label">我的</div>
     </div>
 </footer>
 </body>
 <script type="text/javascript" src="./script/api.js"></script>
 <script type="text/javascript" src="./script/aui-tab.js"></script>
+<script type="text/javascript" src="./script/Base.js"></script>
+<script src="./script/font_ali.js"></script>
 <script type="text/javascript">
 
     apiready = function () {
@@ -85,10 +105,10 @@
                     });
                     break;
                 case 2:
-                    $api.text($api.byId('title'), '发现');
+                    $api.text($api.byId('title'), '分类');
                     api.openFrame({
                         name: 'main',
-                        url: 'html/find.html',
+                        url: 'html/catalog.html',
                         bounces: true,
                         rect: {
                             x: 0,
@@ -99,10 +119,10 @@
                     });
                     break;
                 case 3:
-                    $api.text($api.byId('title'), '分类');
+                    $api.text($api.byId('title'), '动态');
                     api.openFrame({
                         name: 'main',
-                        url: 'html/catalog.html',
+                        url: 'html/find.html',
                         bounces: true,
                         rect: {
                             x: 0,
@@ -129,6 +149,17 @@
             }
         });
 
+
+
     };
+    function add() {
+        var pageParamData = {
+            name: "publish",
+            title: "发布曝光",
+            type:'',
+            frameurl: 'widget://html/publish.html'
+        };
+        LoadNewWin("publish", pageParamData);
+    }
 </script>
 </html>
