@@ -11,4 +11,5 @@ var UrlRouter = {
     collection: host + v+'collection', //意见反馈
     article: host +v+ 'article', //
     banner: host + v+'banner',
+    reply: host + v+'reply',
 }
