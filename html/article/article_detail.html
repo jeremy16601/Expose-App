@@ -14,11 +14,6 @@
             font-family: helvetica;
         }
 
-        .toutiaoBar {
-            height: 40px;
-            background-color: #fff;
-        }
-
         .toutiaoBar img {
             margin: 0 15px;
             display: block;
@@ -74,23 +69,16 @@
         .collect {
             width: 90px;
             margin: 0 auto;
-            background-color: #FFFFFF;
-            border-radius: 23px;
+            font-size: 16px;
             line-height: 45px;
             padding: 0 20px;
         }
 
-        .collect-img {
-            width: 45px;
-            height: 45px;
-            display: inline-block;
-            float: left;
-            background: url('../../image/shouye/collect.png') center no-repeat;
-        }
-
         .num {
             display: inline-block;
-            float: left;
+            float: right;
+            color: #6a6a6a;
+            font-size: 14px;
             line-height: 45px;
         }
 
@@ -186,13 +174,14 @@
         }
 
         .icon {
-            width: 1.2em;
-            height: 1.2em;
-            vertical-align: -0.25em;
+            width: 1.8em;
+            height: 1.8em;
+            vertical-align: -0.4em;
             fill: currentColor;
             overflow: hidden;
         }
-        .aui-badge {
+
+        .aui-badge1 {
             display: inline-block;
             width: auto;
             text-align: center;
@@ -200,13 +189,13 @@
             height: 0.8rem;
             line-height: 0.8rem;
             padding: 0 0.2rem;
-            font-size: 0.6rem;
+            font-size: 0.5rem;
             color: #ffffff;
-            background-color: #ff2600;
+            background-color: #9e9e9e;
             border-radius: 0.4rem;
             position: absolute;
-            top: 0.2rem;
-            right: 60%;
+            top: 0rem;
+            right: 65%;
             z-index: 99;
         }
     </style>
@@ -224,18 +213,31 @@
     </div>
     <div class="article">
         <div id="list" v-html="article.content"></div>
-        <div class="collect">
-            <div class="collect-img"></div>
-            <div class="num">{{article.view_times}}</div>
+        <div class="collect" @click="zan(1)" v-if="!isZan">
+            <svg class=" icn icon" aria-hidden="true">
+                <use xlink:href="#icon-jushoucang"></use>
+            </svg>
+            <div class="num">{{article.zan}}</div>
+        </div>
+        <div class="collect" @click="zan(2)" v-else>
+            <svg class=" icn icon" style="color: #F1141C" aria-hidden="true">
+                <use xlink:href="#icon-jushoucanggift"></use>
+            </svg>
+            <div class="num">{{article.zan}}</div>
         </div>
     </div>
 
     <div class="comment">
         <div class="tit">评论</div>
-        <div class="comment_content">
+        <div class="comment_content" v-if="replys.length==0">
             暂无评论，快去抢沙发~
         </div>
+        <div class="comment_content" v-else>
+            <!--加载评论列表前10条-->
+
+        </div>
     </div>
+
 
     <footer class="footer " id=footer>
         <input id="input_reply" v-model="content" v-on:input="inputFunc()" class="input" type="text"
@@ -245,7 +247,7 @@
                 <use xlink:href="#icon-right"></use>
             </svg>
             <div v-else>
-                <div class="aui-badge">{{replys.length}}</div>
+                <div class="aui-badge1">{{replys.length}}</div>
                 <svg class=" icn icon" aria-hidden="true">
                     <use xlink:href="#icon-comments"></use>
                 </svg>
@@ -258,6 +260,7 @@
             </div>
         </div>
     </footer>
+
 </div>
 </body>
 <script type="text/javascript" src="../../script/vue.js"></script>
@@ -271,7 +274,7 @@
     apiready = function () {
         vm = new Vue({
             el: '#app',
-            data: {article: '', isShow: false, content: '', replys: ''},
+            data: {article: '', isShow: false, isZan: false, content: '', replys: []},
             mounted: function () {
                 this.initData();
                 api.showProgress();
@@ -282,6 +285,35 @@
                 },
                 inputFunc: function () {
                     vm.isShow = true;
+                },
+                zan: function (type) {
+                    _Ajax(UrlRouter.article + '?type=3&aid=' + api.pageParam.aid, "get", {}, "json", function (ret) {
+                        if (ret) {
+                            var zan = 0;
+                            if (type == 1) {
+                                //增加
+                                zan = parseInt(ret[0].zan + 1);
+                            } else {
+                                zan = parseInt(ret[0].zan - 1);
+                            }
+                            _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "PUT", {
+                                values: {
+                                    id: api.pageParam.aid,
+                                    zan: zan,
+                                }
+                            }, "json", function (ret) {
+                                if (ret) {
+                                    vm.article.zan = zan;
+                                    vm.isZan=true;
+                                }
+                            },function (err) {
+                                _toast("点赞失败")
+                            });
+                        } else {
+                            _toast("点赞失败")
+                        }
+                    });
+//
                 },
                 reply: function () {
                     _Ajax(UrlRouter.reply, "POST", {
@@ -308,8 +340,6 @@
     //加载文章
     function getList() {
         _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "get", {}, "json", function (ret) {
-            api.hideProgress();
-//                        _Alert(ret[0])
             if (ret) {
                 vm.article = ret[0];
                 //阅读数+1
@@ -325,13 +355,17 @@
                     if (data) {
                         //加载评论
                         _Ajax(UrlRouter.reply + '?type=1&aid=' + api.pageParam.aid, "get", {}, "json", function (ret) {
+                            api.hideProgress();
                             if (ret) {
-                                    vm.replys=ret;
+                                vm.replys = ret;
                             }
                         });
                     }
                 });
+            } else {
+                api.hideProgress();
             }
+
         }, function () {
             api.hideProgress();
         });
