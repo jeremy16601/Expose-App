@@ -8,7 +8,7 @@
     <title>headcontent</title>
     <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
     <link rel="stylesheet" type="text/css" href="../../dist/css/mzui.min.css"/>
-    <style type="text/css">
+    <style>
         html,
         body {
             height: 100%;
@@ -172,56 +172,25 @@
             padding-bottom: 0;
         }
     </style>
-
 </head>
 
 <body>
 <div id="app" v-cloak>
-    <div class="title">
-        <h1>{{article.title}}</h1>
-        <div class="subtitle">
-            <div id="source">{{article.author}}</div>
-            <div class="time">{{article.created_at | time}}</div>
-        </div>
-    </div>
-    <div class="article">
-        <div id="list" v-html="article.content"></div>
-        <div class="collect" @click="zan(1)" v-if="!isZan">
-            <svg class=" icn icon" style="width: 1.8rem;height: 1.8rem;" aria-hidden="true">
-                <use xlink:href="#icon-jushoucang"></use>
-            </svg>
-            <div class="num">{{article.zan}}</div>
-        </div>
-        <div class="collect" @click="zan(2)" v-else>
-            <svg class=" icn icon" style="color: #F1141C;width:1.8rem;height: 1.8rem;" aria-hidden="true">
-                <use xlink:href="#icon-jushoucanggift"></use>
-            </svg>
-            <div class="num">{{article.zan}}</div>
-        </div>
-    </div>
 
-    <div class="comment">
-        <div class="tit">评论</div>
-        <div class="comment_content" v-if="replys.length==0">
-            暂无评论，快去抢沙发~
-        </div>
-        <div v-else>
-            <!--加载评论列表前10条-->
-            <div class="list">
-                <a class="item with-avatar multi-lines" v-for="reply in replys">
-                    <div class="avatar circle"><img :src="reply.headimg" alt=""></div>
-                    <div class="content">
-                        <div class="title">{{reply.name}}   </div>
-                        <div class="subtitle">{{reply.content}}</div>
-                    </div>
-                    <span class="label gray">{{reply.created_at | time1}} </span>
-                </a>
+    <!--加载评论列表前10条-->
+    <div class="list">
+        <a class="item with-avatar multi-lines" v-for="reply in replys">
+            <div class="avatar circle"><img :src="reply.headimg" alt=""></div>
+            <div class="content">
+                <div class="title">{{reply.name}}</div>
+                <div class="subtitle">{{reply.content}}</div>
+            </div>
+            <span class="label gray">{{reply.created_at | time}} </span>
+        </a>
 
-            </div>
-            <div class="aui-card-list-footer1 aui-text-center" @click="openMore(article.id)">
-                查看更多
-            </div>
-        </div>
+    </div>
+    <div class="aui-card-list-footer1 aui-text-center" @click="loadmore(page++)">
+        查看更多
     </div>
 
 
@@ -260,21 +229,18 @@
     var vm = null;
     apiready = function () {
         Vue.filter('time', function (value) {
-            return _GetTimeFormat(value);
-        });
-        Vue.filter('time1', function (value) {
             return _GetDateDiff(value);
         });
         vm = new Vue({
             el: '#app',
-            data: {article: '', pub_time: '', isShow: false, isZan: false, content: '', replys: []},
+            data: {isShow: false,page:1, isZan: false, content: '', replys: []},
             mounted: function () {
                 this.initData();
                 api.showProgress();
             },
             methods: {
                 initData: function () {
-                    getList();
+                    getList(0);
                 },
                 inputFunc: function () {
                     vm.isShow = true;
@@ -313,6 +279,9 @@
                     });
 //
                 },
+                loadmore:function (page) {
+                    getList(page);
+                },
                 reply: function () {
                     _Ajax(UrlRouter.reply, "POST", {
                         values: {
@@ -325,53 +294,24 @@
                             _toast("回复成功！");
                             vm.isShow = false;
                             //重新加载回复列表
-                            getList();
+                            getList(0);
                         }
                     }, function (err) {
                         _Alert(err);
                     });
-                },
-                openMore:function (id) {
-                    var pageParamData = {
-                        name: "replys",
-                        title: "评论列表",
-                        type:'replys',
-                        aid: id,
-                        frameurl: 'widget://html/article/replys.html'
-                    };
-                    LoadNewWin("replys", pageParamData);
                 }
             }
         })
     };
 
     //加载文章
-    function getList() {
-        _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "get", {}, "json", function (ret) {
+    function getList(page) {
+        _Ajax(UrlRouter.reply+ '?type=1&aid='+api.pageParam.aid+'&page='+page, "get", {}, "json", function (ret) {
+            _Alert(ret)
             if (ret) {
-                vm.article = ret[0];
-                //阅读数+1
-                _Ajax(UrlRouter.article + '/' + ret[0].id, "PUT", {
-                    values: {
-                        id: ret[0].id,
-                        view_times: parseInt(ret[0].view_times + 1)
-                    }
-                }, "json", function (ret) {
-                    if (ret) {
-                        //加载评论
-                        _Ajax(UrlRouter.reply + '?type=1&aid=' + api.pageParam.aid, "get", {}, "json", function (ret) {
-                            api.hideProgress();
-                            if (ret) {
-                                vm.replys = ret;
-                            }
-                        });
-                    }
-                });
-
-            } else {
-                api.hideProgress();
+                vm.replys = ret;
             }
-
+             api.hideProgress();
         }, function () {
             api.hideProgress();
         });

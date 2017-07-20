@@ -220,6 +220,9 @@ function _GetNowDate() {
 	return TimeStamp;
 }
 
+function _GetTimeFormat(time) {
+   return  moment(time).format("YYYY年MM月DD日 hh:mm:ss")
+}
 //.处理时间日期函数
 function _GetDateDiff(dateTimeStamp) {
     var timestamp4 = new Date(dateTimeStamp);
