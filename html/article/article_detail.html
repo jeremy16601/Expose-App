@@ -199,27 +199,28 @@
             <div class="num">{{article.zan}}</div>
         </div>
     </div>
-
-    <div class="comment">
-        <div class="tit">评论</div>
-        <div class="comment_content" v-if="replys.length==0">
-            暂无评论，快去抢沙发~
-        </div>
-        <div v-else>
-            <!--加载评论列表前10条-->
-            <div class="list">
-                <a class="item with-avatar multi-lines" v-for="reply in replys">
-                    <div class="avatar circle"><img :src="reply.headimg" alt=""></div>
-                    <div class="content">
-                        <div class="title">{{reply.name}}   </div>
-                        <div class="subtitle">{{reply.content}}</div>
-                    </div>
-                    <span class="label gray">{{reply.created_at | time1}} </span>
-                </a>
-
+    <div class="listen-scroll" id="scrollDiv">
+        <div class="comment">
+            <div class="tit">评论</div>
+            <div class="comment_content" v-if="replys.length==0">
+                暂无评论，快去抢沙发~
             </div>
-            <div class="aui-card-list-footer1 aui-text-center" @click="openMore(article.id)">
-                查看更多
+            <div v-else>
+                <!--加载评论列表前10条-->
+                <div class="list">
+                    <a class="item with-avatar multi-lines" v-for="reply in replys">
+                        <div class="avatar circle"><img :src="reply.headimg" alt=""></div>
+                        <div class="content">
+                            <div class="title">{{reply.name}}</div>
+                            <div class="subtitle">{{reply.content}}</div>
+                        </div>
+                        <span class="label gray">{{reply.created_at | time1}} </span>
+                    </a>
+                    <div class="aui-card-list-footer1 aui-text-center" @click="openMore(article.id)">
+                        查看更多
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -249,7 +250,7 @@
 
 </div>
 </body>
-<script type="text/javascript" src="../../script/zepto.min.js"></script>
+<script type="text/javascript" src="../../dist/js/mzui.min.js"></script>
 <script type="text/javascript" src="../../script/vue.js"></script>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/commjs/router.js"></script>
@@ -328,14 +329,14 @@
                             getList();
                         }
                     }, function (err) {
-                        _Alert(err);
+                        _toast("发送失败！");
                     });
                 },
-                openMore:function (id) {
+                openMore: function (id) {
                     var pageParamData = {
                         name: "replys",
                         title: "评论列表",
-                        type:'replys',
+                        type: 'replys',
                         aid: id,
                         frameurl: 'widget://html/article/replys.html'
                     };
@@ -343,8 +344,13 @@
                 }
             }
         })
-    };
 
+
+    };
+    // 使用 $().on() 绑定事件
+    $('#scrollDiv').on('listenScroll', function(isInScroll, scrollDirection, scrollTop) {
+        // 处理滚动状态变化
+    });
     //加载文章
     function getList() {
         _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "get", {}, "json", function (ret) {
