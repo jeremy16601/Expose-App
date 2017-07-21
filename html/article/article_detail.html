@@ -207,7 +207,7 @@
             </div>
             <div v-else>
                 <!--加载评论列表前10条-->
-                <div class="list">
+                <div class="list" style="padding-bottom: 60px;">
                     <a class="item with-avatar multi-lines" v-for="reply in replys">
                         <div class="avatar circle"><img :src="reply.headimg" alt=""></div>
                         <div class="content">
@@ -235,11 +235,14 @@
             </svg>
             <div v-else>
                 <div class="aui-badge1">{{replys.length}}</div>
-                <svg class=" icn icon" aria-hidden="true">
+                <svg class=" icn icon" aria-hidden="true" @click="openMore()">
                     <use xlink:href="#icon-comments"></use>
                 </svg>
-                <svg class="icn icon" aria-hidden="true">
-                    <use xlink:href="#icon-favorite"></use>
+                <svg class="icn icon" aria-hidden="true" @click="favo()" v-if="!isFav">
+                    <use xlink:href="#icon-iconfont-favorite"></use>
+                </svg>
+                <svg class="icn icon" aria-hidden="true" @click="favo()" v-else>
+                    <use xlink:href="#icon-shoucang11"></use>
                 </svg>
                 <svg class="icn icon" aria-hidden="true">
                     <use xlink:href="#icon-share"></use>
@@ -250,7 +253,7 @@
 
 </div>
 </body>
-<script type="text/javascript" src="../../dist/js/mzui.min.js"></script>
+<script type="text/javascript" src="../../script/zepto.min.js"></script>
 <script type="text/javascript" src="../../script/vue.js"></script>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/commjs/router.js"></script>
@@ -268,9 +271,14 @@
         });
         vm = new Vue({
             el: '#app',
-            data: {article: '', pub_time: '', isShow: false, isZan: false, content: '', replys: []},
+            data: {
+                article: '', pub_time: '', isFav: false,//是否收藏
+                favID:'',//收藏id
+                isShow: false, isZan: false, content: '', replys: []
+            },
             mounted: function () {
                 this.initData();
+                this.findFav();
                 api.showProgress();
             },
             methods: {
@@ -341,16 +349,45 @@
                         frameurl: 'widget://html/article/replys.html'
                     };
                     LoadNewWin("replys", pageParamData);
+                },
+                favo: function () {
+                    if (vm.isFav) {
+                        //取消
+                        _Ajax(UrlRouter.collection+"/"+vm.favID, "DELETE", { }, "json", function (ret) {
+                            if (ret) {
+                                _toast("取消收藏！");
+                                vm.isFav = false;
+                            }
+                        });
+                    } else {
+                        _Ajax(UrlRouter.collection, "POST", {
+                            values: {
+                                uid: _GetStorage("user").id,
+                                aid: api.pageParam.aid
+                            }
+                        }, "json", function (ret) {
+                            if (ret) {
+                                _toast("收藏成功！");
+                                vm.isFav = true;
+                            }
+                        });
+                    }
+                },
+                findFav: function () {
+                    //查询是否收藏
+                    _Ajax(UrlRouter.collection + "?type=1&uid=" + _GetStorage("user").id + "&aid=" + api.pageParam.aid, "get", {}, "json", function (ret) {
+                        if (ret.length > 0) {
+                            vm.isFav = true;
+                            vm.favID=ret[0].id;
+                        }
+                    });
                 }
             }
         })
 
 
     };
-    // 使用 $().on() 绑定事件
-    $('#scrollDiv').on('listenScroll', function(isInScroll, scrollDirection, scrollTop) {
-        // 处理滚动状态变化
-    });
+
     //加载文章
     function getList() {
         _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "get", {}, "json", function (ret) {
@@ -365,7 +402,7 @@
                 }, "json", function (ret) {
                     if (ret) {
                         //加载评论
-                        _Ajax(UrlRouter.reply + '?type=1&aid=' + api.pageParam.aid, "get", {}, "json", function (ret) {
+                        _Ajax(UrlRouter.reply + '?type=1&aid=' + api.pageParam.aid + "&page=0", "get", {}, "json", function (ret) {
                             api.hideProgress();
                             if (ret) {
                                 vm.replys = ret;

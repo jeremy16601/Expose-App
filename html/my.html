@@ -7,92 +7,125 @@
           content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
     <title>我的</title>
-    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" href="../dist/css/mzui.min.css">
+
     <style>
-        body {
-            background: white;
+        .profile-haeder {
+            position: relative;
+            overflow: hidden;
+            min-height: 9rem
         }
 
-        img {
-            width: auto;
-            margin-top: 14px;
-            display: inline;
+        .profile-haeder > .back {
+            top: -2rem;
+            left: -2rem;
+            right: -2rem;
+            bottom: -2rem;
+            background-position: center;
+            background-size: cover
         }
 
-        .aui-list .aui-list-item-inner {
-            min-height: 2.6rem;
+        .profile-haeder > .front {
+            background: rgba(0, 0, 0, .1);
+            text-align: center;
+            padding: 1.5rem
         }
 
-        .headimg {
-            max-height: 128px;
-            max-width: 128px;
+        .btn {
+            width: 80%;
         }
 
-        .aui-btn-block {
-            width: 95%;
-            margin-left: 10px;
-            margin-right: 10px;
-            height: 2.2rem;
-            line-height: 2.2rem;
+        .icon {
+            width: 1.4em;
+            height: 1.4em;
+            vertical-align: -0.25em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+
+        [v-cloak] {
+            display: none;
         }
     </style>
 </head>
 <body>
 <div id="app" v-cloak>
-    <div class="aui-text-center">
-        <img :src="user.headimg" class="aui-img-round headimg"><br>
-        <span style="font-size: 16px;  ">{{user.name}}</span>
+    <div class="profile-haeder space shadow">
+        <div class="red dock blur-sm back"
+             style="background-image: url(http://7xiqe7.com1.z0.glb.clouddn.com/102daaeeeeea5e4bbf7f0dec9e15327a8be940b7843b828f64-oNbyfk_fw658.jpg)">
+        </div>
+        <div class="front dock text-white">
+            <div class="avatar avatar-xl circle ">
+                <img :src="user.headimg" alt="">
+            </div>
+            <h4 class="lead text-shadow-black" style=" margin-top: 5px;">{{user.name}}</h4>
+        </div>
     </div>
 
-    <div class="aui-content aui-margin-b-15" style="margin-top: 15px;">
-        <ul class="aui-list aui-list-in">
-            <li class="aui-list-header" ></li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    我的发布 <br>
+    <div class="section">
+        <div class="list with-divider">
+            <a class="item with-avatar" @click="openDetail('edit_info','个人信息')">
+                <div class="avatar text-gray">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-edit"></use>
+                    </svg>
                 </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    我的关注 <br>
+                <div class="title">个人设置</div>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-enter"></use>
+                </svg>
+            </a>
+            <a class="item with-avatar">
+                <div class="avatar text-gray">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
                 </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    自动检测可以升级的应用 <br>
+                <div class="title">我的消息</div>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-enter"></use>
+                </svg>
+            </a>
+            <a class="item with-avatar">
+                <div class="avatar text-gray">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-iconfont-favorite"></use>
+                    </svg>
                 </div>
-            </li>
-            <!--<li class="aui-list-item">-->
-                <!--<div class="aui-list-item-inner">-->
-                    <!--<div class="aui-list-item-title">安装包下载位置</div>-->
-                    <!--<br>-->
-                <!--</div>-->
-
-            <!--</li>-->
-        </ul>
+                <div class="title">我的关注</div>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-enter"></use>
+                </svg>
+            </a>
+            <a class="item with-avatar">
+                <div class="avatar text-gray">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-fankui"></use>
+                    </svg>
+                </div>
+                <div class="title">意见反馈</div>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-enter"></use>
+                </svg>
+            </a>
+            <a class="item with-avatar" @click="openDetail('timeline','关于我们')">
+                <div class="avatar text-gray">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                </div>
+                <div class="title">关于我们</div>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-enter"></use>
+                </svg>
+            </a>
+        </div>
     </div>
 
-
-    <div class="aui-content aui-margin-b-15" style="margin-top: 15px;">
-        <ul class="aui-list aui-list-in" style="background-color:white;">
-
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    反馈 <br>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">关于我们</div>
-                </div>
-
-            </li>
-        </ul>
-    </div>
-
-    <div class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin(this)" Path="user" name="login" title="登录">退出登录
+    <div style="text-align: center">
+        <div class=" cell btn primary danger circle btn-lg" onclick="openWin(this)" Path="user" name="login" title="登录">
+            退出登录
+        </div>
     </div>
 
 </div>
@@ -100,7 +133,7 @@
 </body>
 <script type="text/javascript" src="../script/vue.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
-<script type="text/javascript" src="../script/commjs/common.js"></script>
+<script type="text/javascript" src="../script/font_ali.js"></script>
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript" src="../script/Base.js"></script>
 <script>
@@ -121,12 +154,20 @@
                     } else {
                         alert("请登录!");
                         var pageParamData = {
-                            name : "login",
-                            title : "登录",
-                            frameurl : 'widget://html/user/login.html'
+                            name: "login",
+                            title: "登录",
+                            frameurl: 'widget://html/user/login.html'
                         };
-                        LoadNewWin("login",pageParamData);
+                        LoadNewWin("login", pageParamData);
                     }
+                },
+                openDetail:function (value,title) {
+                    var pageParamData = {
+                        name: value,
+                        title: title,
+                        frameurl: 'widget://html/user/'+value+'.html'
+                    };
+                    LoadNewWin(value, pageParamData);
                 }
             }
         })

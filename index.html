@@ -21,7 +21,7 @@
 <body>
 
 <header id="header" class="cia-bar cia-bar-nav DefaultHeader">
-    <div class="cia-title" id="DefaultHeadertitle">曝光平台</div>
+    <div class="cia-title" id="DefaultHeadertitle">首页</div>
     <!-- 右侧新增按钮 -->
     <a class="cia-btn cia-pull-right HeaderBtn-FeedBackAdd " onclick="add()"> <i
             class="aui-iconfont aui-icon-plus"></i></a>
@@ -91,11 +91,11 @@
         }, function (ret) {
             switch (ret.index) {
                 case 1:
-                    $api.text($api.byId('title'), '首页');
+                    $api.text($api.byId('DefaultHeadertitle'), '首页');
                     api.openFrame({
                         name: 'main',
                         url: 'html/main.html',
-                        bounces: true,
+                        bounces: false,
                         rect: {
                             x: 0,
                             y: headerH,
@@ -105,7 +105,7 @@
                     });
                     break;
                 case 2:
-                    $api.text($api.byId('title'), '分类');
+                    $api.text($api.byId('DefaultHeadertitle'), '分类');
                     api.openFrame({
                         name: 'main',
                         url: 'html/catalog.html',
@@ -119,7 +119,7 @@
                     });
                     break;
                 case 3:
-                    $api.text($api.byId('title'), '动态');
+                    $api.text($api.byId('DefaultHeadertitle'), '动态');
                     api.openFrame({
                         name: 'main',
                         url: 'html/find.html',
@@ -133,7 +133,7 @@
                     });
                     break
                 case 4:
-                    $api.text($api.byId('title'), '我的');
+                    $api.text($api.byId('DefaultHeadertitle'), '我的');
                     api.openFrame({
                         name: 'main',
                         url: 'html/my.html',

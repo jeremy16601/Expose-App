@@ -104,7 +104,7 @@
             box-sizing: border-box;
             padding-left: 16px;
             padding-bottom: 2px;
-            padding-right: 155px;
+            padding-right: 105px;
             position: fixed;
             bottom: 0;
             border-top: 1px solid #b4b4b4;
@@ -129,13 +129,11 @@
             background: #f4f5f6;
             bottom: 0;
             text-align: center;
-            width: 129px;
             height: 37px;
         }
 
         .footer .icn {
             float: left;
-            margin-left: 15px;
         }
 
         .icon {
@@ -160,7 +158,6 @@
             border-radius: 0.4rem;
             position: absolute;
             top: 0rem;
-            right: 60%;
             z-index: 99;
         }
 
@@ -178,7 +175,7 @@
 <div id="app" v-cloak>
 
     <!--加载评论列表前10条-->
-    <div class="list">
+    <div class="list" style="padding-bottom: 60px;">
         <a class="item with-avatar multi-lines" v-for="reply in replys">
             <div class="avatar circle"><img :src="reply.headimg" alt=""></div>
             <div class="content">
@@ -187,10 +184,9 @@
             </div>
             <span class="label gray">{{reply.created_at | time}} </span>
         </a>
-
-    </div>
-    <div class="aui-card-list-footer1 aui-text-center" @click="loadmore(page++)">
-        查看更多
+        <div class="aui-card-list-footer1 aui-text-center" @click="loadmore(page++)">
+            查看更多
+        </div>
     </div>
 
 
@@ -205,12 +201,6 @@
                 <div class="aui-badge1">{{replys.length}}</div>
                 <svg class=" icn icon" aria-hidden="true">
                     <use xlink:href="#icon-comments"></use>
-                </svg>
-                <svg class="icn icon" aria-hidden="true">
-                    <use xlink:href="#icon-favorite"></use>
-                </svg>
-                <svg class="icn icon" aria-hidden="true">
-                    <use xlink:href="#icon-share"></use>
                 </svg>
             </div>
         </div>
@@ -233,7 +223,7 @@
         });
         vm = new Vue({
             el: '#app',
-            data: {isShow: false,page:1, isZan: false, content: '', replys: []},
+            data: {isShow: false, page: 1, isZan: false, content: '', replys: []},
             mounted: function () {
                 this.initData();
                 api.showProgress();
@@ -245,41 +235,7 @@
                 inputFunc: function () {
                     vm.isShow = true;
                 },
-                zan: function (type) {
-                    _Ajax(UrlRouter.article + '?type=3&aid=' + api.pageParam.aid, "get", {}, "json", function (ret) {
-                        if (ret) {
-                            var zan = 0;
-                            if (type == 1) {
-                                //增加
-                                zan = parseInt(ret[0].zan + 1);
-                            } else {
-                                zan = parseInt(ret[0].zan - 1);
-                            }
-                            _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "PUT", {
-                                values: {
-                                    id: api.pageParam.aid,
-                                    zan: zan,
-                                }
-                            }, "json", function (ret) {
-                                if (ret) {
-                                    vm.article.zan = zan;
-                                    if (vm.isZan) {
-                                        vm.isZan = false;
-                                    } else {
-                                        vm.isZan = true;
-                                    }
-
-                                }
-                            }, function (err) {
-                                _toast("点赞失败")
-                            });
-                        } else {
-                            _toast("点赞失败")
-                        }
-                    });
-//
-                },
-                loadmore:function (page) {
+                loadmore: function (page) {
                     getList(page);
                 },
                 reply: function () {
@@ -306,12 +262,23 @@
 
     //加载文章
     function getList(page) {
-        _Ajax(UrlRouter.reply+ '?type=1&aid='+api.pageParam.aid+'&page='+page, "get", {}, "json", function (ret) {
-            _Alert(ret)
+        _Ajax(UrlRouter.reply + '?type=1&aid=' + api.pageParam.aid + '&page=' + page, "get", {}, "json", function (ret) {
             if (ret) {
-                vm.replys = ret;
+                if (page == 0) {
+                    vm.replys = ret;
+                } else {
+                    if (ret.length == 0) {
+                        _toast("已经是最后一页了~");
+                        return;
+                    }
+                    for (var i = 0; i < ret.length; i++) {
+                        vm.replys.push(ret[i]);
+                    }
+                }
+            } else {
+                _toast("加载失败~")
             }
-             api.hideProgress();
+            api.hideProgress();
         }, function () {
             api.hideProgress();
         });
