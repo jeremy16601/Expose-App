@@ -7,40 +7,41 @@
           content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
     <title>我的</title>
-    <link rel="stylesheet" href="../dist/css/mzui.min.css">
+    <link rel="stylesheet" href="../css/aui.css">
 
     <style>
-        .profile-haeder {
+        .text-white {
+            color: #ffffff !important;
+        }
+
+        .aui-grid [class*=aui-col-] {
+            padding: 0.75rem 0;
+        }
+
+        .aui-list-item-inner {
+            font-size: 1rem;
+        }
+        .aui-list .aui-list-item-media {
+            width: 4.5rem;
             position: relative;
-            overflow: hidden;
-            min-height: 9rem
+            padding:0;
+        }
+        .commentAvatarDiv{
+            width: 4.5rem;
+            max-height: 4.5rem;
+            border-radius:4.5rem;
+            -moz-border-radius: 4.5rem;
+            -webkit-border-radius:4.5rem;
         }
 
-        .profile-haeder > .back {
-            top: -2rem;
-            left: -2rem;
-            right: -2rem;
-            bottom: -2rem;
-            background-position: center;
-            background-size: cover
-        }
-
-        .profile-haeder > .front {
-            background: rgba(0, 0, 0, .1);
-            text-align: center;
-            padding: 1.5rem
-        }
-
-        .btn {
-            width: 80%;
-        }
-
-        .icon {
-            width: 1.4em;
-            height: 1.4em;
-            vertical-align: -0.25em;
-            fill: currentColor;
-            overflow: hidden;
+        .commentAvatarImage {
+            width: 4.5rem;
+            max-height:4.5rem;
+            line-height: 0;
+            display: inline-block; /* circle wraps image */
+            border-radius: 50%; /* relative value */
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
         }
 
         [v-cloak] {
@@ -50,90 +51,95 @@
 </head>
 <body>
 <div id="app" v-cloak>
-    <div class="profile-haeder space shadow">
-        <div class="red dock blur-sm back"
-             style="background-image: url(http://7xiqe7.com1.z0.glb.clouddn.com/102daaeeeeea5e4bbf7f0dec9e15327a8be940b7843b828f64-oNbyfk_fw658.jpg)">
-        </div>
-        <div class="front dock text-white">
-            <div class="avatar avatar-xl circle ">
-                <img :src="user.headimg" alt="">
+    <section class="aui-content " id="user-info">
+        <div class="aui-list aui-media-list aui-list-noborder aui-bg-info aui-padded-b-15">
+            <div class="aui-list-item aui-list-item-middle">
+                <div class="aui-media-list-item-inner ">
+                    <div class="aui-list-item-media commentAvatarDiv" >
+                        <img :src="user.headimg" class="commentAvatarImage">
+                        <!--<img src="http://7jprpb.com1.z0.glb.clouddn.com/demo1.png" class="commentAvatarImage">-->
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow aui-margin-l-15">
+                        <div class="aui-list-item-text text-white aui-font-size-18">{{user.name}}</div>
+                        <div class="aui-list-item-text text-white">
+                            <div><i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>{{user.mobile}}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h4 class="lead text-shadow-black" style=" margin-top: 5px;">{{user.name}}</h4>
         </div>
-    </div>
+    </section>
 
-    <div class="section">
-        <div class="list with-divider">
-            <a class="item with-avatar" @click="openDetail('edit_info','个人信息')">
-                <div class="avatar text-gray">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-edit"></use>
-                    </svg>
+    <section class="aui-content">
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item" @click="openDetail('edit_info','个人信息')">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-edit aui-text-warning"></i>
                 </div>
-                <div class="title">个人设置</div>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-enter"></use>
-                </svg>
-            </a>
-            <a class="item with-avatar">
-                <div class="avatar text-gray">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-email"></use>
-                    </svg>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">个人设置</div>
                 </div>
-                <div class="title">我的消息</div>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-enter"></use>
-                </svg>
-            </a>
-            <a class="item with-avatar">
-                <div class="avatar text-gray">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-iconfont-favorite"></use>
-                    </svg>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-star aui-text-pink"></i>
                 </div>
-                <div class="title">我的关注</div>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-enter"></use>
-                </svg>
-            </a>
-            <a class="item with-avatar">
-                <div class="avatar text-gray">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-fankui"></use>
-                    </svg>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">我的收藏</div>
                 </div>
-                <div class="title">意见反馈</div>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-enter"></use>
-                </svg>
-            </a>
-            <a class="item with-avatar" @click="openDetail('timeline','关于我们')">
-                <div class="avatar text-gray">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-email"></use>
-                    </svg>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-comment aui-text-danger"></i>
                 </div>
-                <div class="title">关于我们</div>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-enter"></use>
-                </svg>
-            </a>
-        </div>
-    </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">我的消息</div>
+                </div>
+            </li>
+            <!--<li class="aui-list-item">-->
+            <!--<div class="aui-list-item-label-icon">-->
+            <!--<i class="aui-iconfont aui-icon-like aui-text-danger"></i>-->
+            <!--</div>-->
+            <!--<div class="aui-list-item-inner aui-list-item-arrow">-->
+            <!--<div class="aui-list-item-title">我的关注</div>-->
+            <!--</div>-->
+            <!--</li>-->
+        </ul>
 
-    <div style="text-align: center">
-        <div class=" cell btn primary danger circle btn-lg" onclick="openWin(this)" Path="user" name="login" title="登录">
-            退出登录
-        </div>
-    </div>
+        <ul class="aui-list aui-list-in">
+            <li class="aui-list-item">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-pencil aui-text-info"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">意见反馈</div>
+                    <div class="aui-list-item-right">可以提出你的需求哦</div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-info aui-text-warning"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow" @click="openDetail('timeline','关于我们')">
+                    <div class="aui-list-item-title">关于我们</div>
+                    <div class="aui-list-item-right">加入我们吧！</div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn" onclick="openWin(this)"
+                     Path="user" name="login" title="登录">
+                    <div class="aui-btn aui-btn-danger aui-margin-t-10 aui-margin-b-10">注销登录</div>
+                </div>
+            </li>
+        </ul>
+    </section>
+
 
 </div>
 
 </body>
 <script type="text/javascript" src="../script/vue.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
-<script type="text/javascript" src="../script/font_ali.js"></script>
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript" src="../script/Base.js"></script>
 <script>
@@ -161,11 +167,11 @@
                         LoadNewWin("login", pageParamData);
                     }
                 },
-                openDetail:function (value,title) {
+                openDetail: function (value, title) {
                     var pageParamData = {
                         name: value,
                         title: title,
-                        frameurl: 'widget://html/user/'+value+'.html'
+                        frameurl: 'widget://html/user/' + value + '.html'
                     };
                     LoadNewWin(value, pageParamData);
                 }
