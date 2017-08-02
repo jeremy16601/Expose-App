@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport"
@@ -7,13 +7,210 @@
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>发布</title>
     <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" href="../css/weui.min.css">
 </head>
-<body>
+<style>
+    .textarea {
+        height: 300px;
+    }
 
+    .images {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+</style>
+<body>
+<div id="app" v-cloak>
+    <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-form-list">
+            <!-- <li class="aui-list-header">带有输入框</li> -->
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-input">
+                        <input v-model="title" type="text" placeholder="请输入标题">
+                    </div>
+                </div>
+            </li>
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-input textarea">
+                        <textarea v-model="content" placeholder="请输入内容"></textarea>
+                    </div>
+                </div>
+            </li>
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-text">
+                    <div class="aui-row-padded images">
+                        <div class="aui-col-xs-3 " v-for="img in imgData">
+                            <img style="max-height: 100px" :src="img"/>
+                        </div>
+
+                        <div id="start_upload" class="aui-col-xs-3 " @click="openImg() ">
+                            <img src="../image/shouye/publish.png"/>
+                        </div>
+                    </div>
+                    <!--<form id="testform" method="post" enctype="multipart/form-data">-->
+                    <!--<input name="key" id="key" v-model="filename" type="hidden">-->
+                    <!--<input name="token" type="hidden"-->
+                    <!--value="NdLhjWchJAcZ5juHaaF_0NnVQPs9-jB6UZiaQwf-:nt0J9FxMHeI-1iESnvuD-KSwtBo=:eyJzY29wZSI6ImxlZXhpYW5zaGVuZyIsImRlYWRsaW5lIjoxNTAxNjQ0MzU5fQ==">-->
+                    <!--<input id="userfile" name="file" type="file" @change="uploadS"/>-->
+                    <!--</form>-->
+                </div>
+            </li>
+
+            <div class="selected-file"></div>
+            <div class="progress"></div>
+            <img id="imgContent" src="" alt="">
+            <div class="uploaded-result"></div>
+
+        </ul>
+    </div>
+</div>
 </body>
 <script type="text/javascript" src="../script/vue.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript" src="../script/commjs/router.js"></script>
 <script type="text/javascript" src="../script/Base.js"></script>
-<script type="text/javascript" src="../script/zepto.min.js"></script>
+<script>
+    var vm = null;
+
+    apiready = function () {
+
+        var map = api.require('bMap');
+
+        vm = new Vue({
+            el: '#app',
+            data: {title: "", content: "", imgList: [], imgData: [], uptoken: ''},
+            mounted: function () {
+                //获取七牛token
+                _Ajax(UrlRouter.uploadToken, "get", {}, "json", function (ret) {
+                    if (ret) {
+                        vm.uptoken = ret.uptoken;
+                    }
+                });
+            },
+            methods: {
+                openImg: function () {
+                    //最多选9张
+                    if (vm.imgList.length > 8) {
+                        _toast('最多选择9张图片~');
+                        return;
+                    }
+                    api.getPicture({
+                        sourceType: 'album',
+                        encodingType: 'jpg',
+                        mediaValue: 'pic',
+                        destinationType: 'base64',//url
+                        allowEdit: true,
+                        quality: 80
+                    }, function (ret, err) {
+                        if (ret) {
+                            //自动上传
+                            vm.imgData.push(ret.base64Data);
+                            var filename = Math.random().toString(26) + '.jpg';
+                            var f = new FormData();
+                            f.append("token", vm.uptoken);
+                            f.append("file", ret.base64Data)
+                            f.append("key", filename);
+                            $.ajax({
+                                url: 'http://up-z1.qiniu.com/',  // Different bucket zone has different upload url, you can get right url by the browser error massage when uploading a file with wrong upload url.
+                                type: 'POST',
+                                data: f,
+                                processData: false,
+                                contentType: false,
+                                xhr: function () {
+                                    myXhr = $.ajaxSettings.xhr();
+//                                    if (myXhr.upload) {
+//                                        _toast('开始上传')
+//                                myXhr.upload.addEventListener('progress', function (e) {
+//                                    // console.log(e);
+//                                    if (e.lengthComputable) {
+//                                        var percent = e.loaded / e.total * 100;
+//                                        $(".progress").html('上传：' + e.loaded + "/" + e.total + " bytes. " + percent.toFixed(2) + "%");
+//                                    }
+//                                }, false);
+//                                    }
+                                    return myXhr;
+                                },
+                                success: function (res) {
+                                    _toast('upload success' + res.key);
+                                    vm.imgList.push('http://op21lte5h.bkt.clouddn.com/' + res.key);
+//                                    $('.uploaded-result').html(vm.imgList[0]);
+                                },
+                                error: function (res) {
+                                    _toast("失败:" + JSON.stringify(res));
+                                }
+                            });
+                            return false;
+                        }
+                    });
+
+
+                },
+                openImgDetail: function (file) {
+                    //              api.openFrame({
+                    //                  name: 'photoBrowser',
+                    //                  url: 'widget://html/article/photoBrowser.html',
+                    //                  pageParam: {
+                    //                      images:vm.imgList,
+                    //                  }
+                    //              });
+                    //              var pageParamData = {
+                    //                  name: "photoBrowser",
+                    //                  title: "图片浏览",
+                    //                  type:'',
+                    //                  images:vm.imgList,
+                    //                  frameurl: 'widget://html/article/photoBrowser.html'
+                    //              };
+                    //              LoadNewWin("photoBrowser", pageParamData);
+
+                }
+            }
+        })
+        //监听确认按钮状态
+        _AddEventListener("a_submit", function () {
+            if (vm.title == '') {
+                _toast('请输入标题');
+                return;
+            }
+            if (vm.content == '') {
+                _toast('请输入内容');
+                return;
+            }
+            api.showProgress();
+            //保存
+            _Ajax(UrlRouter.article, "post", {
+                    values: {
+                        title: vm.title,
+                        uid: _GetStorage("user").id,
+                        author: _GetStorage("user").name,
+                        content: vm.content,
+                        zan: 0,
+                        view_times: 1,
+                        catalog_id: 0,//默认分类
+                        small_image: vm.imgList
+                    }
+                },
+                "json", function (ret) {
+                    api.hideProgress();
+                    if (ret) {
+                        _toast('发布成功');
+                        vm.title = '';
+                        vm.content = '';
+                    }
+                }, function (err) {
+                    api.hideProgress();
+                    _Alert('服务器异常');
+                }
+            );
+        });
+
+    }
+
+
+</script>
 </html>

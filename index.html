@@ -24,7 +24,7 @@
     <div class="cia-title" id="DefaultHeadertitle">首页</div>
     <!-- 右侧新增按钮 -->
     <a class="cia-btn cia-pull-right HeaderBtn-FeedBackAdd " onclick="add()"> <i
-            class="aui-iconfont aui-icon-plus"></i></a>
+            class="aui-iconfont aui-icon-camera"></i></a>
 </header>
 
 <div id="main">
@@ -48,7 +48,7 @@
         <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-faxian"></use>
         </svg>
-        <div class="aui-bar-tab-label">发现</div>
+        <div class="aui-bar-tab-label">曝光圈</div>
     </div>
     <div class="aui-bar-tab-item" tapmode>
         <div class="aui-badge">99</div>
@@ -119,7 +119,7 @@
                     });
                     break;
                 case 3:
-                    $api.text($api.byId('DefaultHeadertitle'), '动态');
+                    $api.text($api.byId('DefaultHeadertitle'), '曝光圈');
                     api.openFrame({
                         name: 'main',
                         url: 'html/find.html',
@@ -156,7 +156,7 @@
         var pageParamData = {
             name: "publish",
             title: "发布曝光",
-            type:'',
+            type:'Add',
             frameurl: 'widget://html/publish.html'
         };
         LoadNewWin("publish", pageParamData);

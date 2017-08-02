@@ -6,6 +6,7 @@
           content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <title>曝光吧</title>
     <link rel="stylesheet" type="text/css" href="../css/ciacloud.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
     <link rel="stylesheet" type="text/css" href="../css/publicWin.css"/>
     <style>
 
@@ -29,7 +30,8 @@
     <a class="cia-btn cia-pull-right HeaderBtn-FeedBackAdd none" onclick="openWin(this);" type="Submit" Path="Setting"
        name="FeedBack_Add" title="意见反馈">新增</a>
     <!-- 右侧发送按钮 -->
-    <a class="cia-btn cia-pull-right HeaderBtn-Submit none" tapmode onclick="SubmitBtn()">发送</a>
+    <a id="save" class="cia-btn cia-pull-right HeaderBtn-Submit none" tapmode onclick="SubmitBtn()">
+        <i class="aui-iconfont aui-icon-correct"></i></a>
 </header>
 
 </body>
@@ -62,6 +64,13 @@
             case 'Detail':
                 $api.removeCls($api.dom('.DefaultHeader'), 'none');
                 $api.removeCls($api.dom('#ShareBtn'), 'none');
+                var headerPos = $api.offset(DefaultHeader);
+                var frameheight = api.winHeight - headerPos.h;
+                openFrame(headerPos, frameheight, pageParamData);
+                break;
+            case 'Add':
+                $api.removeCls($api.dom('.DefaultHeader'), 'none');
+                $api.removeCls($api.dom('#save'), 'none');
                 var headerPos = $api.offset(DefaultHeader);
                 var frameheight = api.winHeight - headerPos.h;
                 openFrame(headerPos, frameheight, pageParamData);
@@ -165,5 +174,8 @@
             }
 
         });
+    }
+    function SubmitBtn() {
+        _SendEvent("a_submit");
     }
 </script>

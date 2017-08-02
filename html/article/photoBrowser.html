@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>图片浏览</title>
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/ciacloud.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/publicWin.css"/>
+</head>
+<body>
+<header id="DefaultHeader" class="cia-bar cia-bar-nav DefaultHeader ">
+    <div class="cia-title" id="DefaultHeadertitle">图片浏览</div>
+<a class="cia-btn cia-pull-left" tapmode onclick="_CloseWin()">
+    <span class="CIACloud-font icon-zuojiantou"></span></a>
+</header>
+</body>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/Base.js"></script>
+<script>
+    apiready = function () {
+        var photoBrowser = api.require('photoBrowser');
+
+        photoBrowser.open({
+            images:api.pageParam.images
+        }, function(ret, err) {
+
+        });
+    }
+</script>
+</html>
