@@ -71,6 +71,7 @@
 </div>
 </body>
 <script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/moment.min.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript" src="../script/commjs/router.js"></script>
@@ -79,9 +80,7 @@
     var vm = null;
 
     apiready = function () {
-
         var map = api.require('bMap');
-
         vm = new Vue({
             el: '#app',
             data: {title: "", content: "", imgList: [], imgData: [], uptoken: ''},
@@ -108,14 +107,17 @@
                         allowEdit: true,
                         quality: 80
                     }, function (ret, err) {
-                        if (ret) {
+                        if (ret.base64Data) {
                             //自动上传
                             vm.imgData.push(ret.base64Data);
-                            var filename = Math.random().toString(26) + '.jpg';
+                            var filename = _GetNowDate() + Math.random().toString(26) + '.jpg';//
                             var f = new FormData();
+                            var blob = dataURItoBlob(ret.base64Data); // 上一步中的函数
+                            var canvas = document.createElement('canvas');
                             f.append("token", vm.uptoken);
-                            f.append("file", ret.base64Data)
+                            f.append("file", blob);
                             f.append("key", filename);
+
                             $.ajax({
                                 url: 'http://up-z1.qiniu.com/',  // Different bucket zone has different upload url, you can get right url by the browser error massage when uploading a file with wrong upload url.
                                 type: 'POST',
@@ -137,14 +139,15 @@
                                     return myXhr;
                                 },
                                 success: function (res) {
+                                    vm.imgList.push(res.key);
                                     _toast('upload success' + res.key);
-                                    vm.imgList.push('http://op21lte5h.bkt.clouddn.com/' + res.key);
 //                                    $('.uploaded-result').html(vm.imgList[0]);
                                 },
                                 error: function (res) {
                                     _toast("失败:" + JSON.stringify(res));
                                 }
                             });
+
                             return false;
                         }
                     });
@@ -182,6 +185,10 @@
                 return;
             }
             api.showProgress();
+//            var json = {};
+//            for (var i = 0; i < vm.imgList.length; i++) {
+//                json[i] = vm.imgList[i];
+//            }
             //保存
             _Ajax(UrlRouter.article, "post", {
                     values: {
@@ -192,7 +199,7 @@
                         zan: 0,
                         view_times: 1,
                         catalog_id: 0,//默认分类
-                        small_image: vm.imgList
+                        small_image:  json
                     }
                 },
                 "json", function (ret) {
@@ -201,6 +208,8 @@
                         _toast('发布成功');
                         vm.title = '';
                         vm.content = '';
+                        vm.imgData = '';
+                        vm.imgList = '';
                     }
                 }, function (err) {
                     api.hideProgress();
@@ -211,6 +220,20 @@
 
     }
 
+    //base 64 图片上传
+    function dataURItoBlob(base64Data) {
+        var byteString;
+        if (base64Data.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(base64Data.split(',')[1]);
+        else
+            byteString = unescape(base64Data.split(',')[1]);
+        var mimeString = base64Data.split(',')[0].split(':')[1].split(';')[0];
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ia], {type: mimeString});
+    }
 
 </script>
 </html>

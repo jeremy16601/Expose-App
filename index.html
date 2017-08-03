@@ -153,13 +153,25 @@
 
     };
     function add() {
-        var pageParamData = {
-            name: "publish",
-            title: "发布曝光",
-            type:'Add',
-            frameurl: 'widget://html/publish.html'
-        };
-        LoadNewWin("publish", pageParamData);
+        if (_GetStorage("user")) {
+            //判断是否登陆状态
+            var pageParamData = {
+                name: "publish",
+                title: "发布曝光",
+                type:'Add',
+                frameurl: 'widget://html/publish.html'
+            };
+            LoadNewWin("publish", pageParamData);
+        } else {
+            alert("请登录!");
+            var pageParamData = {
+                name: "login",
+                title: "登录",
+                frameurl: 'widget://html/user/login.html'
+            };
+            LoadNewWin("login", pageParamData);
+        }
+
     }
 </script>
 </html>

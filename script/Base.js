@@ -216,8 +216,12 @@ function _GetNewDate(TimeStamp, style) {
 
 //.获取当前事件戳
 function _GetNowDate() {
-	var TimeStamp = Date.parse(new Date()) / 1000;
-	return TimeStamp;
+    var TimeStamp = Date.parse(new Date()) / 1000;
+    return TimeStamp;
+}
+function _GetNowDateF() {
+    var TimeStamp = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
+    return TimeStamp;
 }
 
 function _GetTimeFormat(time) {
