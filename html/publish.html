@@ -185,10 +185,6 @@
                 return;
             }
             api.showProgress();
-//            var json = {};
-//            for (var i = 0; i < vm.imgList.length; i++) {
-//                json[i] = vm.imgList[i];
-//            }
             //保存
             _Ajax(UrlRouter.article, "post", {
                     values: {
@@ -199,7 +195,7 @@
                         zan: 0,
                         view_times: 1,
                         catalog_id: 0,//默认分类
-                        small_image:  json
+                        small_image:  vm.imgList
                     }
                 },
                 "json", function (ret) {
