@@ -32,7 +32,7 @@
 .aui-slide-node-center {
 	display: -moz-box;
     display: -webkit-box;
-    display: box;
+    /*display: box;*/
     -moz-box-pack: center;
     -webkit-box-pack: center;
     box-pack: center;
@@ -40,7 +40,7 @@
 .aui-slide-node-middle {
 	display: -moz-box;
     display: -webkit-box;
-    display: box;
+    /*display: box;*/
 	-moz-box-align: center;
     -webkit-box-align: center;
     box-align: center;
@@ -88,6 +88,7 @@
     from { opacity: 0.3; }
     to { opacity: 1 }
 }
+
 .aui-slide-prev-btn,
 .aui-slide-next-btn {
     display: inline-block;

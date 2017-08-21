@@ -5,43 +5,85 @@
     <meta name="viewport"
           content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <title>个人信息修改</title>
+    <link type="text/css" rel="stylesheet" href="../../css/api.css">
     <link type="text/css" rel="stylesheet" href="../../css/aui.css">
     <style type="text/css">
 
-        .avatar-sm {
-            font-size: .6rem;
-            width: 2rem;
-            height: 2rem;
+        .aui-list .aui-list-item-media img {
+            width: 80px;
+            height: 80px;
         }
+
     </style>
 </head>
 <body>
 <div id="app" v-cloak>
     <div class="aui-content aui-margin-b-15">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-item aui-list-item-middle" @click="updateImg()">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner ">
+                        头像
+                    </div>
+                    <div class="aui-list-item-media " style="margin-right: 15px;">
+                        <img :src="user.headimg" class="aui-img-round aui-list-img-sm">
+                    </div>
+                    <div class="aui-list-item-arrow"></div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="aui-content aui-margin-b-15">
         <ul class="aui-list aui-form-list">
             <li class="aui-list-item">
                 <div class="aui-list-item-inner">
                     <div class="aui-list-item-label">
-                        头像
+                        用户名：
                     </div>
                     <div class="aui-list-item-input">
-                        <div class="avatar avatar-sm circle right">
-                            <img :src="user.headimg">
-                        </div>
+                        <input type="text" v-model="user.name" placeholder="用户名">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        真实姓名：
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" v-model="user.realname" placeholder="真实姓名">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        Email：
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" v-model="user.email" placeholder="Email">
                     </div>
                 </div>
             </li>
         </ul>
     </div>
-
-
+    <p>
+    <div @click="save()" class="aui-btn aui-btn-block aui-btn-danger aui-btn-sm"
+         style="padding-left: 15px;padding-right: 15px;">保存
+    </div>
+    </p>
+</div>
 </body>
 
 <script type="text/javascript" src="../../script/aui-actionsheet.js"></script>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/Base.js"></script>
 <script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/zepto.min.js"></script>
 <script type="text/javascript" src="../../script/font_ali.js"></script>
+<script type="text/javascript" src="../../script/moment.min.js"></script>
 <script type="text/javascript" src="../../script/commjs/router.js"></script>
 <script type="text/javascript">
     var vm = null;
@@ -51,19 +93,80 @@
 
         vm = new Vue({
             el: '#app',
-            data: {user: _GetStorage("user")},
+            data: {user: _GetStorage("user"), img: '', uptoken: ''},
+            mounted: function () {
+                //获取七牛token
+                _Ajax(UrlRouter.uploadToken, "get", {}, "json", function (ret) {
+                    if (ret) {
+                        vm.uptoken = ret.uptoken;
+                    }
+                });
+            },
             methods: {
+                save: function () {
+                    //保存
+                    if (vm.user.name == _GetStorage("user").name) {
+                        update();
+                        return;
+                    } else {
+                        if(vm.user.name==''){
+                            _toast('请输入用户名！');
+                            return;
+                        }
+                        //查询用户名是否存在
+                        _Ajax(UrlRouter.user + '?type=2&name=' + vm.user.name, "get", {}, "json", function (ret) {
+                            if (ret) {
+                                if (ret.code == -1) {
+                                    _toast(ret.info);
+                                } else {
+                                    update();
+                                }
+                            }
+                        });
+                    }
+                },
                 updateImg: function () {
                     var actionsheet = new auiActionsheet();
                     //修改头像
                     actionsheet.init({
-                        frameBounces:true,//当前页面是否弹动，（主要针对安卓端）
-                        cancelTitle:'这里取消按钮',
-                        destructiveTitle:'红色警告按钮',
-                        buttons:['拍照','图库选择']
-                    },function(ret){
-                        if(ret){
-                            _toast(ret.buttonIndex);
+                        frameBounces: true,//当前页面是否弹动，（主要针对安卓端）
+                        cancelTitle: '取消',
+                        buttons: ['拍照', '图库选择']
+                    }, function (ret) {
+                        if (ret) {
+                            if (ret.buttonIndex == 1) {
+                                api.getPicture({
+                                    sourceType: 'camera',
+                                    encodingType: 'jpg',
+                                    mediaValue: 'pic',
+                                    destinationType: 'base64',
+                                    allowEdit: true,
+                                    quality: 70,
+                                    saveToPhotoAlbum: api.deviceModel.match(/baoguang/) ? false : true
+                                }, function (ret, err) {
+                                    if (ret.base64Data) {
+                                        //上传头像
+                                        upload(ret.base64Data);
+                                    }
+                                });
+                            } else if (ret.buttonIndex == 2) {
+                                api.getPicture({
+                                    sourceType: 'album',
+                                    encodingType: 'png',
+                                    mediaValue: 'pic',
+                                    destinationType: 'base64',
+                                    allowEdit: true,
+                                    quality: 70,
+                                    saveToPhotoAlbum: api.deviceModel.match(/baoguang/) ? false : true
+                                }, function (ret, err) {
+                                    if (ret.base64Data) {
+                                        //上传头像
+                                        upload(ret.base64Data);
+                                    }
+                                });
+                            }
+                        } else {
+                            alert(JSON.stringify(err));
                         }
                     })
                 }
@@ -71,5 +174,96 @@
         })
     }
 
+    function update() {
+        _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "put", {
+                values: {
+                    name: vm.user.name,
+                    realname: vm.user.realname,
+                    email: vm.user.email,
+                    id: _GetStorage("user").id
+                }
+            },
+            "json", function (ret) {
+                api.hideProgress();
+                if (ret) {
+                    _toast('用户信息修改成功');
+                }
+            }, function (err) {
+                api.hideProgress();
+                _Alert('服务器异常');
+            }
+        );
+    }
+
+    function upload(data) {
+        var filename = _GetNowDate() + Math.random().toString(26) + '.jpg';//
+        var f = new FormData();
+        var blob = dataURItoBlob(data); // 上一步中的函数
+        var canvas = document.createElement('canvas');
+        f.append("token", vm.uptoken);
+        f.append("file", blob);
+        f.append("key", filename);
+
+        $.ajax({
+            url: 'http://up-z1.qiniu.com/',  // Different bucket zone has different upload url, you can get right url by the browser error massage when uploading a file with wrong upload url.
+            type: 'POST',
+            data: f,
+            processData: false,
+            contentType: false,
+            xhr: function () {
+                myXhr = $.ajaxSettings.xhr();
+//                                    if (myXhr.upload) {
+//                                        _toast('开始上传')
+//                                myXhr.upload.addEventListener('progress', function (e) {
+//                                    // console.log(e);
+//                                    if (e.lengthComputable) {
+//                                        var percent = e.loaded / e.total * 100;
+//                                        $(".progress").html('上传：' + e.loaded + "/" + e.total + " bytes. " + percent.toFixed(2) + "%");
+//                                    }
+//                                }, false);
+//                                    }
+                return myXhr;
+            },
+            success: function (res) {
+                vm.user.headimg = 'http://res.bbaaoo.cn/' + res.key;
+                //更新头像地址
+                _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "put", {
+                        values: {
+                            headimg: vm.user.headimg,
+                            id: _GetStorage("user").id
+                        }
+                    },
+                    "json", function (ret) {
+                        api.hideProgress();
+                        if (ret) {
+                            _toast('头像修改成功');
+                        }
+                    }, function (err) {
+                        api.hideProgress();
+                        _Alert('服务器异常');
+                    }
+                );
+            },
+            error: function (res) {
+                _toast("失败:" + JSON.stringify(res));
+            }
+        });
+
+    }
+
+    //base 64 图片上传
+    function dataURItoBlob(base64Data) {
+        var byteString;
+        if (base64Data.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(base64Data.split(',')[1]);
+        else
+            byteString = unescape(base64Data.split(',')[1]);
+        var mimeString = base64Data.split(',')[0].split(':')[1].split(';')[0];
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ia], {type: mimeString});
+    }
 </script>
 </html>

@@ -67,8 +67,8 @@ a {
 }
 /*tab选中时样式*/
 .aui-tab .aui-tab-item.active {
-    color: #15A238;
-    border-bottom: 2px solid #15A238;
+    color: #039be5;
+    border-bottom: 2px solid #039be5;
 }
 /*单选选中样式*/
 .aui-radio:checked,
@@ -133,7 +133,7 @@ a {
 }
 /*底部工具栏选中时颜色*/
 .aui-bar-tab .active {
-	color: #15A238;
+	color: #039be5;
 }
 /*按钮工具栏*/
 .aui-bar-btn .aui-bar-btn-item {
