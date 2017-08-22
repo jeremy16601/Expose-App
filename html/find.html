@@ -5,8 +5,9 @@
     <meta name="viewport"
           content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-    <title>AUI快速完成布局</title>
+    <title>曝光圈</title>
     <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui-pull-refresh.css"/>
     <style type="text/css">
         .aui-list .aui-list-item-media {
             width: 3rem;
@@ -14,132 +15,101 @@
     </style>
 </head>
 <body>
-<section class="aui-content">
-    <ul class="aui-list aui-media-list">
-        <li class="aui-list-item">
-            <div class="aui-media-list-item-inner">
-                <div class="aui-list-item-media">
-                    <img src="../image/demo1.png"/>
-                </div>
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-text">
-                        <div class="aui-list-item-title" style="color:#4c5276">流浪男</div>
-                    </div>
-                    <div class="aui-list-item-text" style="color:#333;">
-                        如果谈及中国在技术领域的短板，那么大家可能想到的是发动机，其实还有一样：高级电子芯片！人们通常所说的CPU，所谓CPU即中央处理器，就是其代表产品，它可是为电子信息产品的心脏
-                    </div>
-                    <div class="aui-list-item-text">
-                        <div class="aui-row-padded" style="max-width:90%;">
-                            <div class="aui-col-xs-4">
-                                <img src="../image/demo/1.jpeg"/>
+<div id="app" v-cloak>
+    <section class="aui-refresh-content">
+        <div class="aui-content">
+            <ul class="aui-list aui-media-list">
+                <li class="aui-list-item" v-for="a in articles">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media">
+                            <img :src="a.authorImg"/>
+                        </div>
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title" style="color:#4c5276">{{a.author}}</div>
                             </div>
-                            <div class="aui-col-xs-4">
-                                <img src="../image/demo/2.jpeg"/>
+                            <div class="aui-list-item-text aui-ellipsis-2" style="color:#333;" v-html="a.content">
                             </div>
-                            <div class="aui-col-xs-4">
-                                <img src="../image/demo/3.jpeg"/>
+                            <div class="aui-list-item-text">
+                                <div class="aui-row-padded" style="max-width:90%;">
+                                    <div class="aui-col-xs-4" v-for="sm in  eval(a.small_image)  ">
+                                        <img :src="sm | ss"/>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div class="aui-col-xs-4">
-                                <img src="../image/demo/2.jpeg"/>
-                            </div>
-                            <div class="aui-col-xs-4">
-                                <img src="../image/demo/1.jpeg"/>
-                            </div>
-                            <div class="aui-col-xs-4">
-                                <img src="../image/demo/3.jpeg"/>
+                            <p class="aui-margin-t-5 aui-font-size-12">山东潍坊</p>
+                            <div class="aui-info aui-font-size-12" style="padding-top:0; padding-bottom:0">
+                                <div class="aui-info-item">1小时前</div>
+                                <div class="aui-info-item">
+                                    <i class="aui-iconfont aui-icon-comment" style="color:#4c5276"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <p class="aui-margin-t-5 aui-font-size-12">山东潍坊</p>
-                    <div class="aui-info aui-font-size-12" style="padding-top:0; padding-bottom:0">
-                        <div class="aui-info-item">1小时前</div>
-                        <div class="aui-info-item">
-                            <i class="aui-iconfont aui-icon-comment" style="color:#4c5276"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="aui-list-item">
-            <div class="aui-media-list-item-inner">
-                <div class="aui-list-item-media">
-                    <img src="../image/demo3.png"/>
-                </div>
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-text">
-                        <div class="aui-list-item-title" style="color:#4c5276">AUI</div>
-                    </div>
-                    <div class="aui-list-item-text" style="color:#333;">
-                        中国拥有世界顶级航天芯片产品：俄罗斯造不出来了只能求中国分享
-                    </div>
-                    <div class="aui-info aui-font-size-12 aui-padded-t-0 aui-padded-b-0">
-                        <div class="aui-info-item">1小时前</div>
-                        <div class="aui-info-item">
-                            <i class="aui-iconfont aui-icon-comment" style="color:#4c5276"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="aui-list-item">
-            <div class="aui-media-list-item-inner">
-                <div class="aui-list-item-media">
-                    <img src="../image/liulangnan.png"/>
-                </div>
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-text">
-                        <div class="aui-list-item-title" style="color:#4c5276">流浪男</div>
-                    </div>
-                    <div class="aui-list-item-text" style="color:#333;">
-                        网传“贴吧之父”俞军加入滴滴
-                    </div>
-                    <div class="aui-list-item-text">
-                        <div class="aui-row-padded" style="max-width:90%;">
-                            <div class="aui-col-xs-4">
-                                <img src="../image/l1.png"/>
-                            </div>
-                            <div class="aui-col-xs-4">
-                                <img src="../image/l2.png"/>
-                            </div>
-                            <div class="aui-col-xs-4">
-                                <img src="../image/l3.png"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="aui-info aui-font-size-12 aui-padded-t-0 aui-padded-b-0">
-                        <div class="aui-info-item">1小时前</div>
-                        <div class="aui-info-item">
-                            <i class="aui-iconfont aui-icon-comment" style="color:#4c5276"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="aui-list-item">
-            <div class="aui-media-list-item-inner">
-                <div class="aui-list-item-media">
-                    <img src="../image/liulangnan.png"/>
-                </div>
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-text">
-                        <div class="aui-list-item-title" style="color:#4c5276">流浪男</div>
-                    </div>
-                    <div class="aui-list-item-text" style="color:#333;">
-                        美团、饿了么外卖小哥斗殴：约架中关村
-                    </div>
-                    <div class="aui-info aui-font-size-12 aui-padded-t-0 aui-padded-b-0">
-                        <div class="aui-info-item">1小时前</div>
-                        <div class="aui-info-item">
-                            <i class="aui-iconfont aui-icon-comment" style="color:#4c5276"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
-</section>
+                </li>
+
+            </ul>
+        </div>
+    </section>
+</div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript" src="../script/commjs/router.js"></script>
+<script type="text/javascript" src="../script/Base.js"></script>
+<script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript">
+    var vm = null;
+
+    apiready = function () {
+        Vue.filter('time', function (value) {
+            return _GetDateDiff(value);
+        });
+        Vue.filter('ss', function (value) {
+            return 'http://res.bbaaoo.cn/' + value + '?imageView2/1/w/200/h/200';
+        });
+        vm = new Vue({
+            el: '#app',
+            data: {
+                page: 1,
+                articles: [],
+                small_image: []
+            },
+            mounted: function () {
+                api.showProgress({
+                    title: '加载中',
+                    modal: false
+                });
+                this.initData();
+            },
+            methods: {
+                //banner加载
+                initData: function () {
+                    _Ajax(UrlRouter.article + '?type=0&limit=' + this.page, "get", {}, "json", function (ret) {
+                        api.hideProgress();
+                        if (ret) {
+                            vm.articles = ret;
+                        }
+                    }, function () {
+                        api.hideProgress();
+                    });
+
+                },
+                //打开详情
+                openDetail: function (article) {
+
+                    var pageParamData = {
+                        name: "article_detail",
+                        title: "文章详情",
+                        type: 'Detail',
+                        aid: article.id,
+                        frameurl: 'widget://html/article/article_detail.html'
+                    };
+                    LoadNewWin("article_detail", pageParamData);
+                }
+            }
+        })
+    }
 </script>
 </html>
