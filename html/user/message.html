@@ -61,12 +61,11 @@
                 items: []
             },
             mounted: function () {
-                //获取七牛token
-                _Ajax(UrlRouter.collection + '?type=2&uid=' + _GetStorage("user").id, "get", {}, "json", function (ret) {
-                    if (ret) {
-                        vm.items = ret;
-                    }
-                });
+//                _Ajax(UrlRouter.message + '?type=2&uid=' + _GetStorage("user").id, "get", {}, "json", function (ret) {
+//                    if (ret) {
+//                        vm.items = ret;
+//                    }
+//                });
             },
             methods: {}
         })

@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
     <style>
-
+        .aui-list .aui-list-item-media img {
+            width: 80%;
+        }
     </style>
 </head>
 <body>
@@ -44,6 +46,7 @@
 <script type="text/javascript" src="../script/commjs/common.js"></script>
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript" src="../script/commjs/router.js"></script>
+<script type="text/javascript" src="../script/Base.js"></script>
 <script type="text/javascript" src="../script/vue.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
 
@@ -67,7 +70,8 @@
                     }).done(function (data, status, header) {
                         api.hideProgress();
                         vm.datas = data;
-
+                        //缓存到本地
+                        _SetStorage("catalog", vm.datas);
                     }).fail(function (header, status, errorThrown) {
                         api.hideProgress();
                         alert(errorThrown);

@@ -187,6 +187,7 @@
                 api.hideProgress();
                 if (ret) {
                     _toast('用户信息修改成功');
+                    _SendEvent("updateUser");
                 }
             }, function (err) {
                 api.hideProgress();
@@ -237,6 +238,7 @@
                         api.hideProgress();
                         if (ret) {
                             _toast('头像修改成功');
+                            _SendEvent("updateUser");
                         }
                     }, function (err) {
                         api.hideProgress();

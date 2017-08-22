@@ -21,31 +21,35 @@
         .aui-list-item-inner {
             font-size: 1rem;
         }
+
         .aui-list .aui-list-item-media {
             width: 4.5rem;
             position: relative;
-            padding:0;
+            padding: 0;
         }
-        .commentAvatarDiv{
+
+        .commentAvatarDiv {
             width: 4.5rem;
             max-height: 4.5rem;
-            border-radius:4.5rem;
+            border-radius: 4.5rem;
             -moz-border-radius: 4.5rem;
-            -webkit-border-radius:4.5rem;
+            -webkit-border-radius: 4.5rem;
         }
 
         .commentAvatarImage {
             width: 4.5rem;
-            max-height:4.5rem;
+            max-height: 4.5rem;
             line-height: 0;
             display: inline-block; /* circle wraps image */
             border-radius: 50%; /* relative value */
             -moz-border-radius: 50%;
             -webkit-border-radius: 50%;
         }
+
         .aui-list .aui-list-item:active {
-            background-color:transparent;
+            background-color: transparent;
         }
+
         [v-cloak] {
             display: none;
         }
@@ -55,9 +59,9 @@
 <div id="app" v-cloak>
     <section class="aui-content " id="user-info">
         <div class="aui-list aui-media-list aui-list-noborder aui-bg-info aui-padded-b-15">
-            <div class="aui-list-item aui-list-item-middle">
+            <div class="aui-list-item aui-list-item-middle" @click="openDetail('edit_info','个人信息')">
                 <div class="aui-media-list-item-inner ">
-                    <div class="aui-list-item-media commentAvatarDiv" >
+                    <div class="aui-list-item-media commentAvatarDiv">
                         <img :src="user.headimg" class="commentAvatarImage">
                         <!--<img src="http://7jprpb.com1.z0.glb.clouddn.com/demo1.png" class="commentAvatarImage">-->
                     </div>
@@ -86,11 +90,11 @@
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-star aui-text-pink"></i>
                 </div>
-                <div  class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-inner aui-list-item-arrow">
                     <div class="aui-list-item-title">我的收藏</div>
                 </div>
             </li>
-            <li class="aui-list-item">
+            <li class="aui-list-item" @click="openDetail('message','我的消息')">
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-comment aui-text-danger"></i>
                 </div>
@@ -148,6 +152,18 @@
 <script>
     var vm = null;
     apiready = function () {
+        _AddEventListener("updateUser", function () {
+            //判断是否登陆状态
+            _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
+                if (ret) {
+                    vm.user = ret[0];
+                    _SetStorage('user', ret[0]);
+                }
+                api.hideProgress();
+            }, function (err) {
+                api.hideProgress();
+            });
+        });
         vm = new Vue({
             el: '#app',
             data: {user: ""},
@@ -160,13 +176,13 @@
 //                    alert(JSON.stringify(_GetStorage("user")));
                     if (_GetStorage("user")) {
                         //判断是否登陆状态
-                        _Ajax(UrlRouter.user+'/'+_GetStorage("user").id, "get", {}, "json", function (ret) {
+                        _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
                             if (ret) {
                                 vm.user = ret[0];
                                 _SetStorage('user', ret[0]);
                             }
                             api.hideProgress();
-                        },function (err) {
+                        }, function (err) {
                             api.hideProgress();
                         });
 
