@@ -12,6 +12,12 @@
         .aui-list .aui-list-item-media {
             width: 3rem;
         }
+
+        img1 {
+             width: 40px;
+             height: 40px;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -22,9 +28,9 @@
                 <li class="aui-list-item" v-for="a in articles">
                     <div class="aui-media-list-item-inner">
                         <div class="aui-list-item-media">
-                            <img :src="a.authorImg"/>
+                            <img class="img1 aui-img-round" :src="a.authorImg | imgf"/>
                         </div>
-                        <div class="aui-list-item-inner">
+                        <div class="aui-list-item-inner" @click="openDetail(a)">
                             <div class="aui-list-item-text">
                                 <div class="aui-list-item-title" style="color:#4c5276">{{a.author}}</div>
                             </div>
@@ -40,7 +46,12 @@
                             </div>
                             <p class="aui-margin-t-5 aui-font-size-12">山东潍坊</p>
                             <div class="aui-info aui-font-size-12" style="padding-top:0; padding-bottom:0">
-                                <div class="aui-info-item">1小时前</div>
+                                <div class="aui-info-item">
+                                    {{a.created_at | time}}
+                                </div>
+                                <div class="aui-info-item" v-if="a.zan > 0">
+                                    {{a.zan}} &nbsp;<i class="aui-iconfont aui-icon-laud" style="color:#4c5276"></i>
+                                </div>
                                 <div class="aui-info-item">
                                     <i class="aui-iconfont aui-icon-comment" style="color:#4c5276"></i>
                                 </div>
@@ -58,6 +69,7 @@
 <script type="text/javascript" src="../script/vue.min.js"></script>
 <script type="text/javascript" src="../script/commjs/router.js"></script>
 <script type="text/javascript" src="../script/Base.js"></script>
+<script type="text/javascript" src="../script/aui-pull-refresh.js"></script>
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript">
     var vm = null;
@@ -68,6 +80,9 @@
         });
         Vue.filter('ss', function (value) {
             return 'http://res.bbaaoo.cn/' + value + '?imageView2/1/w/200/h/200';
+        });
+        Vue.filter('imgf', function (value) {
+            return   value + '?imageView2/1/w/200/h/200';
         });
         vm = new Vue({
             el: '#app',
@@ -109,7 +124,11 @@
                     LoadNewWin("article_detail", pageParamData);
                 }
             }
-        })
+        });
+
+
     }
+
+
 </script>
 </html>

@@ -188,13 +188,13 @@
         <div id="list" v-html="article.content"></div>
         <div class="collect" @click="zan(1)" v-if="!isZan">
             <svg class=" icn icon" style="width: 1.8rem;height: 1.8rem;" aria-hidden="true">
-                <use xlink:href="#icon-jushoucang"></use>
+                <use xlink:href="#icon-good"></use>
             </svg>
             <div class="num">{{article.zan}}</div>
         </div>
         <div class="collect" @click="zan(2)" v-else>
             <svg class=" icn icon" style="color: #F1141C;width:1.8rem;height: 1.8rem;" aria-hidden="true">
-                <use xlink:href="#icon-jushoucanggift"></use>
+                <use xlink:href="#icon-good"></use>
             </svg>
             <div class="num">{{article.zan}}</div>
         </div>
