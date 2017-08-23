@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>曝光圈分类</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui-pull-refresh.css"/>
+    <style type="text/css">
+        .aui-list .aui-list-item-media {
+            width: 3rem;
+        }
+
+        img1 {
+            width: 40px;
+            height: 40px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<section class="aui-refresh-content">
+    <div id="app" v-cloak>
+        <div class="aui-content">
+            <div id="demo">
+                <ul class="aui-list aui-media-list">
+                    <li class="aui-list-item" v-for="a in articles">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-media">
+                                <img class="img1 aui-img-round" :src="a.authorImg | imgf"/>
+                            </div>
+                            <div class="aui-list-item-inner" @click="openDetail(a)">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title" style="color:#4c5276">{{a.author}}</div>
+                                </div>
+                                <div class="aui-list-item-text aui-ellipsis-2" style="color:#333;" v-html="a.content">
+                                </div>
+                                <div class="aui-list-item-text">
+                                    <div class="aui-row-padded" style="max-width:90%;">
+                                        <div class="aui-col-xs-4" v-for="sm in  eval(a.small_image)  ">
+                                            <img :src="sm | ss"/>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <p class="aui-margin-t-5 aui-font-size-12">山东潍坊</p>
+                                <div class="aui-info aui-font-size-12" style="padding-top:0; padding-bottom:0">
+                                    <div class="aui-info-item">
+                                        {{a.created_at | time}}
+                                    </div>
+                                    <div class="aui-info-item" v-if="a.zan > 0">
+                                        {{a.zan}} &nbsp;<i class="aui-iconfont aui-icon-laud" style="color:#4c5276"></i>
+                                    </div>
+                                    <div class="aui-info-item">
+                                        <i class="aui-iconfont aui-icon-comment" style="color:#4c5276"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript" src="../script/commjs/router.js"></script>
+<script type="text/javascript" src="../script/Base.js"></script>
+<script type="text/javascript" src="../script/aui-pull-refresh.js"></script>
+<script type="text/javascript" src="../script/zepto.min.js"></script>
+<script type="text/javascript">
+    var vm = null;
+
+
+    apiready = function () {
+        Vue.filter('time', function (value) {
+            return _GetDateDiff(value);
+        });
+        Vue.filter('ss', function (value) {
+            return 'http://res.bbaaoo.cn/' + value + '?imageView2/1/w/200/h/200';
+        });
+        Vue.filter('imgf', function (value) {
+            return value + '?imageView2/1/w/200/h/200';
+        });
+        vm = new Vue({
+            el: '#app',
+            data: {
+                page: 1,
+                articles: [],
+                small_image: []
+            },
+            mounted: function () {
+                api.showProgress({
+                    title: '加载中',
+                    modal: false
+                });
+                this.initData();
+            },
+            methods: {
+                //banner加载
+                initData: function () {
+                    _Ajax(UrlRouter.article + '?type=4&catalog='+api.pageParam.catalog_id+'&offset=' + this.page, "get", {}, "json", function (ret) {
+                        api.hideProgress();
+                        if (ret) {
+                            vm.articles = ret;
+                        }
+                    }, function () {
+                        api.hideProgress();
+                    });
+
+                },
+                //打开详情
+                openDetail: function (article) {
+
+                    var pageParamData = {
+                        name: "article_detail",
+                        title: "文章详情",
+                        type: 'Detail',
+                        aid: article.id,
+                        frameurl: 'widget://html/article/article_detail.html'
+                    };
+                    LoadNewWin("article_detail", pageParamData);
+                }
+            }
+        });
+
+
+    }
+
+    var pullRefresh = new auiPullToRefresh({
+        container: document.querySelector('.aui-refresh-content'),
+        triggerDistance: 100
+    }, function (ret) {
+        if (ret.status == "success") {
+            setTimeout(function () {
+                //刷新
+                vm.articles=[];
+                vm.initData();
+                pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
+            }, 1500)
+        }
+    });
+</script>
+</html>

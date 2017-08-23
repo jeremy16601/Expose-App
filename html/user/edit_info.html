@@ -185,6 +185,7 @@
                 api.hideProgress();
                 if (ret) {
                     _toast('用户信息修改成功');
+                    _SetStorage("isSetUser",true);
                     _SendEvent("updateUser");
                 }
             }, function (err) {

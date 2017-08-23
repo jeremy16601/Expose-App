@@ -22,7 +22,7 @@
         <ul class="aui-list aui-media-list" v-for="data in datas">
             <li class="aui-list-item">
                 <div class="aui-media-list-item-inner">
-                    <div class="aui-list-item-media" @click="openDetail('熊猫直播')">
+                    <div class="aui-list-item-media" @click="openDetail(data)">
                         <img :src="data.img">
                     </div>
                     <div class="aui-list-item-inner" style="padding-top: 1.3rem;">
@@ -47,7 +47,7 @@
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript" src="../script/commjs/router.js"></script>
 <script type="text/javascript" src="../script/Base.js"></script>
-<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
 
 <script>
@@ -64,7 +64,7 @@
                 initd: function () {
                     api.showProgress();
                     $.ajax({
-                        "url": UrlRouter.catalog+"?type=2",
+                        "url": UrlRouter.catalog + "?type=2",
                         "cache": false,
                         "type": "GET"
                     }).done(function (data, status, header) {
@@ -77,28 +77,15 @@
                         alert(errorThrown);
                     })
                 },
-                open: function (package) {
-                    api.showProgress();
-                    api.download({
-                        url: package,
-                        report: true,
-                        cache: true,
-                        allowResume: true
-                    }, function (ret, err) {
-                        if (ret.state == 1) {
-                            api.hideProgress();
-                            //下载成功
-                            api.installApp({
-                                appUri: ret.savePath
-                            });
-                        } else {
-
-                        }
-                    });
-                },
-                openapp: function () {
-                    //打开app
-
+                openDetail: function (ca) {
+                    //打开分类列表
+                    var pageParamData = {
+                        name: "catalog_detail",
+                        title: ca.name,
+                        catalog_id: ca.id,
+                        frameurl: 'widget://html/catalog_detail.html'
+                    };
+                    LoadNewWin("catalog_detail", pageParamData);
                 },
             }
         });

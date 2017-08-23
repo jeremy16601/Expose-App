@@ -82,8 +82,11 @@
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-edit aui-text-warning"></i>
                 </div>
-                <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-inner aui-list-item-arrow" >
                     <div class="aui-list-item-title">个人设置</div>
+                    <div class="aui-list-item-right" v-if="!isSetUser">
+                        <div class="aui-dot" style="position:relative;top:0; right:0"></div>
+                    </div>
                 </div>
             </li>
             <li class="aui-list-item" @click="openDetail('collection','我的收藏')">
@@ -156,6 +159,7 @@
             return   value + '?imageView2/1/w/200/h/200';
         });
         _AddEventListener("updateUser", function () {
+            this.isSetUser=_GetStorage("isSetUser");
             //判断是否登陆状态
             _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
                 if (ret) {
@@ -170,10 +174,11 @@
 
         vm = new Vue({
             el: '#app',
-            data: {user: ""},
+            data: {user: "",isSetUser:true},
             mounted: function () {
                 api.showProgress();
                 this.init();
+                this.isSetUser=_GetStorage("isSetUser");
             },
             methods: {
                 init: function () {
