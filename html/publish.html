@@ -16,16 +16,17 @@
         min-height: 12rem;
     }
 
-    *{
-        -webkit-touch-callout:none;  /*系统默认菜单被禁用*/
-        -webkit-user-select:none; /*webkit浏览器*/
-        -khtml-user-select:none; /*早期浏览器*/
-        -moz-user-select:none;/*火狐*/
-        -ms-user-select:none; /*IE10*/
-        user-select:none;
+    * {
+        -webkit-touch-callout: none; /*系统默认菜单被禁用*/
+        -webkit-user-select: none; /*webkit浏览器*/
+        -khtml-user-select: none; /*早期浏览器*/
+        -moz-user-select: none; /*火狐*/
+        -ms-user-select: none; /*IE10*/
+        user-select: none;
     }
-    input,textarea {
-        -webkit-user-select:auto; /*webkit浏览器*/
+
+    input, textarea {
+        -webkit-user-select: auto; /*webkit浏览器*/
         margin: 0px;
         padding: 0px;
         outline: none;
@@ -46,7 +47,7 @@
             <li class="aui-list-item">
                 <div class="aui-list-item-inner">
                     <div class="aui-list-item-label">
-                       选择分类
+                        选择分类
                     </div>
                     <div class="aui-list-item-input">
                         <select v-model="selected">
@@ -67,7 +68,7 @@
                 <div class="aui-list-item-text">
                     <div class="aui-row-padded images">
                         <div class="aui-col-xs-3 " v-for="img in imgData">
-                            <img style="max-height: 100px" :src="img"/>
+                            <img style=" height: 100px;width: 100px;" :src="img"/>
                         </div>
 
                         <div id="start_upload" class="aui-col-xs-3 " @click="openImg() ">
@@ -92,7 +93,7 @@
     </div>
 </div>
 </body>
-<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
 <script type="text/javascript" src="../script/moment.min.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/zepto.min.js"></script>
@@ -103,9 +104,12 @@
 
     apiready = function () {
         var map = api.require('bMap');
+        Vue.filter('imgf', function (value) {
+            return value + '?imageView2/1/w/200/h/200';
+        });
         vm = new Vue({
             el: '#app',
-            data: {title: "", content: "", imgList: [], imgData: [], uptoken: '',catalog:[],selected:5},
+            data: {title: "", content: "", imgList: [], imgData: [], uptoken: '', catalog: [], selected: 5},
             mounted: function () {
                 //获取七牛token
                 _Ajax(UrlRouter.uploadToken, "get", {}, "json", function (ret) {
@@ -113,10 +117,10 @@
                         vm.uptoken = ret.uptoken;
                     }
                 });
-                this.catalog=_GetStorage("catalog");
+                this.catalog = _GetStorage("catalog");
             },
             methods: {
-                selectT:function () {
+                selectT: function () {
                     alert()
                 },
                 openImg: function () {
@@ -136,7 +140,7 @@
                         if (ret.base64Data) {
                             //自动上传
                             vm.imgData.push(ret.base64Data);
-                            var filename = _GetNowDate() + Math.random().toString(26) + '.jpg';//
+                            var filename = _GetNowDate() + Math.random().toString(20) + '.jpg';//
                             var f = new FormData();
                             var blob = dataURItoBlob(ret.base64Data); // 上一步中的函数
                             var canvas = document.createElement('canvas');
@@ -218,12 +222,12 @@
                         title: vm.title,
                         uid: _GetStorage("user").id,
                         author: _GetStorage("user").name,
-                        authorImg:_GetStorage("user").headimg,
+                        authorImg: _GetStorage("user").headimg,
                         content: vm.content,
                         zan: 0,
                         view_times: 1,
                         catalog_id: vm.selected,//默认分类
-                        small_image:  vm.imgList
+                        small_image: vm.imgList
                     }
                 },
                 "json", function (ret) {

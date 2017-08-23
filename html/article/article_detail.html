@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-    <title>headcontent</title>
+    <title>正文</title>
     <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
     <link rel="stylesheet" type="text/css" href="../../dist/css/mzui.min.css"/>
     <style type="text/css">
@@ -186,6 +186,16 @@
     </div>
     <div class="article">
         <div id="list" v-html="article.content"></div>
+
+        <div class="aui-list-item-text">
+            <div class="aui-row-padded">
+                <div class="aui-col-xs-4" v-for="sm in  eval(article.small_image)  ">
+                    <img :src="sm | ss"/>
+                </div>
+
+            </div>
+        </div>
+
         <div class="collect" @click="zan(1)" v-if="!isZan">
             <svg class=" icn icon" style="width: 1.8rem;height: 1.8rem;" aria-hidden="true">
                 <use xlink:href="#icon-good"></use>
@@ -254,7 +264,7 @@
 </div>
 </body>
 <script type="text/javascript" src="../../script/zepto.min.js"></script>
-<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/vue.min.js"></script>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/commjs/router.js"></script>
 <script type="text/javascript" src="../../script/Base.js"></script>
@@ -269,11 +279,14 @@
         Vue.filter('time1', function (value) {
             return _GetDateDiff(value);
         });
+        Vue.filter('ss', function (value) {
+            return 'http://res.bbaaoo.cn/' + value + '?imageView2/1/w/200/h/200';
+        });
         vm = new Vue({
             el: '#app',
             data: {
                 article: '', pub_time: '', isFav: false,//是否收藏
-                favID:'',//收藏id
+                favID: '',//收藏id
                 isShow: false, isZan: false, content: '', replys: []
             },
             mounted: function () {
@@ -353,7 +366,7 @@
                 favo: function () {
                     if (vm.isFav) {
                         //取消
-                        _Ajax(UrlRouter.collection+"/"+vm.favID, "DELETE", { }, "json", function (ret) {
+                        _Ajax(UrlRouter.collection + "/" + vm.favID, "DELETE", {}, "json", function (ret) {
                             if (ret) {
                                 _toast("取消收藏！");
                                 vm.isFav = false;
@@ -378,7 +391,7 @@
                     _Ajax(UrlRouter.collection + "?type=1&uid=" + _GetStorage("user").id + "&aid=" + api.pageParam.aid, "get", {}, "json", function (ret) {
                         if (ret.length > 0) {
                             vm.isFav = true;
-                            vm.favID=ret[0].id;
+                            vm.favID = ret[0].id;
                         }
                     });
                 }

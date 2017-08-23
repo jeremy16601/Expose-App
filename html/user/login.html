@@ -114,6 +114,7 @@
                 //存储用户信息
                 _SetStorage('user', ret[0]);
                 //广播事件：用户登录成功
+                _SendEvent('updateUser');
                 _SendEvent('UserLogin', ret.mtypeid);
                 setTimeout(function () {
                     _toast('登录成功！');

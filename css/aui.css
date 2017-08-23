@@ -10,6 +10,9 @@ html{
 	font-family: "Helvetica Neue", Helvetica, sans-serif;
 	font-size: 20px;
 }
+[v-cloak] {
+    display: none;
+}
 html,body {
 	-webkit-touch-callout:none;
 	-webkit-text-size-adjust:none;
@@ -60,7 +63,7 @@ p {
 	color: #757575;
 }
 a {
-	color: #0062cc;
+	color: #15A238;
 	text-decoration: none;
 	background-color: transparent;
 }
@@ -339,7 +342,7 @@ img {
 	color: #009688 !important;
 }
 .aui-text-info {
-	color: #03a9f4 !important;
+	color: #15A238 !important;
 }
 .aui-text-warning {
 	color: #ffc107 !important;
@@ -366,7 +369,7 @@ img {
 	background-color: #009688 !important;
 }
 .aui-bg-info {
-	background-color: #03a9f4 !important;
+	background-color: #15A238 !important;
 }
 .aui-bg-warning {
 	background-color: #f1c40f !important;
@@ -1559,7 +1562,7 @@ input[type="search"]::-webkit-search-cancel-button {
     vertical-align: middle;
 }
 .aui-bar-tab .aui-active {
-	color: #039be5;
+	color: #15A238;
 }
 .aui-bar-tab .aui-bar-tab-item .aui-iconfont {
 	position: relative;

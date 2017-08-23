@@ -62,7 +62,7 @@
             <div class="aui-list-item aui-list-item-middle" @click="openDetail('edit_info','个人信息')">
                 <div class="aui-media-list-item-inner ">
                     <div class="aui-list-item-media commentAvatarDiv">
-                        <img :src="user.headimg" class="commentAvatarImage">
+                        <img :src="user.headimg | imgs" class="commentAvatarImage">
                         <!--<img src="http://7jprpb.com1.z0.glb.clouddn.com/demo1.png" class="commentAvatarImage">-->
                     </div>
                     <div class="aui-list-item-inner aui-list-item-arrow aui-margin-l-15">
@@ -144,7 +144,7 @@
 </div>
 
 </body>
-<script type="text/javascript" src="../script/vue.js"></script>
+<script type="text/javascript" src="../script/vue.min.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript" src="../script/Base.js"></script>
@@ -152,6 +152,9 @@
 <script>
     var vm = null;
     apiready = function () {
+        Vue.filter('imgs', function (value) {
+            return   value + '?imageView2/1/w/200/h/200';
+        });
         _AddEventListener("updateUser", function () {
             //判断是否登陆状态
             _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
@@ -164,6 +167,7 @@
                 api.hideProgress();
             });
         });
+
         vm = new Vue({
             el: '#app',
             data: {user: ""},
@@ -174,7 +178,7 @@
             methods: {
                 init: function () {
 //                    alert(JSON.stringify(_GetStorage("user")));
-                    if (_GetStorage("user")) {
+                    if (_GetStorage("user")!=''&&_GetStorage("user")!='undefined') {
                         //判断是否登陆状态
                         _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
                             if (ret) {

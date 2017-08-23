@@ -67,7 +67,6 @@
 
 	<script type="text/javascript" src="../../script/api.js"></script>
 	<script type="text/javascript" src="../../script/Base.js"></script>
-	<script type="text/javascript" src="../../script/SMSVerify.js"></script>
     <script type="text/javascript" src="../../script/commjs/router.js"></script>
 	<script type="text/javascript">
 		var smsVerify = null;
@@ -204,9 +203,9 @@
 //			var MD5_pwd = hex_md5(pwd);
 			_Ajax(UrlRouter.user, "post", {
 			       values : {
-			           name:userid, password:pwd, mobile:phone}
+			           name:userid, headimg:'http://res-qiniu.12xue.com/%E5%A4%B4%E5%83%8F1.png',password:pwd, mobile:phone}
 			}, "json", function(ret) {
-			    alert(JSON.stringify(ret))
+//			    alert(JSON.stringify(ret))
 			    switch(ret.code) {
 				    case -1:
 					     _toast('该用户名已被注册！');
@@ -245,5 +244,94 @@
 			    },
 		    });
 		}
+
+        // 初始化smsVerify
+        function _Register() {
+            smsVerify.register(function(ret, err) {
+                if (ret.status)
+                {
+                    //_toast('初始化成功');
+                }
+                else
+                {
+                    //_toast('初始化失败');
+                }
+            });
+        }
+
+        //.短信验证码
+        function _SendSmsPIN(phone, _callback) {
+		    api.showProgress();
+            if ( typeof _callback == "function")
+            {//.回调函数，倒计时
+                _callback();
+            }
+            smsVerify.sms({
+                phone : phone,
+            }, function(ret, err) {
+                if (ret.status)
+                {//.新增安卓智能验证功能
+                    if (ret.smart == true)
+                    {//.安卓智能验证成功
+                        _toast('智能验证成功，开发者可以为用户直接跳转到手机号验证成功之后的操作');
+                    }
+                    else
+                    {
+                        _toast('验证码发送成功');
+                    }
+                }
+                else
+                {//.错误
+                    api.alert({
+                        msg : err.code + ' 验证码发送失败'
+                    });
+                }
+                api.hideProgress();
+            });
+        }
+
+        //.语音验证码
+        function _SendVoicePIN(phone) {
+            smsVerify.voice({
+                phone : phone,
+            }, function(ret, err) {
+                if (ret.status)
+                {//.
+                    api.alert({
+                        msg : ' 操作成功！请注意接听来电'
+                    });
+                }
+                else
+                {
+                    api.alert({
+                        msg : err.code + ' 语音发送失败'
+                    });
+                }
+            });
+        }
+
+        //.校验验证码
+        function _Verify(phone, PIN, pwd, mtypeid, _callback, _callbackerr) {
+            smsVerify.verify({
+                phone : phone,
+                code : PIN,
+            }, function(ret, err) {
+                if (ret.status)
+                {//.回调函数·验证成功，执行注册操作
+                    if ( typeof _callback == "function")
+                    {//.回调函数·执行注册
+                        _callback();
+                    }
+                }
+                else
+                {//.回调函数·验证错误
+                    if ( typeof _callbackerr == "function")
+                    {
+                        _callbackerr();
+                    }
+                    _toast('验证码错误');
+                }
+            });
+        }
 	</script>
 </html>

@@ -9,10 +9,6 @@
     <link type="text/css" rel="stylesheet" href="../../css/aui.css">
     <style type="text/css">
 
-        .aui-list .aui-list-item-media img {
-            width: 80px;
-            height: 80px;
-        }
 
     </style>
 </head>
@@ -20,13 +16,13 @@
 <div id="app" v-cloak>
     <div class="aui-content aui-margin-b-15">
         <ul class="aui-list aui-media-list">
-            <li class="aui-list-item aui-list-item-middle" @click="updateImg()">
+            <li class="aui-list-item aui-list-item-middle"   @click="updateImg()">
                 <div class="aui-media-list-item-inner">
                     <div class="aui-list-item-inner ">
                         头像
                     </div>
                     <div class="aui-list-item-media " style="margin-right: 15px;">
-                        <img :src="user.headimg" class="aui-img-round aui-list-img-sm">
+                        <img :src="user.headimg | imgf" class="aui-img-round aui-list-img-sm">
                     </div>
                     <div class="aui-list-item-arrow"></div>
                 </div>
@@ -80,7 +76,7 @@
 <script type="text/javascript" src="../../script/aui-actionsheet.js"></script>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/Base.js"></script>
-<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/vue.min.js"></script>
 <script type="text/javascript" src="../../script/zepto.min.js"></script>
 <script type="text/javascript" src="../../script/font_ali.js"></script>
 <script type="text/javascript" src="../../script/moment.min.js"></script>
@@ -90,7 +86,9 @@
 
     apiready = function () {
         api.parseTapmode();
-
+        Vue.filter('imgf', function (value) {
+            return   value + '?imageView2/1/w/220/h/220';
+        });
         vm = new Vue({
             el: '#app',
             data: {user: _GetStorage("user"), img: '', uptoken: ''},
