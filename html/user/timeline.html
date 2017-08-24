@@ -84,13 +84,17 @@
         </div>
 
         <div class="aui-timeline-item-header">2017年8月22日</div>
-        <div class="aui-timeline-item-label aui-bg-warning text-light">NO.3</div>
-        <div class="aui-timeline-item-inner">
-            <div class="aui-card-list">
-                <div class="aui-card-list-header aui-border-b">第一版本测试<div id="version"></div></div>
-                <div class="aui-card-list-content-padded">
-                    <div class="aui-row aui-row-padded">
+        <div class="aui-timeline-item">
+            <div class="aui-timeline-item-label aui-bg-danger text-light">NO.3</div>
+            <div class="aui-timeline-item-inner">
+                <div class="aui-card-list">
+                    <div class="aui-card-list-header aui-border-b">第一版本测试
+                      <div id="version"></div>
+                    </div>
+                    <div class="aui-card-list-content-padded">
+                        <div class="aui-row aui-row-padded">
 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,9 +109,9 @@
 <script type="text/javascript" src="../../script/font_ali.js"></script>
 <script type="text/javascript">
     apiready = function () {
-        $api.text($api.byId('version'), api.appVersion);
+        $api.text($api.byId('version'),  'V' +api.appVersion);
         var td = api.require('talkingData');
-        td.onPageStart({pageName:'关于我们'});
+        td.onPageStart({pageName: '关于我们'});
     }
 
 </script>

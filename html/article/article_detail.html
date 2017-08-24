@@ -201,8 +201,8 @@
 
         <div class="aui-list-item-text">
             <div class="aui-row-padded">
-                <div class="aui-col-xs-4" v-for="sm in  eval(article.small_image)  ">
-                    <img :src="sm | ss"/>
+                <div class="aui-col-xs-4" v-for="(sm,index) in  eval(article.small_image)  ">
+                    <img :src="sm | ss" @click="openImg(article.small_image,index)"/>
                 </div>
 
             </div>
@@ -374,6 +374,25 @@
                         frameurl: 'widget://html/article/replys.html'
                     };
                     LoadNewWin("replys", pageParamData);
+                },
+                openImg: function (images, index) {
+                    var photoBrowser = api.require('photoBrowser');
+                    var newImg = [];
+                    for (var i = 0; i < eval(images).length; i++) {
+                        newImg.push('http://res.bbaaoo.cn/' + eval(images)[i]);
+                    }
+
+                    photoBrowser.open({
+                        images: newImg,
+                        activeIndex: index,
+                        bgColor: '#000'
+                    }, function (ret, err) {
+                        if (ret.eventType == 'click') {
+                            photoBrowser.close();
+                        }
+                    });
+
+
                 },
                 favo: function () {
                     if (vm.isFav) {
