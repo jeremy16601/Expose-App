@@ -22,6 +22,7 @@
         }
 
         .title {
+            color: #ff8f0b;
             padding: 10px 0;
             display: block;
         }
@@ -164,12 +165,23 @@
             z-index: 99;
         }
 
+        .collect {
+            width: 100px;
+            margin: 0 auto;
+            margin-top: 150px;
+            line-height: 45px;
+            padding: 0 20px;
+        }
         .aui-card-list-footer1 {
             position: relative;
             font-size: 14px;
             min-height: 0rem;
             padding-top: 0.5rem;
             padding-bottom: 0;
+        }
+        .list-item > .content > .subtitle, .list > .item > .content > .subtitle {
+            color: #0d0d0d;
+            opacity: .5 !important;
         }
     </style>
 
@@ -398,7 +410,8 @@
             }
         })
 
-
+        var td = api.require('talkingData');
+        td.onPageStart({pageName:'文章详情'});
     };
 
     //加载文章

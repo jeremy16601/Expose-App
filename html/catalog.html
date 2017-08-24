@@ -20,9 +20,9 @@
 <div id="app" v-cloak>
     <div class="aui-content aui-margin-b-15">
         <ul class="aui-list aui-media-list" v-for="data in datas">
-            <li class="aui-list-item">
+            <li class="aui-list-item" @click="openDetail(data)">
                 <div class="aui-media-list-item-inner">
-                    <div class="aui-list-item-media" @click="openDetail(data)">
+                    <div class="aui-list-item-media" >
                         <img :src="data.img">
                     </div>
                     <div class="aui-list-item-inner" style="padding-top: 1.3rem;">
@@ -53,6 +53,8 @@
 <script>
     var vm = null;
     apiready = function () {
+        var td = api.require('talkingData');
+        td.onPageStart({pageName:'分类'});
         vm = new Vue({
             el: '#app',
             data: {datas: []},

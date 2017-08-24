@@ -50,7 +50,7 @@
             </p>
         </div>
         <a id="login" class="btnok" onclick="login_1()">立即登录</a>
-        <a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 登陆中</a>
+        <a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 登录中</a>
     </div>
 </div>
 </body>
@@ -118,17 +118,17 @@
                 _SendEvent('UserLogin', ret.mtypeid);
                 setTimeout(function () {
                     _toast('登录成功！');
-                }, 2000)
+                }, 100)
                 setTimeout(function () {
                     api.closeToWin({
                         name: 'root'
                     });
-                }, 3000)
+                }, 100)
             }
         }, function (err) {
             setTimeout(function () {
                 _ChangeBtn('err');
-            }, 1000)
+            }, 100)
         });
     }
 

@@ -174,7 +174,7 @@
 
         vm = new Vue({
             el: '#app',
-            data: {user: "",isSetUser:true},
+            data: {user: "",isSetUser:true,},
             mounted: function () {
                 api.showProgress();
                 this.init();
@@ -183,7 +183,7 @@
             methods: {
                 init: function () {
 //                    alert(JSON.stringify(_GetStorage("user")));
-                    if (_GetStorage("user")!=''&&_GetStorage("user")!='undefined') {
+                    if (_GetStorage("user")!='' && _GetStorage("user")!=undefined) {
                         //判断是否登陆状态
                         _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
                             if (ret) {
@@ -216,6 +216,8 @@
             }
         })
         ;
+        var td = api.require('talkingData');
+        td.onPageStart({pageName:'我的'});
     }
 
 </script>

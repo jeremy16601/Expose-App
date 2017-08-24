@@ -19,6 +19,10 @@
             height: 40px;
             overflow: hidden;
         }
+
+        .title1 {
+
+        }
     </style>
 </head>
 <body>
@@ -36,7 +40,15 @@
                                 <div class="aui-list-item-text">
                                     <div class="aui-list-item-title" style="color:#4c5276">{{a.author}}</div>
                                 </div>
-                                <div class="aui-list-item-text aui-ellipsis-2" style="color:#333;" v-html="a.content">
+                                <!--标题-->
+                                <b>
+                                    <div class="aui-list-item-text title1 aui-ellipsis-2" style="color:#333;"
+                                         v-html="a.title">
+                                    </div>
+                                </b>
+                                <!--内容-->
+                                <div class="aui-list-item-text aui-ellipsis-2" style="color:#333;"
+                                     v-html="highlight(a.content)">
                                 </div>
                                 <div class="aui-list-item-text">
                                     <div class="aui-row-padded" style="max-width:90%;">
@@ -46,7 +58,7 @@
 
                                     </div>
                                 </div>
-                                <p class="aui-margin-t-5 aui-font-size-12">山东潍坊</p>
+                                <p class="aui-margin-t-5 aui-font-size-12">{{a.location}}</p>
                                 <div class="aui-info aui-font-size-12" style="padding-top:0; padding-bottom:0">
                                     <div class="aui-info-item">
                                         {{a.created_at | time}}
@@ -88,6 +100,14 @@
         Vue.filter('imgf', function (value) {
             return value + '?imageView2/1/w/200/h/200';
         });
+        Vue.prototype.highlight= function (value) {
+            if (value.length > 100) {
+                return value.substring(0, 98)+'... .. 全文 ';
+            } else {
+                return value;
+            }
+        };
+
         vm = new Vue({
             el: '#app',
             data: {
@@ -130,7 +150,8 @@
             }
         });
 
-
+        var td = api.require('talkingData');
+        td.onPageStart({pageName:'曝光圈'});
     }
 
     var pullRefresh = new auiPullToRefresh({
@@ -140,10 +161,11 @@
         if (ret.status == "success") {
             setTimeout(function () {
                 //刷新
-                vm.articles=[];
+                vm.articles = [];
+                api.showProgress();
                 vm.initData();
                 pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
-            }, 1500)
+            }, 300)
         }
     });
 </script>

@@ -89,7 +89,6 @@
             position: relative;
         }
 
-
         .content2 .section,
         .content3 .section {
             width: 100%;
@@ -179,7 +178,7 @@
     <div id="aui-slide1">
         <div class="aui-slide-wrap">
             <div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center" v-for=" item in banners">
-                <img :src="item.image"/>
+                <img :src="item.image | imgF75" @click="openBanner(item.open)"/>
             </div>
 
         </div>
@@ -217,11 +216,16 @@
     var vm = null;
 
     apiready = function () {
+        var td = api.require('talkingData');
+        td.onPageStart({pageName: '首页'});
         Vue.filter('time', function (value) {
             return _GetDateDiff(value);
         });
         Vue.filter('ss', function (value) {
-            return 'http://res.bbaaoo.cn/' + JSON.parse(value)[0]+'?imageView2/1/w/200/h/200';
+            return 'http://res.bbaaoo.cn/' + JSON.parse(value)[0] + '?imageView2/1/w/200/h/200';
+        });
+        Vue.filter('imgF75', function (value) {
+            return value + '?imageMogr2/thumbnail/!75p';
         });
 
         vm = new Vue({
@@ -273,6 +277,19 @@
                     });
 
                 },
+                openBanner: function (url) {
+                    if (url == '0') {
+                        return;
+                    }
+                    var browser = api.require('webBrowser');
+                    browser.open({
+                        titleBar: {
+                            visible: true,
+                            bg: '#15A238',
+                        },
+                        url: url
+                    });
+                },
                 //打开详情
                 openDetail: function (article) {
 
@@ -287,6 +304,28 @@
                 }
             }
         })
+
+        //打开信鸽
+        var tencentPush = api.require('tencentPush');
+        var rc = function (ret, err) {
+            if (ret.status) {
+                console.log("注册成功，token为：" + ret.token);
+                var resultCallback = function (ret, err) {
+//                    alert("收到通知被展示的回调，title：" + ret.title + "，content：" + ret.content + "，customContent：" + ret.customContent + ",activity:" + ret.activity + ",actionType:" + ret.actionType + ",msgid:" + ret.msgid);
+                };
+                var params = {name: "notifactionShow"};
+                tencentPush.setListener(params, resultCallback);
+
+                var dlresultCallback = function (ret, err) {
+//                    alert("收到通知被点击的回调，title：" + ret.title + "，content：" + ret.content + "，customContent：" + ret.customContent + ",activity:" + ret.activity + ",actionType:" + ret.actionType + ",msgid:" + ret.msgid);
+                }
+                var params = {name: "notifactionClick"};
+                tencentPush.setListener(params, dlresultCallback);
+
+            }
+        };
+        tencentPush.registerPush(rc);
+
     };
 
 

@@ -15,7 +15,6 @@
         margin: 0.5rem 0;
         min-height: 12rem;
     }
-
     * {
         -webkit-touch-callout: none; /*系统默认菜单被禁用*/
         -webkit-user-select: none; /*webkit浏览器*/
@@ -63,7 +62,17 @@
                     </div>
                 </div>
             </li>
-
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title"><i class="aui-iconfont aui-icon-location"></i> &nbsp;位置</div>
+                    <div class=" aui-ellipsis-1 " style="font-size: 0.7rem;color:#5B7AA6;padding-right: 25px">
+                        {{location.address}}
+                    </div>
+                    <!--<div class="aui-ellipsis-1 " style="font-size: 0.7rem;color:#CE272D;padding-right: 25px" v-else>-->
+                    <!--无法获取位置，请检查gps是否打开-->
+                    <!--</div>-->
+                </div>
+            </li>
             <li class="aui-list-item">
                 <div class="aui-list-item-text">
                     <div class="aui-row-padded images">
@@ -103,13 +112,18 @@
     var vm = null;
 
     apiready = function () {
-        var map = api.require('bMap');
+        var bMap = api.require('bMap');
+        var td = api.require('talkingData');
+        td.onPageStart({pageName:'发布'});
         Vue.filter('imgf', function (value) {
             return value + '?imageView2/1/w/200/h/200';
         });
         vm = new Vue({
             el: '#app',
-            data: {title: "", content: "", imgList: [], imgData: [], uptoken: '', catalog: [], selected: 5},
+            data: {
+                title: "", content: "", imgList: [], imgData: [], uptoken: '', catalog: '', selected: 5,
+                location: '',
+            },
             mounted: function () {
                 //获取七牛token
                 _Ajax(UrlRouter.uploadToken, "get", {}, "json", function (ret) {
@@ -118,6 +132,36 @@
                     }
                 });
                 this.catalog = _GetStorage("catalog");
+
+                if (_GetStorage("catalog") == undefined) {
+                    //获取分类列表
+                    _Ajax(UrlRouter.catalog + "?type=1", "get", {}, "json", function (ret) {
+                        _Alert(ret)
+                        if (ret) {
+                            vm.catalog = ret;
+                        }
+                    });
+                }
+                bMap.getLocation({
+                    accuracy: '100m',
+                    autoStop: true,
+                    filter: 1
+                }, function (ret, err) {
+                    if (ret.status) {
+                        bMap.getNameFromCoords({
+                            lon: ret.lon,
+                            lat: ret.lat
+                        }, function (ret, err) {
+                            if (ret.status) {
+                                //获取的位置
+                                vm.location = ret;
+                            }
+                        });
+                    } else {
+                        alert(err.code);
+                    }
+                });
+
             },
             methods: {
                 selectT: function () {
@@ -225,6 +269,7 @@
                         authorImg: _GetStorage("user").headimg,
                         content: vm.content,
                         zan: 0,
+                        location: vm.location.address,
                         view_times: 1,
                         catalog_id: vm.selected,//默认分类
                         small_image: vm.imgList
