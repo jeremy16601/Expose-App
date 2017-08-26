@@ -266,7 +266,7 @@
                 <svg class="icn icon" aria-hidden="true" @click="favo()" v-else>
                     <use xlink:href="#icon-shoucang11"></use>
                 </svg>
-                <svg class="icn icon" aria-hidden="true" @click="actionMenu()">
+                <svg class="icn icon" aria-hidden="true" @click="actionMenu(article)">
                     <use xlink:href="#icon-share"></use>
                 </svg>
             </div>
@@ -425,8 +425,8 @@
                         }
                     });
                 },
-                actionMenu:function () {
-                    _SendEvent("actionMenu");
+                actionMenu:function (a) {
+                    _SendEvent("actionMenu",{data:a});
                 }
             }
         })

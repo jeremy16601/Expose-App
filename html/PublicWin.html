@@ -47,8 +47,8 @@
         //选择新窗口容器
         SelectWinHeaderInfo(type, api.pageParam);
         dialogBox = api.require('dialogBox');
-        _AddEventListener("actionMenu",function () {
-            actionMenu();
+        _AddEventListener("actionMenu", function (data) {
+            actionMenu(data);
         });
 
     };
@@ -101,7 +101,7 @@
             name: api.winName,
             url: frameurl,
             bounces: false,
-            allowEdit:true,
+            allowEdit: true,
             rect: {
                 x: 0,
                 y: headerPos.h,
@@ -111,8 +111,9 @@
             pageParam: pageParamData,
         });
     }
+
     //openFrame end
-    function actionMenu() {
+    function actionMenu(data) {
         var qq = api.require('qq');
         dialogBox.actionMenu({
             rect: {
@@ -164,28 +165,29 @@
         }, function (ret) {
             switch (ret.index) {
                 case 0:
-                    alert('weixin')
+                    _toast('即将实现~')
                     break;
                 case 1:
-                    var screenClip = api.require('screenClip');
-                    screenClip.open({imgPath:api.deviceModel.match(/baoguang/) ? false : true},function(ret, err) {
-                        if (ret.status) {
-                            alert(JSON.stringify(ret));
-                        } else {
-                            alert(JSON.stringify(err));
-                        }
-                    });
+                    _toast('即将实现~')
                     break;
                 case 2:
-                    qq.shareText({
-                        text: 'ahhhhhh'
+                    var qq = api.require('qq');
+                    qq.shareNews({
+                        url: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.value.data.id,
+                        title: data.value.data.title,
+                        description: data.value.data.content,
+                        imgUrl: data.value.data.authorImg,
+                        type: "QFriend"
                     });
+
                     break;
                 case 3:
-                    qq.shareImage({
-                        title: '曝光吧',
-                        description: '描述',
-                        imgPath: 'widget://res/filterMe.png'
+                    var qq = api.require('qq');
+                    qq.shareNews({
+                        url: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.value.data.id,
+                        title: data.value.data.title,
+                        description: data.value.data.content,
+                        imgUrl: data.value.data.authorImg
                     });
                     break;
 
@@ -196,6 +198,7 @@
 
         });
     }
+
     function SubmitBtn() {
         _SendEvent("a_submit");
     }

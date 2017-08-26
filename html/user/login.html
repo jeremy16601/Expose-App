@@ -64,11 +64,7 @@
         loadphone();
         var qq = api.require('qq');
         qq.installed(function(ret, err) {
-            if (ret.status) {
-                api.alert({ msg: "安装" });
-            } else {
-                api.alert({ msg: "没有安装" });
-            }
+
         });
     }
 

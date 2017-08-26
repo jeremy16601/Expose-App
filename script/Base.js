@@ -140,8 +140,8 @@ function _RefreshPage() {
 //.弹出框
 function _toast(msg) {
 	api.toast({
-		msg : msg
-		//location: 'middle'
+		msg : msg,
+		location: 'middle'
 	});
 }
 
