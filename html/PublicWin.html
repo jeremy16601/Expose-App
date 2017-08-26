@@ -47,6 +47,10 @@
         //选择新窗口容器
         SelectWinHeaderInfo(type, api.pageParam);
         dialogBox = api.require('dialogBox');
+        _AddEventListener("actionMenu",function () {
+            actionMenu();
+        });
+
     };
 
     //打开新窗口
@@ -109,6 +113,7 @@
     }
     //openFrame end
     function actionMenu() {
+        var qq = api.require('qq');
         dialogBox.actionMenu({
             rect: {
                 h: 200
@@ -162,10 +167,26 @@
                     alert('weixin')
                     break;
                 case 1:
+                    var screenClip = api.require('screenClip');
+                    screenClip.open({imgPath:api.deviceModel.match(/baoguang/) ? false : true},function(ret, err) {
+                        if (ret.status) {
+                            alert(JSON.stringify(ret));
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
                     break;
                 case 2:
+                    qq.shareText({
+                        text: 'ahhhhhh'
+                    });
                     break;
                 case 3:
+                    qq.shareImage({
+                        title: '曝光吧',
+                        description: '描述',
+                        imgPath: 'widget://res/filterMe.png'
+                    });
                     break;
 
             }

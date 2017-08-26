@@ -62,6 +62,14 @@
         api.parseTapmode();
         //加载用户账号缓存
         loadphone();
+        var qq = api.require('qq');
+        qq.installed(function(ret, err) {
+            if (ret.status) {
+                api.alert({ msg: "安装" });
+            } else {
+                api.alert({ msg: "没有安装" });
+            }
+        });
     }
 
     //.加载用户手机号
@@ -104,6 +112,7 @@
         _Ajax(UrlRouter.login, "post", {
             values: {mobile: phone, password: pwd}
         }, "json", function (ret) {
+            api.hideProgress();
             if (ret.code == 401) {
                 _toast('账号或密码错误！');
                 //.更改按钮状态

@@ -266,7 +266,7 @@
                 <svg class="icn icon" aria-hidden="true" @click="favo()" v-else>
                     <use xlink:href="#icon-shoucang11"></use>
                 </svg>
-                <svg class="icn icon" aria-hidden="true">
+                <svg class="icn icon" aria-hidden="true" @click="actionMenu()">
                     <use xlink:href="#icon-share"></use>
                 </svg>
             </div>
@@ -302,9 +302,8 @@
                 isShow: false, isZan: false, content: '', replys: []
             },
             mounted: function () {
-                this.initData();
-                this.findFav();
                 api.showProgress();
+                this.initData();
             },
             methods: {
                 initData: function () {
@@ -425,6 +424,9 @@
                             vm.favID = ret[0].id;
                         }
                     });
+                },
+                actionMenu:function () {
+                    _SendEvent("actionMenu");
                 }
             }
         })
@@ -445,21 +447,24 @@
                         view_times: parseInt(ret[0].view_times + 1)
                     }
                 }, "json", function (ret) {
-                    if (ret) {
-                        //加载评论
-                        _Ajax(UrlRouter.reply + '?type=1&aid=' + api.pageParam.aid + "&page=0", "get", {}, "json", function (ret) {
-                            api.hideProgress();
-                            if (ret) {
-                                vm.replys = ret;
-                            }
-                        });
-                    }
+
                 });
 
             } else {
                 api.hideProgress();
             }
-
+            Vue.nextTick(function () {
+                vm.findFav();
+            });
+            Vue.nextTick(function () {
+                //加载评论
+                _Ajax(UrlRouter.reply + '?type=1&aid=' + api.pageParam.aid + "&page=0", "get", {}, "json", function (ret) {
+                    api.hideProgress();
+                    if (ret) {
+                        vm.replys = ret;
+                    }
+                });
+            });
         }, function () {
             api.hideProgress();
         });

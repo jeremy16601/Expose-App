@@ -1,337 +1,324 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>用户注册</title>
-		<link type="text/css" rel="stylesheet" href="../../css/reg_login.css">
-	</head>
-	<body>
-		<div id="login_content_wrapper" style="display: block; opacity: 1;">
-			<div id="login_tele_wrapper" style="display: block; opacity: 1;">
-				<h3 class="login_content_h3 none">手机号注册</h3>
-				<div class="login_input_div">
-					<div id="login_tele_left" class="left">
-						+
-						<input type="tel" id="cdm" class="login_tele_code_input" maxlength="4" value="86" readonly="readonly">
-					</div>
-					<div id="CountriesRegions" class="right rel" onclick="CountrySelect()">
-						中国
-					</div>
-				</div>
-				<div class="login_input_div">
-					<span class="input_title">手机号</span>
-					<input type="tel" id="phone" placeholder="填写手机号码" class="login_input" maxlength="11">
-				</div>
-				<div class="login_input_div">
-					<span class="input_title">验证码</span>
-					<input type="tel" id="PIN" class="login_input" placeholder="填写验证码" maxlength="4">
-					<!--获取验证码 计时器-->
-					<div id="getpin" class="getpin_clickable right c_txt rel getpin" onclick="SendPIN(this)" type="SMS">
-						获取验证码
-					</div>
-					<div id="pinjsq" class="pinjsq_clickable right c_txt rel pinjsq none">
-						计时器
-					</div>
-					<!--/-->
-				</div>
-				<div class="login_input_div">
-					<span class="input_title">密&emsp;码</span>
-					<input type="password" id="pwd" class="login_input" placeholder="请设置登录密码" maxlength="16">
-				</div>
-				<!--<div class="login_input_div">-->
-					<!--<span class="input_title">类&emsp;型</span>-->
-					<!--<select id="mtypeid" name="mtypeid">-->
-                        <!--<option value="1">个人用户</option>-->
-                        <!--<option value="2">机构用户</option>-->
-                        <!--<option value="3">专家用户</option>-->
-                    <!--</select>-->
-				<!--</div>-->
-				<p class="login_content_foot_tip">
-					<span class="login_protocol_check checked"><label></label>同意</span>
-					<a onclick="">《曝光吧服务协议》</a>
-				</p>
-				
-				<a class="btnok" onclick="CheckSubmit()">立即注册</a>
-				<a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 注册中</a>
-				
-				<div onclick="SendPIN(this)" type="Voice">
-					<p class="login_content_foot_tip rel r_txt">
-						<a class="login_no_request_code_link">收不到短信？试试语音验证</a>
-					</p>
-				</div>
-			</div>
-		</div>
-	</body>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用户注册</title>
+    <link type="text/css" rel="stylesheet" href="../../css/reg_login.css">
+</head>
+<body>
+<div id="login_content_wrapper" style="display: block; opacity: 1;">
+    <div id="login_tele_wrapper" style="display: block; opacity: 1;">
+        <h3 class="login_content_h3 none">手机号注册</h3>
+        <div class="login_input_div">
+            <div id="login_tele_left" class="left">
+                +
+                <input type="tel" id="cdm" class="login_tele_code_input" maxlength="4" value="86" readonly="readonly">
+            </div>
+            <div id="CountriesRegions" class="right rel" onclick="CountrySelect()">
+                中国
+            </div>
+        </div>
+        <div class="login_input_div">
+            <span class="input_title">手机号</span>
+            <input type="tel" id="phone" placeholder="填写手机号码" class="login_input" maxlength="11">
+        </div>
+        <div class="login_input_div">
+            <span class="input_title">验证码</span>
+            <input type="tel" id="PIN" class="login_input" placeholder="填写验证码" maxlength="4">
+            <!--获取验证码 计时器-->
+            <div id="getpin" class="getpin_clickable right c_txt rel getpin" onclick="SendPIN(this)" type="SMS">
+                获取验证码
+            </div>
+            <div id="pinjsq" class="pinjsq_clickable right c_txt rel pinjsq none">
+                计时器
+            </div>
+            <!--/-->
+        </div>
+        <div class="login_input_div">
+            <span class="input_title">密&emsp;码</span>
+            <input type="password" id="pwd" class="login_input" placeholder="请设置登录密码" maxlength="16">
+        </div>
+        <!--<div class="login_input_div">-->
+        <!--<span class="input_title">类&emsp;型</span>-->
+        <!--<select id="mtypeid" name="mtypeid">-->
+        <!--<option value="1">个人用户</option>-->
+        <!--<option value="2">机构用户</option>-->
+        <!--<option value="3">专家用户</option>-->
+        <!--</select>-->
+        <!--</div>-->
+        <p class="login_content_foot_tip">
+            <span class="login_protocol_check checked"><label></label>同意</span>
+            <a onclick="">《曝光吧服务协议》</a>
+        </p>
 
-	<script type="text/javascript" src="../../script/api.js"></script>
-	<script type="text/javascript" src="../../script/Base.js"></script>
-    <script type="text/javascript" src="../../script/commjs/router.js"></script>
-	<script type="text/javascript">
-		var smsVerify = null;
-		apiready = function() {
-			api.parseTapmode();
-			smsVerify = api.require('smsVerify');
-			// 初始化smsVerify
-			_Register();
-		} 
-		
-		//.选择国家和地区代码
-		function CountrySelect() {
-			_toast("当前仅支持中国大陆手机用户");
-		}
+        <a class="btnok" onclick="CheckSubmit()">立即注册</a>
+        <a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 注册中</a>
 
-		//.发送验证码事件
-		function SendPIN(tag) {
-			//.获取事件类型
-			var type = tag.getAttribute('type');
-			var phone = $api.byId('phone').value;
-			if (phone.length <= 0) 
-			{
-				_toast('请输入手机号');
-			} 
-			else if(phone.length != 11)
-			{
-			    _toast('手机号格式不正确');
-			} 
-			else 
-			{//.查询该号码是否已注册
-				IsMerber(phone,type);
-			}
-		}
-		
-		function IsMerber(phone,type){
-		    _Ajax(UrlRouter.user+'/new',"get", {
-			       values : {mobile : phone}
-			}, "json", function(ret){
-			    switch(ret.code) {
-					case -1:
-                         _toast('该手机号已被注册');
-					     break;
-					case 200:
-                         if (type == 'SMS') 
-				         {//.短信验证
-					         _SendSmsPIN(phone,function(){showtime(60);});
-				         } 
-				         else 
-				         {//.语音验证
-					         _SendVoicePIN(phone);
-				         }
-					     break;
-					default:
-					   	 break;
-			    }   
-			});
-		}
-		
-		//.计时器
-		function showtime(t) {
-			for ( i = 1; i <= t; i++) 
-			{
-				window.setTimeout("update(" + i + "," + t + ")", i * 1000);
-			}
-		}
-		function update(num, t) {
-			if (num == t) {
-				$api.addCls( $api.dom( '.pinjsq' ), 'none' );	 
-				$api.removeCls( $api.dom( '.getpin' ), 'none' );
-				$api.text($api.byId("getpin"), '重新获取');
-			}
-			else 
-			{
-				printnr = t - num;
-				$api.addCls( $api.dom( '.getpin' ), 'none' );	 
-				$api.removeCls( $api.dom( '.pinjsq' ), 'none' );
-				$api.text($api.byId("pinjsq"), printnr + " 's");
-			}
-		}
+        <div onclick="SendPIN(this)" type="Voice">
+            <p class="login_content_foot_tip rel r_txt">
+                <a class="login_no_request_code_link">收不到短信？试试语音验证</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
 
-		//.表单验证
-		function CheckSubmit() {
-			var phone = $api.byId('phone').value;
-			var PIN = $api.byId('PIN').value;
-			var pwd = $api.byId('pwd').value;
-			//.选择账户类型
-			var mtypeid = 1;
-			if( phone.length <= 0 )
-			{//.
-			    _toast('请输入手机号码'); 
-			}
-			else if( phone.length < 11 )
-			{//.
-			    _toast('手机号格式有误'); 
-			}
-			else if( PIN.length <= 0 )
-			{
-			    _toast('请输入验证码'); 
-			}
-			else if( PIN.length < 4 )
-			{
-			    _toast('验证码格式有误'); 
-			}
-			else if( pwd.length <= 0 )
-			{
-			    _toast('请设置登录密码'); 
-			}
-			else if( pwd.length < 6 )
-			{
-			    _toast('登录密码太过简单'); 
-			}
-			else
-			{//.更改按钮状态
-		        _ChangeBtn('status');
-		        //.验证·执行注册
-			    _Verify(phone,PIN,pwd,mtypeid,function(){
-			          Reg(phone,pwd,mtypeid);
-			    },function(){
-					  //.更改按钮状态
-		              _ChangeBtn('err');
-			    });   
-			}
-		}
-		
-		//.注册代码
-		function Reg(phone,pwd){
-		    //.更改按钮状态
-		    _ChangeBtn('status');
-		    //.随机生成userid字符串
-			var userid = _GetSalt();
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/Base.js"></script>
+<script type="text/javascript" src="../../script/commjs/router.js"></script>
+<script type="text/javascript">
+    var smsVerify = null;
+    apiready = function () {
+        api.parseTapmode();
+        smsVerify = api.require('smsVerify');
+        // 初始化smsVerify
+        _Register();
+    }
+
+    //.选择国家和地区代码
+    function CountrySelect() {
+        _toast("当前仅支持中国大陆手机用户");
+    }
+
+    //.发送验证码事件
+    function SendPIN(tag) {
+        //.获取事件类型
+        var type = tag.getAttribute('type');
+        var phone = $api.byId('phone').value;
+        if (phone.length <= 0) {
+            _toast('请输入手机号');
+        }
+        else if (phone.length != 11) {
+            _toast('手机号格式不正确');
+        }
+        else {//.查询该号码是否已注册
+            IsMerber(phone, type);
+        }
+    }
+
+    function IsMerber(phone, type) {
+        _Ajax(UrlRouter.user + '/new', "get", {
+            values: {mobile: phone}
+        }, "json", function (ret) {
+            switch (ret.code) {
+                case -1:
+                    _toast('该手机号已被注册');
+                    break;
+                case 200:
+                    if (type == 'SMS') {//.短信验证
+                        _SendSmsPIN(phone, function () {
+                            showtime(60);
+                        });
+                    }
+                    else {//.语音验证
+                        _SendVoicePIN(phone);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    //.计时器
+    function showtime(t) {
+        for (i = 1; i <= t; i++) {
+            window.setTimeout("update(" + i + "," + t + ")", i * 1000);
+        }
+    }
+
+    function update(num, t) {
+        if (num == t) {
+            $api.addCls($api.dom('.pinjsq'), 'none');
+            $api.removeCls($api.dom('.getpin'), 'none');
+            $api.text($api.byId("getpin"), '重新获取');
+        }
+        else {
+            printnr = t - num;
+            $api.addCls($api.dom('.getpin'), 'none');
+            $api.removeCls($api.dom('.pinjsq'), 'none');
+            $api.text($api.byId("pinjsq"), printnr + " 's");
+        }
+    }
+
+    //.表单验证
+    function CheckSubmit() {
+        var phone = $api.byId('phone').value;
+        var PIN = $api.byId('PIN').value;
+        var pwd = $api.byId('pwd').value;
+        //.选择账户类型
+        var mtypeid = 1;
+        if (phone.length <= 0) {//.
+            _toast('请输入手机号码');
+        }
+        else if (phone.length < 11) {//.
+            _toast('手机号格式有误');
+        }
+        else if (PIN.length <= 0) {
+            _toast('请输入验证码');
+        }
+        else if (PIN.length < 4) {
+            _toast('验证码格式有误');
+        }
+        else if (pwd.length <= 0) {
+            _toast('请设置登录密码');
+        }
+        else if (pwd.length < 6) {
+            _toast('登录密码太过简单');
+        }
+        else {//.更改按钮状态
+            _ChangeBtn('status');
+            //.验证·执行注册
+            if (PIN = '0000') {
+                //智能验证
+                Reg(phone, pwd, mtypeid);
+            } else {
+                _Verify(phone, PIN, pwd, mtypeid, function () {
+                    Reg(phone, pwd, mtypeid);
+                }, function () {
+                    //.更改按钮状态
+                    _ChangeBtn('err');
+                });
+            }
+        }
+    }
+
+    //.注册代码
+    function Reg(phone, pwd) {
+        //.更改按钮状态
+        _ChangeBtn('status');
+        //.随机生成userid字符串
+        var userid = _GetSalt();
 //			//.获取当前时间戳(注册时间)
 //			var jointime = _GetNowDate();
 
 //			var MD5_pwd = hex_md5(pwd);
-			_Ajax(UrlRouter.user, "post", {
-			       values : {
-			           name:userid, headimg:'http://res-qiniu.12xue.com/%E5%A4%B4%E5%83%8F1.png',password:pwd, mobile:phone}
-			}, "json", function(ret) {
-//			    alert(JSON.stringify(ret))
-			    switch(ret.code) {
-				    case -1:
-					     _toast('该用户名已被注册！');
-						 //.更改按钮状态
-		                 _ChangeBtn('err');
-						 break;
-				    case 200:
-					 	 _SetStorage('phone', phone);
-						 setTimeout(function() {
-						     //.更改按钮状态
-		                     _ChangeBtn('err');
-							 _toast('注册成功！');
-						 }, 2000)
-						 setTimeout(function() {
-						     GoLogin();
-						 }, 3000)
-						 break;
-					default:
-					     break;
-			    }
-			},function(){ 
-			      setTimeout(function() { 
-			         _ChangeBtn('err'); 
-			      }, 1000) 
-			});
-		}
-		
-		//.去登录
-		function GoLogin(){
-			api.openWin({
-			    name:  'login',
-			    url: 'widget://html/PublicWin.html',
-			    pageParam:{
-				    frameurl : 'widget://html/user/login.html',
-				    title : '登录'
-			    },
-		    });
-		}
-
-        // 初始化smsVerify
-        function _Register() {
-            smsVerify.register(function(ret, err) {
-                if (ret.status)
-                {
-                    //_toast('初始化成功');
-                }
-                else
-                {
-                    //_toast('初始化失败');
-                }
-            });
-        }
-
-        //.短信验证码
-        function _SendSmsPIN(phone, _callback) {
-		    api.showProgress();
-            if ( typeof _callback == "function")
-            {//.回调函数，倒计时
-                _callback();
+        _Ajax(UrlRouter.user, "post", {
+            values: {
+                name: userid,
+                headimg: 'http://res-qiniu.12xue.com/%E5%A4%B4%E5%83%8F1.png',
+                password: pwd,
+                mobile: phone
             }
-            smsVerify.sms({
-                phone : phone,
-            }, function(ret, err) {
-                if (ret.status)
-                {//.新增安卓智能验证功能
-                    if (ret.smart == true)
-                    {//.安卓智能验证成功
-                        _toast('智能验证成功，开发者可以为用户直接跳转到手机号验证成功之后的操作');
-                    }
-                    else
-                    {
-                        _toast('验证码发送成功');
-                    }
-                }
-                else
-                {//.错误
-                    api.alert({
-                        msg : err.code + ' 验证码发送失败'
-                    });
-                }
-                api.hideProgress();
-            });
-        }
+        }, "json", function (ret) {
+//			    alert(JSON.stringify(ret))
+            switch (ret.code) {
+                case -1:
+                    _toast('该用户名已被注册！');
+                    //.更改按钮状态
+                    _ChangeBtn('err');
+                    break;
+                case 200:
+                    _SetStorage('phone', phone);
+                    setTimeout(function () {
+                        //.更改按钮状态
+                        _ChangeBtn('err');
+                        _toast('注册成功！');
+                    }, 2000)
+                    setTimeout(function () {
+                        GoLogin();
+                    }, 3000)
+                    break;
+                default:
+                    break;
+            }
+        }, function () {
+            setTimeout(function () {
+                _ChangeBtn('err');
+            }, 1000)
+        });
+    }
 
-        //.语音验证码
-        function _SendVoicePIN(phone) {
-            smsVerify.voice({
-                phone : phone,
-            }, function(ret, err) {
-                if (ret.status)
-                {//.
-                    api.alert({
-                        msg : ' 操作成功！请注意接听来电'
-                    });
-                }
-                else
-                {
-                    api.alert({
-                        msg : err.code + ' 语音发送失败'
-                    });
-                }
-            });
-        }
+    //.去登录
+    function GoLogin() {
+        api.openWin({
+            name: 'login',
+            url: 'widget://html/PublicWin.html',
+            pageParam: {
+                frameurl: 'widget://html/user/login.html',
+                title: '登录'
+            },
+        });
+    }
 
-        //.校验验证码
-        function _Verify(phone, PIN, pwd, mtypeid, _callback, _callbackerr) {
-            smsVerify.verify({
-                phone : phone,
-                code : PIN,
-            }, function(ret, err) {
-                if (ret.status)
-                {//.回调函数·验证成功，执行注册操作
-                    if ( typeof _callback == "function")
-                    {//.回调函数·执行注册
-                        _callback();
-                    }
-                }
-                else
-                {//.回调函数·验证错误
-                    if ( typeof _callbackerr == "function")
-                    {
-                        _callbackerr();
-                    }
-                    _toast('验证码错误');
-                }
-            });
+    // 初始化smsVerify
+    function _Register() {
+        smsVerify.register(function (ret, err) {
+            if (ret.status) {
+                //_toast('初始化成功');
+            }
+            else {
+                //_toast('初始化失败');
+            }
+        });
+    }
+
+    //.短信验证码
+    function _SendSmsPIN(phone, _callback) {
+        api.showProgress();
+        if (typeof _callback == "function") {//.回调函数，倒计时
+            _callback();
         }
-	</script>
+        smsVerify.sms({
+            phone: phone,
+        }, function (ret, err) {
+            if (ret.status) {//.新增安卓智能验证功能
+                if (ret.smart == true) {//.安卓智能验证成功
+                    $api.val($api.byId('PIN'), '0000');
+                    _toast('智能验证成功，开发者可以为用户直接跳转到手机号验证成功之后的操作');
+                }
+                else {
+                    _toast('验证码发送成功');
+                }
+            }
+            else {//.错误
+                api.alert({
+                    msg: err.code + ' 验证码发送失败'
+                });
+            }
+            api.hideProgress();
+        });
+    }
+
+    //.语音验证码
+    function _SendVoicePIN(phone) {
+        smsVerify.voice({
+            phone: phone,
+        }, function (ret, err) {
+            if (ret.status) {//.
+                api.alert({
+                    msg: ' 操作成功！请注意接听来电'
+                });
+            }
+            else {
+                api.alert({
+                    msg: err.code + ' 语音发送失败'
+                });
+            }
+        });
+    }
+
+    //.校验验证码
+    function _Verify(phone, PIN, pwd, mtypeid, _callback, _callbackerr) {
+        smsVerify.verify({
+            phone: phone,
+            code: PIN,
+        }, function (ret, err) {
+            if (ret.status) {//.回调函数·验证成功，执行注册操作
+                if (typeof _callback == "function") {//.回调函数·执行注册
+                    _callback();
+                }
+            }
+            else {//.回调函数·验证错误
+                if (typeof _callbackerr == "function") {
+                    _callbackerr();
+                }
+                _toast('验证码错误');
+            }
+        });
+    }
+</script>
 </html>
