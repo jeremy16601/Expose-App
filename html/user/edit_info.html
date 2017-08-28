@@ -16,7 +16,7 @@
 <div id="app" v-cloak>
     <div class="aui-content aui-margin-b-15">
         <ul class="aui-list aui-media-list">
-            <li class="aui-list-item aui-list-item-middle"   @click="updateImg()">
+            <li class="aui-list-item aui-list-item-middle" @click="updateImg()">
                 <div class="aui-media-list-item-inner">
                     <div class="aui-list-item-inner ">
                         头像
@@ -63,6 +63,16 @@
                     </div>
                 </div>
             </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        简介：
+                    </div>
+                    <div class="aui-list-item-input">
+                        <textarea v-model="user.intro" placeholder="输入个人签名"></textarea>
+                    </div>
+                </div>
+            </li>
         </ul>
     </div>
     <p>
@@ -87,7 +97,7 @@
     apiready = function () {
         api.parseTapmode();
         Vue.filter('imgf', function (value) {
-            return   value + '?imageView2/1/w/220/h/220';
+            return value + '?imageView2/1/w/220/h/220';
         });
         vm = new Vue({
             el: '#app',
@@ -107,7 +117,7 @@
                         update();
                         return;
                     } else {
-                        if(vm.user.name==''){
+                        if (vm.user.name == '') {
                             _toast('请输入用户名！');
                             return;
                         }
@@ -178,6 +188,7 @@
                     name: vm.user.name,
                     realname: vm.user.realname,
                     email: vm.user.email,
+                    intro:vm.user.intro,
                     id: _GetStorage("user").id
                 }
             },
@@ -185,7 +196,7 @@
                 api.hideProgress();
                 if (ret) {
                     _toast('用户信息修改成功');
-                    _SetStorage("isSetUser",true);
+                    _SetStorage("isSetUser", true);
                     _SendEvent("updateUser");
                 }
             }, function (err) {

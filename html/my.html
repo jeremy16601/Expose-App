@@ -70,6 +70,9 @@
                         <div class="aui-list-item-text text-white">
                             <div><i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>{{user.mobile}}</div>
                         </div>
+                        <div class="aui-list-item-text text-white aui-ellipsis-1 " style="margin-top: 3px;">
+                            <div>{{user.intro}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -82,7 +85,7 @@
                 <div class="aui-list-item-label-icon">
                     <i class="aui-iconfont aui-icon-edit aui-text-warning"></i>
                 </div>
-                <div class="aui-list-item-inner aui-list-item-arrow" >
+                <div class="aui-list-item-inner aui-list-item-arrow">
                     <div class="aui-list-item-title">个人设置</div>
                     <div class="aui-list-item-right" v-if="!isSetUser">
                         <div class="aui-dot" style="position:relative;top:0; right:0"></div>
@@ -156,10 +159,10 @@
     var vm = null;
     apiready = function () {
         Vue.filter('imgs', function (value) {
-            return   value + '?imageView2/1/w/200/h/200';
+            return value + '?imageView2/1/w/200/h/200';
         });
         _AddEventListener("updateUser", function () {
-            this.isSetUser=_GetStorage("isSetUser");
+            this.isSetUser = _GetStorage("isSetUser");
             //判断是否登陆状态
             _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
                 if (ret) {
@@ -174,16 +177,16 @@
 
         vm = new Vue({
             el: '#app',
-            data: {user: "",isSetUser:true,},
+            data: {user: "", isSetUser: true,},
             mounted: function () {
                 api.showProgress();
                 this.init();
-                this.isSetUser=_GetStorage("isSetUser");
+                this.isSetUser = _GetStorage("isSetUser");
             },
             methods: {
                 init: function () {
 //                    alert(JSON.stringify(_GetStorage("user")));
-                    if (_GetStorage("user")!='' && _GetStorage("user")!=undefined) {
+                    if (_GetStorage("user") != '' && _GetStorage("user") != undefined) {
                         //判断是否登陆状态
                         _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
                             if (ret) {
@@ -191,7 +194,7 @@
                                 _SetStorage('user', ret[0]);
                             }
                             api.hideProgress();
-                        } );
+                        });
 
                     } else {
                         alert("请登录!");
@@ -216,7 +219,7 @@
         })
         ;
         var td = api.require('talkingData');
-        td.onPageStart({pageName:'我的'});
+        td.onPageStart({pageName: '我的'});
     }
 
 </script>
