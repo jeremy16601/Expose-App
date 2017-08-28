@@ -118,8 +118,8 @@
     }
 
     //openFrame end
-    function actionMenu(data) {
-        var qq = api.require('qq');
+    function actionMenu() {
+        var data=api.pageParam.article;
         dialogBox.actionMenu({
             rect: {
                 h: 200
@@ -173,22 +173,26 @@
                     var wx = api.require('wx');
                     wx.shareWebpage({
                         scene: 'timeline',
-                        title: data.value.data.title,
-                        description: data.value.data.content,
-                        thumb: data.value.data.authorImg,
-                        contentUrl: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.value.data.id
+                        title: data.title,
+                        description: data.content,
+                        thumb: data.authorImg,
+                        contentUrl: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.id
                     }, function (ret, err) {
-
+                        if (ret.status) {
+                            alert('分享成功');
+                        } else {
+                            alert(err.code);
+                        }
                     });
                     break;
                 case 1:
                     var wx = api.require('wx');
                     wx.shareWebpage({
                         scene: 'session',
-                        title: data.value.data.title,
-                        description: data.value.data.content,
-                        thumb: data.value.data.authorImg,
-                        contentUrl: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.value.data.id
+                        title: data.title,
+                        description: data.content,
+                        thumb: data.authorImg,
+                        contentUrl: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.id
                     }, function (ret, err) {
 
                     });
@@ -196,10 +200,10 @@
                 case 2:
                     var qq = api.require('qq');
                     qq.shareNews({
-                        url: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.value.data.id,
-                        title: data.value.data.title,
-                        description: data.value.data.content,
-                        imgUrl: data.value.data.authorImg,
+                        url: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.id,
+                        title: data.title,
+                        description: data.content,
+                        imgUrl: data.authorImg,
                         type: "QFriend"
                     });
 
@@ -207,10 +211,10 @@
                 case 3:
                     var qq = api.require('qq');
                     qq.shareNews({
-                        url: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.value.data.id,
-                        title: data.value.data.title,
-                        description: data.value.data.content,
-                        imgUrl: data.value.data.authorImg
+                        url: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.id,
+                        title: data.title,
+                        description: data.content,
+                        imgUrl: data.authorImg
                     });
                     break;
 

@@ -325,7 +325,7 @@
                         }
                     },
                     zan: function (type) {
-                        _Ajax(UrlRouter.article + '?type=3&aid=' + api.pageParam.aid, "get", {}, "json", function (ret) {
+                        _Ajax(UrlRouter.article + '?type=3&aid=' + api.pageParam.article.id, "get", {}, "json", function (ret) {
                             if (ret) {
                                 var zan = 0;
                                 if (type == 1) {
@@ -334,9 +334,9 @@
                                 } else {
                                     zan = parseInt(ret[0].zan - 1);
                                 }
-                                _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "PUT", {
+                                _Ajax(UrlRouter.article + '/' + api.pageParam.article.id, "PUT", {
                                     values: {
-                                        id: api.pageParam.aid,
+                                        id: api.pageParam.article.id,
                                         zan: zan,
                                     }
                                 }, "json", function (ret) {
@@ -419,7 +419,7 @@
                                 _Ajax(UrlRouter.collection, "POST", {
                                     values: {
                                         uid: _GetStorage("user").id,
-                                        aid: api.pageParam.aid
+                                        aid: api.pageParam.article.id
                                     }
                                 }, "json", function (ret) {
                                     if (ret) {
@@ -441,7 +441,7 @@
                     findFav: function () {
                         if (_GetStorage("user") != '' && _GetStorage("user") != undefined) {
                             //查询是否收藏
-                            _Ajax(UrlRouter.collection + "?type=1&uid=" + _GetStorage("user").id + "&aid=" + api.pageParam.aid, "get", {}, "json", function (ret) {
+                            _Ajax(UrlRouter.collection + "?type=1&uid=" + _GetStorage("user").id + "&aid=" + api.pageParam.article.id, "get", {}, "json", function (ret) {
                                 if (ret.length > 0) {
                                     vm.isFav = true;
                                     vm.favID = ret[0].id;
@@ -449,8 +449,8 @@
                             });
                         }
                     },
-                    actionMenu: function (a) {
-                        _SendEvent("actionMenu", {data: a});
+                    actionMenu: function () {
+                        _SendEvent("actionMenu");
                     }
                 }
             }
@@ -462,7 +462,7 @@
 
     //加载文章
     function getList() {
-        _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "get", {}, "json", function (ret) {
+        _Ajax(UrlRouter.article + '/' + api.pageParam.article.id, "get", {}, "json", function (ret) {
             if (ret) {
                 vm.article = ret[0];
                 //阅读数+1
@@ -483,7 +483,7 @@
             });
             Vue.nextTick(function () {
                 //加载评论
-                _Ajax(UrlRouter.reply + '?type=1&aid=' + api.pageParam.aid + "&page=0", "get", {}, "json", function (ret) {
+                _Ajax(UrlRouter.reply + '?type=1&aid=' + api.pageParam.article.id + "&page=0", "get", {}, "json", function (ret) {
                     api.hideProgress();
                     if (ret) {
                         vm.replys = ret;

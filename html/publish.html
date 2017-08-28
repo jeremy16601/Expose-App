@@ -136,7 +136,7 @@
                 if (_GetStorage("catalog") == undefined) {
                     //获取分类列表
                     _Ajax(UrlRouter.catalog + "?type=1", "get", {}, "json", function (ret) {
-                        _Alert(ret)
+//                        _Alert(ret)
                         if (ret) {
                             vm.catalog = ret;
                         }
