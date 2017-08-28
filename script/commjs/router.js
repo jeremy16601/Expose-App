@@ -1,8 +1,8 @@
 /**
  * 路由
  */
-// var host = "http://115.159.107.25:7001/";
-var host = "http://192.168.0.159:7001/";
+var host = "http://115.159.107.25:7001/";
+// var host = "http://192.168.0.159:7001/";
 var v="api/v1/";
 
 var UrlRouter = {

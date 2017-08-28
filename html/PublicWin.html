@@ -165,10 +165,28 @@
         }, function (ret) {
             switch (ret.index) {
                 case 0:
-                    _toast('即将实现~')
+                    var wx = api.require('wx');
+                    wx.shareWebpage({
+                        scene: 'timeline',
+                        title: data.value.data.title,
+                        description: data.value.data.content,
+                        thumb: data.value.data.authorImg,
+                        contentUrl: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.value.data.id
+                    }, function (ret, err) {
+
+                    });
                     break;
                 case 1:
-                    _toast('即将实现~')
+                    var wx = api.require('wx');
+                    wx.shareWebpage({
+                        scene: 'session',
+                        title: data.value.data.title,
+                        description: data.value.data.content,
+                        thumb: data.value.data.authorImg,
+                        contentUrl: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.value.data.id
+                    }, function (ret, err) {
+
+                    });
                     break;
                 case 2:
                     var qq = api.require('qq');
