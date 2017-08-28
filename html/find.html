@@ -31,7 +31,7 @@
         <div class="aui-content">
             <div id="demo">
                 <ul class="aui-list aui-media-list">
-                    <li class="aui-list-item" v-for="a in articles" >
+                    <li class="aui-list-item" v-for="a in articles">
                         <div class="aui-media-list-item-inner">
                             <div class="aui-list-item-media" @click="openDetail(a)">
                                 <img class="img1 aui-img-round" :src="a.authorImg | imgf"/>
@@ -60,7 +60,8 @@
                                     </div>
                                 </div>
                                 <p class="aui-margin-t-5 aui-font-size-12">{{a.location}}</p>
-                                <div class="aui-info aui-font-size-12" style="padding-top:0; padding-bottom:0" @click="openDetail(a)">
+                                <div class="aui-info aui-font-size-12" style="padding-top:0; padding-bottom:0"
+                                     @click="openDetail(a)">
                                     <div class="aui-info-item">
                                         {{a.created_at | time}}
                                     </div>
@@ -89,8 +90,6 @@
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript">
     var vm = null;
-
-
     apiready = function () {
         Vue.filter('time', function (value) {
             return _GetDateDiff(value);

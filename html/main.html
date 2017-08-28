@@ -175,7 +175,7 @@
 <body>
 <div id="app" v-cloak>
 
-    <div id="aui-slide1">
+    <div id="aui-slide1" v-if="banners.length>0">
         <div class="aui-slide-wrap">
             <div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center" v-for=" item in banners">
                 <img :src="item.image | imgF75" @click="openBanner(item.open)"/>
@@ -184,24 +184,60 @@
         </div>
         <div class="aui-slide-page-wrap"><!--分页容器--></div>
     </div>
-    <div id="headlist">
-        <div class="content" tapmode="" v-for="(article,index) in articles">
-            <div class="section1" @click="openDetail(article)">
-                <div class="from">
-                    <div class="text aui-ellipsis-2 ">{{article.title}}</div>
-                    <div>
-                        <div class="text2">{{article.author}}&nbsp; <span> {{article.view_times}}阅读</span> <span>{{article.zan}}赞</span>
-                            <span>&nbsp; {{article.created_at | time}}</span>
-                            <div class="arrow"></div>
+
+    <!--内容-->
+    <div class="aui-content">
+        <ul class="aui-list aui-media-list">
+            <!--置顶数据-->
+            <li class="aui-list-item" v-for="(a,index) in articlesTop" @click="openDetail(a)">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title aui-font-size-18 aui-ellipsis-2">{{a.title}}</div>
+                        </div>
+                        <div class="aui-list-item-text" v-if="a.title.length<15">
+                            <p class="aui-ellipsis-2">{{a.content}}</p>
+                        </div>
+                        <div class="aui-info aui-padded-b-0">
+                            <div class="aui-info-item aui-font-size-12">
+                                <img :src="a.authorImg | headimg" style="width:1rem" class="aui-img-round"/>
+                                <span class="aui-margin-l-5">{{a.author}}</span>
+                                <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5"
+                                >置顶</span>
+                            </div>
+                            <div class="aui-info-item aui-font-size-12">{{a.created_at | time}}</div>
                         </div>
                     </div>
+                    <div class="aui-list-item-media">
+                        <img :src="a.small_image | ss">
+                    </div>
                 </div>
-                <div class="img">
-                    <img :src="article.small_image | ss">
+            </li>
+            <!--普通数据-->
+            <li class="aui-list-item" v-for="(article,index) in articles" @click="openDetail(article)">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title aui-font-size-18 aui-ellipsis-2">{{article.title}}</div>
+                        </div>
+                        <div class="aui-list-item-text" v-if="article.title.length<15">
+                            <p class="aui-ellipsis-2">{{article.content}}</p>
+                        </div>
+                        <div class="aui-info aui-padded-b-0">
+                            <div class="aui-info-item aui-font-size-12">
+                                <img :src="article.authorImg | headimg" style="width:1rem" class="aui-img-round"/>
+                                <span class="aui-margin-l-5">{{article.author}}</span>
+                                <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5">热</span>
+                            </div>
+                            <div class="aui-info-item aui-font-size-12">{{article.created_at | time}}</div>
+                        </div>
+                    </div>
+                    <div class="aui-list-item-media">
+                        <img :src="article.small_image | ss">
+                    </div>
                 </div>
-            </div>
-        </div>
-
+            </li>
+        </ul>
     </div>
 
 </div>
@@ -224,13 +260,20 @@
         Vue.filter('ss', function (value) {
             return 'http://res.bbaaoo.cn/' + JSON.parse(value)[0] + '?imageView2/1/w/200/h/200';
         });
+        Vue.filter('headimg', function (value) {
+            return value + '?imageView2/1/w/100/h/100';
+        });
         Vue.filter('imgF75', function (value) {
             return value + '?imageMogr2/thumbnail/!75p';
         });
 
         vm = new Vue({
             el: '#app',
-            data: {banners: '', articles: []},
+            data: {
+                banners: '',
+                articlesTop: [],//置顶数据
+                articles: [], //普通数据
+            },
             mounted: function () {
                 api.showProgress({
                     title: '加载中',
@@ -259,17 +302,25 @@
                                     'dotPosition': 'center'
                                 });
                             });
-                            //加载首页数据
+                            //加载首页置顶
                             Vue.nextTick(function () {
-                                _Ajax(UrlRouter.article + '?type=2', "get", {}, "json", function (ret) {
-                                    api.hideProgress();
+                                _Ajax(UrlRouter.article + '?type=5', "get", {}, "json", function (ret) {
                                     if (ret) {
-                                        vm.articles = ret;
+                                        vm.articlesTop = ret;
+                                        //加载首页数据
+                                        Vue.nextTick(function () {
+                                            _Ajax(UrlRouter.article + '?type=2', "get", {}, "json", function (ret) {
+                                                api.hideProgress();
+                                                if (ret) {
+                                                    vm.articles = ret;
+                                                }
+                                            });
+                                        })
                                     }
-                                }, function () {
-                                    api.hideProgress();
                                 });
-                            })
+                            });
+
+                            api.hideProgress();
                         }
                     }, function (err) {
 //                        alert(JSON.stringify(err))
@@ -285,7 +336,7 @@
                     browser.open({
                         titleBar: {
                             visible: true,
-                            bg: '#15A238',
+                            bg: '#484848',
                         },
                         url: url
                     });

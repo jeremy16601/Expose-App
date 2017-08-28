@@ -12,12 +12,14 @@
 </head>
 <style>
     .icon {
-        width: 1.2em; height: 1.2em;
+        width: 1.2em;
+        height: 1.2em;
         vertical-align: -0.25em;
         fill: currentColor;
         overflow: hidden;
     }
-    .aui-iconfont{
+
+    .aui-iconfont {
         font-size: 0.83rem;
     }
 </style>
@@ -86,6 +88,17 @@
             }
         });
 
+        var daojishi = 0;
+
+        //倒计时
+        function kaishiJishi() {
+            if (daojishi > 0) {
+                setTimeout(function () {
+                    daojishi = daojishi - 20;
+                    kaishiJishi();
+                }, 20);
+            }
+        }
 
         var tab = new auiTab({
             element: document.getElementById("footer"),
@@ -153,15 +166,34 @@
         });
 
 
+        api.addEventListener({
+            name: 'keyback'
+        }, function (ret, err) {
+            if (daojishi == 0) {
+                //这里设置了倒计时为2秒
+                daojishi = 2000;
+                api.toast({
+                    msg: '再按一次退出',
+                    duration: 2000,
+                    location: 'bottom'
+                });
+                kaishiJishi();
+            } else {
+                api.closeWidget({
+                    silent: true
+                });
+            }
+        });
 
     };
+
     function add() {
         if (_GetStorage("user")) {
             //判断是否登陆状态
             var pageParamData = {
                 name: "publish",
                 title: "发布曝光",
-                type:'Add',
+                type: 'Add',
                 frameurl: 'widget://html/publish.html'
             };
             LoadNewWin("publish", pageParamData);
