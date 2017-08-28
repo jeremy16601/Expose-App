@@ -48,7 +48,12 @@
         SelectWinHeaderInfo(type, api.pageParam);
         dialogBox = api.require('dialogBox');
         _AddEventListener("actionMenu", function (data) {
-            actionMenu(data);
+            if(data!=''&&data!=undefined){
+                actionMenu(data);
+            }else {
+                _toast('获取参数失败，请重新点击分享按钮~！')
+            }
+
         });
 
     };
