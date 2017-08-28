@@ -50,6 +50,14 @@
             background-color: transparent;
         }
 
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+
         [v-cloak] {
             display: none;
         }
@@ -68,10 +76,17 @@
                     <div class="aui-list-item-inner aui-list-item-arrow aui-margin-l-15">
                         <div class="aui-list-item-text text-white aui-font-size-18">{{user.name}}</div>
                         <div class="aui-list-item-text text-white">
-                            <div><i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>{{user.mobile}}</div>
+                            <div><i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>{{user.mobile}} &nbsp;&nbsp;
+                                <svg class="icon">
+                                    <use xlink:href="#icon-score"></use>
+                                </svg>
+                                {{user.score}}
+                            </div>
                         </div>
+
                         <div class="aui-list-item-text text-white aui-ellipsis-1 " style="margin-top: 3px;">
-                            <div>{{user.intro}}</div>
+                            <div v-if="user.intro">{{user.intro}}</div>
+                            <div v-else>简介：暂无个性签名~</div>
                         </div>
                     </div>
                 </div>
@@ -108,14 +123,16 @@
                     <div class="aui-list-item-title">我的消息</div>
                 </div>
             </li>
-            <!--<li class="aui-list-item">-->
-            <!--<div class="aui-list-item-label-icon">-->
-            <!--<i class="aui-iconfont aui-icon-like aui-text-danger"></i>-->
-            <!--</div>-->
-            <!--<div class="aui-list-item-inner aui-list-item-arrow">-->
-            <!--<div class="aui-list-item-title">我的关注</div>-->
-            <!--</div>-->
-            <!--</li>-->
+            <li class="aui-list-item" @click="_toast('即将上线~')">
+                <div class="aui-list-item-label-icon">
+                    <svg class="icon" style="font-size: 1.2em;color: #ac6f3d">
+                        <use xlink:href="#icon-gifts"></use>
+                    </svg>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">积分商城</div>
+                </div>
+            </li>
         </ul>
 
         <ul class="aui-list aui-list-in">
@@ -154,6 +171,7 @@
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript" src="../script/Base.js"></script>
+<script type="text/javascript" src="../script/font_ali.js"></script>
 <script type="text/javascript" src="../script/commjs/router.js"></script>
 <script>
     var vm = null;
