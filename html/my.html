@@ -191,9 +191,7 @@
                                 _SetStorage('user', ret[0]);
                             }
                             api.hideProgress();
-                        }, function (err) {
-                            api.hideProgress();
-                        });
+                        } );
 
                     } else {
                         alert("请登录!");
@@ -204,6 +202,7 @@
                         };
                         LoadNewWin("login", pageParamData);
                     }
+                    api.hideProgress();
                 },
                 openDetail: function (value, title) {
                     var pageParamData = {

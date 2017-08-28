@@ -172,6 +172,7 @@
             line-height: 45px;
             padding: 0 20px;
         }
+
         .aui-card-list-footer1 {
             position: relative;
             font-size: 14px;
@@ -179,6 +180,7 @@
             padding-top: 0.5rem;
             padding-bottom: 0;
         }
+
         .list-item > .content > .subtitle, .list > .item > .content > .subtitle {
             color: #0d0d0d;
             opacity: .5 !important;
@@ -257,7 +259,7 @@
             </svg>
             <div v-else>
                 <div class="aui-badge1">{{replys.length}}</div>
-                <svg class=" icn icon" aria-hidden="true" @click="openMore()">
+                <svg class=" icn icon" aria-hidden="true" @click="openMore(article.id)">
                     <use xlink:href="#icon-comments"></use>
                 </svg>
                 <svg class="icn icon" aria-hidden="true" @click="favo()" v-if="!isFav">
@@ -281,7 +283,7 @@
 <script type="text/javascript" src="../../script/commjs/router.js"></script>
 <script type="text/javascript" src="../../script/Base.js"></script>
 <script type="text/javascript" src="../../script/moment.min.js"></script>
-<script src="../../script/font_ali.js"></script>
+<script type="text/javascript" src="../../script/font_ali.js"></script>
 <script>
     var vm = null;
     apiready = function () {
@@ -295,145 +297,168 @@
             return 'http://res.bbaaoo.cn/' + value + '?imageView2/1/w/200/h/200';
         });
         vm = new Vue({
-            el: '#app',
-            data: {
-                article: '', pub_time: '', isFav: false,//是否收藏
-                favID: '',//收藏id
-                isShow: false, isZan: false, content: '', replys: []
-            },
-            mounted: function () {
-                api.showProgress();
-                this.initData();
-            },
-            methods: {
-                initData: function () {
-                    getList();
+                el: '#app',
+                data: {
+                    article: '', pub_time: '', isFav: false,//是否收藏
+                    favID: '',//收藏id
+                    isShow: false, isZan: false, content: '', replys: []
                 },
-                inputFunc: function () {
-                    vm.isShow = true;
+                mounted: function () {
+                    api.showProgress();
+                    this.initData();
                 },
-                zan: function (type) {
-                    _Ajax(UrlRouter.article + '?type=3&aid=' + api.pageParam.aid, "get", {}, "json", function (ret) {
-                        if (ret) {
-                            var zan = 0;
-                            if (type == 1) {
-                                //增加
-                                zan = parseInt(ret[0].zan + 1);
-                            } else {
-                                zan = parseInt(ret[0].zan - 1);
-                            }
-                            _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "PUT", {
-                                values: {
-                                    id: api.pageParam.aid,
-                                    zan: zan,
-                                }
-                            }, "json", function (ret) {
-                                if (ret) {
-                                    vm.article.zan = zan;
-                                    if (vm.isZan) {
-                                        vm.isZan = false;
-                                    } else {
-                                        vm.isZan = true;
-                                    }
-
-                                }
-                            }, function (err) {
-                                _toast("点赞失败")
-                            });
+                methods: {
+                    initData: function () {
+                        getList();
+                    },
+                    inputFunc: function () {
+                        if (_GetStorage("user") != '' && _GetStorage("user") != undefined) {
+                            vm.isShow = true;
                         } else {
-                            _toast("点赞失败")
+                            alert("请登录!");
+                            var pageParamData = {
+                                name: "login",
+                                title: "登录",
+                                frameurl: 'widget://html/user/login.html'
+                            };
+                            LoadNewWin("login", pageParamData);
                         }
-                    });
-//
-                },
-                reply: function () {
-                    _Ajax(UrlRouter.reply, "POST", {
-                        values: {
-                            uid: _GetStorage("user").id,
-                            article_id: vm.article.id,
-                            content: vm.content,
-                        }
-                    }, "json", function (ret) {
-                        if (ret) {
-                            _toast("回复成功！");
-                            vm.isShow = false;
-                            //重新加载回复列表
-                            getList();
-                        }
-                    }, function (err) {
-                        _toast("发送失败！");
-                    });
-                },
-                openMore: function (id) {
-                    var pageParamData = {
-                        name: "replys",
-                        title: "评论列表",
-                        type: 'replys',
-                        aid: id,
-                        frameurl: 'widget://html/article/replys.html'
-                    };
-                    LoadNewWin("replys", pageParamData);
-                },
-                openImg: function (images, index) {
-                    var photoBrowser = api.require('photoBrowser');
-                    var newImg = [];
-                    for (var i = 0; i < eval(images).length; i++) {
-                        newImg.push('http://res.bbaaoo.cn/' + eval(images)[i]);
-                    }
-
-                    photoBrowser.open({
-                        images: newImg,
-                        activeIndex: index,
-                        bgColor: '#000'
-                    }, function (ret, err) {
-                        if (ret.eventType == 'click') {
-                            photoBrowser.close();
-                        }
-                    });
-
-
-                },
-                favo: function () {
-                    if (vm.isFav) {
-                        //取消
-                        _Ajax(UrlRouter.collection + "/" + vm.favID, "DELETE", {}, "json", function (ret) {
+                    },
+                    zan: function (type) {
+                        _Ajax(UrlRouter.article + '?type=3&aid=' + api.pageParam.aid, "get", {}, "json", function (ret) {
                             if (ret) {
-                                _toast("取消收藏！");
-                                vm.isFav = false;
+                                var zan = 0;
+                                if (type == 1) {
+                                    //增加
+                                    zan = parseInt(ret[0].zan + 1);
+                                } else {
+                                    zan = parseInt(ret[0].zan - 1);
+                                }
+                                _Ajax(UrlRouter.article + '/' + api.pageParam.aid, "PUT", {
+                                    values: {
+                                        id: api.pageParam.aid,
+                                        zan: zan,
+                                    }
+                                }, "json", function (ret) {
+                                    if (ret) {
+                                        vm.article.zan = zan;
+                                        if (vm.isZan) {
+                                            vm.isZan = false;
+                                        } else {
+                                            vm.isZan = true;
+                                        }
+
+                                    }
+                                }, function (err) {
+                                    _toast("点赞失败")
+                                });
+                            } else {
+                                _toast("点赞失败")
                             }
                         });
-                    } else {
-                        _Ajax(UrlRouter.collection, "POST", {
+//
+                    },
+                    reply: function () {
+                        _Ajax(UrlRouter.reply, "POST", {
                             values: {
                                 uid: _GetStorage("user").id,
-                                aid: api.pageParam.aid
+                                article_id: vm.article.id,
+                                content: vm.content,
                             }
                         }, "json", function (ret) {
                             if (ret) {
-                                _toast("收藏成功！");
-                                vm.isFav = true;
+                                _toast("回复成功！");
+                                vm.isShow = false;
+                                //重新加载回复列表
+                                getList();
+                            }
+                        }, function (err) {
+                            _toast("发送失败！");
+                        });
+                    },
+                    openMore: function (id) {
+                        var pageParamData = {
+                            name: "replys",
+                            title: "评论列表",
+                            type: 'replys',
+                            aid: id,
+                            frameurl: 'widget://html/article/replys.html'
+                        };
+                        LoadNewWin("replys", pageParamData);
+                    },
+                    openImg: function (images, index) {
+                        var photoBrowser = api.require('photoBrowser');
+                        var newImg = [];
+                        for (var i = 0; i < eval(images).length; i++) {
+                            newImg.push('http://res.bbaaoo.cn/' + eval(images)[i]);
+                        }
+
+                        photoBrowser.open({
+                            images: newImg,
+                            activeIndex: index,
+                            bgColor: '#000'
+                        }, function (ret, err) {
+                            if (ret.eventType == 'click') {
+                                photoBrowser.close();
                             }
                         });
-                    }
-                },
-                findFav: function () {
-                    //查询是否收藏
-                    _Ajax(UrlRouter.collection + "?type=1&uid=" + _GetStorage("user").id + "&aid=" + api.pageParam.aid, "get", {}, "json", function (ret) {
-                        if (ret.length > 0) {
-                            vm.isFav = true;
-                            vm.favID = ret[0].id;
+
+
+                    },
+                    favo: function () {
+                        if (_GetStorage("user") != '' && _GetStorage("user") != undefined) {
+                            if (vm.isFav) {
+                                //取消
+                                _Ajax(UrlRouter.collection + "/" + vm.favID, "DELETE", {}, "json", function (ret) {
+                                    if (ret) {
+                                        _toast("取消收藏！");
+                                        vm.isFav = false;
+                                    }
+                                });
+                            } else {
+                                _Ajax(UrlRouter.collection, "POST", {
+                                    values: {
+                                        uid: _GetStorage("user").id,
+                                        aid: api.pageParam.aid
+                                    }
+                                }, "json", function (ret) {
+                                    if (ret) {
+                                        _toast("收藏成功！");
+                                        vm.isFav = true;
+                                    }
+                                });
+                            }
+                        } else {
+                            alert("请登录!");
+                            var pageParamData = {
+                                name: "login",
+                                title: "登录",
+                                frameurl: 'widget://html/user/login.html'
+                            };
+                            LoadNewWin("login", pageParamData);
                         }
-                    });
-                },
-                actionMenu:function (a) {
-                    _SendEvent("actionMenu",{data:a});
+                    },
+                    findFav: function () {
+                        if (_GetStorage("user") != '' && _GetStorage("user") != undefined) {
+                            //查询是否收藏
+                            _Ajax(UrlRouter.collection + "?type=1&uid=" + _GetStorage("user").id + "&aid=" + api.pageParam.aid, "get", {}, "json", function (ret) {
+                                if (ret.length > 0) {
+                                    vm.isFav = true;
+                                    vm.favID = ret[0].id;
+                                }
+                            });
+                        }
+                    },
+                    actionMenu: function (a) {
+                        _SendEvent("actionMenu", {data: a});
+                    }
                 }
             }
-        })
+        )
 
         var td = api.require('talkingData');
-        td.onPageStart({pageName:'文章详情'});
-    };
+        td.onPageStart({pageName: '文章详情'});
+    }
 
     //加载文章
     function getList() {

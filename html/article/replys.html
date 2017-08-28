@@ -263,6 +263,7 @@
     //加载文章
     function getList(page) {
         _Ajax(UrlRouter.reply + '?type=1&aid=' + api.pageParam.aid + '&page=' + page, "get", {}, "json", function (ret) {
+//            alert(api.pageParam.aid)
             if (ret) {
                 if (page == 0) {
                     vm.replys = ret;

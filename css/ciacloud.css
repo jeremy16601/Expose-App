@@ -60,7 +60,7 @@ p {
 	color: #757575;
 }
 a {
-	color: #15A238;
+	color: #484848;
 	text-decoration: none;
 	background-color: transparent;
 }
@@ -365,7 +365,7 @@ img {
 	color: #009688 !important;
 }
 .cia-text-info {
-	color: #15A238 !important;
+	color: #484848 !important;
 }
 .cia-text-warning {
 	color: #ffc107 !important;
@@ -392,7 +392,7 @@ img {
 	background-color: #009688 !important;
 }
 .cia-bg-info {
-	background-color: #15A238 !important;
+	background-color: #484848 !important;
 }
 .cia-bg-warning {
 	background-color: #f1c40f !important;
@@ -562,7 +562,7 @@ img.cia-img-square {
 }
 .cia-label-info {
   color: #ffffff;
-  background-color: #15A238;
+  background-color: #484848;
 }
 .cia-label-warning {
 	color: #ffffff;
@@ -604,8 +604,8 @@ img.cia-img-square {
 }
 .cia-label-outlined.cia-label-info,
 .cia-label-outlined.cia-label-info:after {
-  	color: #15A238;
-  	border-color: #15A238;
+  	color: #484848;
+  	border-color: #484848;
 }
 .cia-label-outlined.cia-label-warning,
 .cia-label-outlined.cia-label-warning:after {
@@ -704,11 +704,11 @@ button, .cia-btn {
 }
 .cia-btn-info {
 	color: #ffffff !important;
-	background-color: #15A238 !important;
+	background-color: #484848 !important;
 }
 .cia-btn-info.cia-active, .cia-btn-info:active {
 	color: #fff !important;
-	background-color: #15A238 !important;
+	background-color: #484848 !important;
 }
 .cia-btn-warning {
 	color: #ffffff !important;
@@ -765,8 +765,8 @@ button, .cia-btn {
 	border: 1px solid #009688 !important;
 }
 .cia-btn-info.cia-btn-outlined {
-	color: #15A238 !important;
-	border: 1px solid #15A238 !important;
+	color: #484848 !important;
+	border: 1px solid #484848 !important;
 }
 .cia-btn-warning.cia-btn-outlined {
 	color: #ffc107 !important;
@@ -1180,8 +1180,8 @@ input[type="search"]::-webkit-search-cancel-button {
             box-flex: 1;
 }
 .cia-tab-item.cia-active {
-    color: #15A238;
-    border-bottom: 2px solid #15A238;
+    color: #484848;
+    border-bottom: 2px solid #484848;
 }
 /*卡片列表布局*/
 .cia-card-list {
@@ -1358,8 +1358,8 @@ input[type="search"]::-webkit-search-cancel-button {
 .cia-radio.cia-checked,
 .cia-checkbox:checked,
 .cia-checkbox.cia-checked {
-    background-color: #15A238;
-    border: solid 1px #15A238;
+    background-color: #484848;
+    border: solid 1px #484848;
     text-align: center;
     background-clip: padding-box;
 }
@@ -1457,8 +1457,8 @@ input[type="search"]::-webkit-search-cancel-button {
             transition: left 0.2s;
 }
 .cia-switch:checked {
-    border-color: #15A238;
-    background-color: #15A238;
+    border-color: #484848;
+    background-color: #484848;
 }
 .cia-switch:checked:before {
     left: 1.1rem;
@@ -1479,7 +1479,7 @@ input[type="search"]::-webkit-search-cancel-button {
 .cia-bar-nav {
 	top: 0;
 	line-height: 2.25rem;
-	background-color: #15A238; 
+	background-color: #484848; 
 	color: #ffffff;
 }
 .cia-title a {
@@ -1568,15 +1568,15 @@ input[type="search"]::-webkit-search-cancel-button {
 	color: #ffffff;
 }
 .cia-bar-light {
-	color: #15A238;
+	color: #484848;
 	background-color: #ffffff;
 	border-bottom: 1px solid #dddddd;
 }
 .cia-bar-nav.cia-bar-light .CIACloud-font {
-	color: #15A238;
+	color: #484848;
 }
 .cia-bar-nav.cia-bar-light .cia-btn-outlined {
-	border-color: #15A238;
+	border-color: #484848;
 }
 @media screen and (-webkit-min-device-pixel-ratio:1.5) {
 	.cia-bar.cia-bar-light {
@@ -1606,7 +1606,7 @@ input[type="search"]::-webkit-search-cancel-button {
     vertical-align: middle;
 }
 .cia-bar-tab .cia-active {
-	color: #15A238;
+	color: #484848;
 }
 .cia-bar-tab .cia-bar-tab-item .CIACloud-font {
 	position: relative;
@@ -1656,7 +1656,7 @@ input[type="search"]::-webkit-search-cancel-button {
     position: relative;
     border-width: 1px;
     border-style: solid;
-    border-color: #15A238;
+    border-color: #484848;
     border-left-width: 0;
 }
 .cia-bar-btn-item-left {
@@ -1670,7 +1670,7 @@ input[type="search"]::-webkit-search-cancel-button {
     position: relative;
     border-width: 1px;
     border-style: solid;
-    border-color: #15A238;
+    border-color: #484848;
     border-left-width: 0;
 }
 .cia-bar-btn-item-right {
@@ -1684,7 +1684,7 @@ input[type="search"]::-webkit-search-cancel-button {
     position: relative;
     border-width: 1px;
     border-style: solid;
-    border-color: #15A238;
+    border-color: #484848;
     border-left-width: 0;
 }
 .cia-bar-btn .cia-input,
@@ -1715,15 +1715,15 @@ input[type="search"]::-webkit-search-cancel-button {
     font-size: 0.6rem;
 }
 .cia-bar-btn-item.cia-active {
-    background-color: #15A238;
+    background-color: #484848;
     color: #ffffff;
 }
 .cia-bar-btn-item-left.cia-active {
-    background-color: #15A238;
+    background-color: #484848;
     color: #ffffff;
 }
 .cia-bar-btn-item-right.cia-active {
-    background-color: #15A238;
+    background-color: #484848;
     color: #ffffff;
 }
 .cia-bar-btn-item:first-child {
@@ -1829,35 +1829,35 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .cia-bar-nav .cia-bar-btn-item.cia-active {
     background-color: #ffffff;
-    color: #15A238;
+    color: #484848;
 }
 .cia-bar-nav .cia-bar-btn-item-left.cia-active {
     background-color: #ffffff;
-    color: #15A238;
+    color: #484848;
 }
 .cia-bar-nav .cia-bar-btn-item-right.cia-active {
     background-color: #ffffff;
-    color: #15A238;
+    color: #484848;
 }
 .cia-bar-nav.cia-bar-light .cia-bar-btn-item {
-    border-color: #15A238;
+    border-color: #484848;
 }
 .cia-bar-nav.cia-bar-light .cia-bar-btn-item-left {
-    border-color: #15A238;
+    border-color: #484848;
 }
 .cia-bar-nav.cia-bar-light .cia-bar-btn-item-right {
-    border-color: #15A238;
+    border-color: #484848;
 }
 .cia-bar-nav.cia-bar-light .cia-bar-btn-item.cia-active {
-    background-color: #15A238;
+    background-color: #484848;
     color: #ffffff;
 }
 .cia-bar-nav.cia-bar-light .cia-bar-btn-item-left.cia-active {
-    background-color: #15A238;
+    background-color: #484848;
     color: #ffffff;
 }
 .cia-bar-nav.cia-bar-light .cia-bar-btn-item-right.cia-active {
-    background-color: #15A238;
+    background-color: #484848;
     color: #ffffff;
 }
 .cia-bar-nav > .cia-bar-btn {
@@ -1913,7 +1913,7 @@ input[type="search"]::-webkit-search-cancel-button {
 	line-height: 1rem;
 	color: #ffffff;
 	text-align: center;
-	background-color: #15A238;
+	background-color: #484848;
 }
 .cia-progress.sm,
 .cia-progress-sm {
@@ -1962,8 +1962,8 @@ input[type="search"]::-webkit-search-cancel-button {
     width: 1.2rem;
     height: 1.2rem;
     border-radius: 50%;
-    border-color: #15A238;
-    background-color: #15A238;
+    border-color: #484848;
+    background-color: #484848;
     -webkit-appearance: none !important;
 }
 .cia-range .cia-range-tip {
