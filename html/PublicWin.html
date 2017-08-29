@@ -40,8 +40,10 @@
 
 <script type="text/javascript">
     var dialogBox;
+    var wx;
     apiready = function () {
         api.parseTapmode();
+         wx = api.require('wx');
         //获取新窗口属性
         var type = api.pageParam.type;
         //选择新窗口容器
@@ -120,6 +122,10 @@
     //openFrame end
     function actionMenu() {
         var data = api.pageParam.article;
+        var sleng=data.content.length-(data.content.length/2);
+        if(data.content.length>100){
+            sleng=100;
+        }
 //        _Alert(data)
         dialogBox.share({
             rect: {
@@ -164,29 +170,23 @@
         }, function (ret) {
             switch (ret.index) {
                 case 0:
-                    var wx = api.require('wx');
                     wx.shareWebpage({
                         scene: 'timeline',
                         title: data.title,
-                        description: data.content,
+                        description: data.content.substring(0,sleng),
                         thumb: data.authorImg,
-                        contentUrl: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.id
+                        contentUrl: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id
                     }, function (ret, err) {
-                        if (ret.status) {
-                            alert('分享成功');
-                        } else {
-                            alert(err.code);
-                        }
+
                     });
                     break;
                 case 1:
-                    var wx = api.require('wx');
                     wx.shareWebpage({
                         scene: 'session',
                         title: data.title,
-                        description: data.content,
+                        description: data.content.substring(0,sleng),
                         thumb: data.authorImg,
-                        contentUrl: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.id
+                        contentUrl: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id
                     }, function (ret, err) {
 
                     });
@@ -194,9 +194,9 @@
                 case 2:
                     var qq = api.require('qq');
                     qq.shareNews({
-                        url: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.id,
+                        url: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id,
                         title: data.title,
-                        description: data.content,
+                        description: data.content.substring(0,sleng),
                         imgUrl: data.authorImg,
                         type: "QFriend"
                     });
@@ -205,14 +205,23 @@
                 case 3:
                     var qq = api.require('qq');
                     qq.shareNews({
-                        url: 'http://bbaaoo.cn:7001/public/article_detail.html?aid=' + data.id,
+                        url: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id,
                         title: data.title,
-                        description: data.content,
+                        description: data.content.substring(0,sleng),
                         imgUrl: data.authorImg
                     });
                     break;
                 case 4:
-                    alert('即将接入~');
+                    var weibo = api.require('weibo');
+                    weibo.shareWebPage({
+//                        text: '这里是测试的内容',
+                        title: data.title,
+                        description: data.content.substring(0,sleng),
+                        thumb: data.authorImg,
+                        contentUrl: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id
+                    }, function(ret, err) {
+
+                    });
                     break;
                 case 5:
                     alert('即将接入~');

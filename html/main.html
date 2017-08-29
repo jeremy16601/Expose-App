@@ -205,7 +205,7 @@
                                 <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5"
                                 >置顶</span>
                             </div>
-                            <div class="aui-info-item aui-font-size-12">{{a.created_at | time}}</div>
+                            <div class="aui-info-item aui-font-size-12" v-if="a.created_at">{{a.created_at | time}}</div>
                         </div>
                     </div>
                     <div class="aui-list-item-media">
@@ -306,13 +306,14 @@
                             Vue.nextTick(function () {
                                 _Ajax(UrlRouter.article + '?type=5', "get", {}, "json", function (ret) {
                                     if (ret) {
+//                                        _Alert(ret)
                                         vm.articlesTop = ret;
                                         //加载首页数据
                                         Vue.nextTick(function () {
-                                            _Ajax(UrlRouter.article + '?type=2', "get", {}, "json", function (ret) {
+                                            _Ajax(UrlRouter.article + '?type=2', "get", {}, "json", function (ret2) {
                                                 api.hideProgress();
-                                                if (ret) {
-                                                    vm.articles = ret;
+                                                if (ret2) {
+                                                    vm.articles = ret2;
                                                 }
                                             });
                                         })
