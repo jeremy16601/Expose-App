@@ -11,7 +11,7 @@
 	background-color: #f5f5f5;
 }
  p {
-	color: #757575;
+	color: #606060;
 }
 a {
 	color: #0062cc;
@@ -130,7 +130,7 @@ a {
 /*底部工具栏*/
 .aui-bar-tab {
 	background-color: #ffffff;
-	color: #757575;
+	color: #606060;
 }
 /*底部工具栏选中时颜色*/
 .aui-bar-tab .aui-active {
@@ -208,7 +208,7 @@ a {
 /*列表文本区域字体*/
 .aui-list .aui-list-item-text {
 	font-size: 0.7rem;
-	color: #757575;
+	color: #606060;
 }
 /*列表右侧箭头*/
 .aui-list-item-arrow:before {
@@ -217,7 +217,7 @@ a {
 /*列表右侧其他信息字体颜色*/
 .aui-list .aui-list-item-right,
 .aui-list-item-title-row em {
-	color: #757575;
+	color: #606060;
 }
 /*列表线条颜色*/
 .aui-list:before,
@@ -253,12 +253,12 @@ a {
 /*卡片列表底部*/
 .aui-card-list-footer {
 	font-size: 0.7rem;
-	color: #757575;
+	color: #606060;
 }
 /*信息条*/
 .aui-info {
 	font-size: 0.7rem;
-    color: #757575;
+    color: #606060;
     background-color: transparent;
 }
 /*输入框类字体颜色*/

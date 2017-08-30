@@ -57,7 +57,7 @@ ul, li {
 }
 p {
 	font-size: 0.7rem;
-	color: #757575;
+	color: #606060;
 }
 a {
 	color: #484848;
@@ -290,22 +290,22 @@ h4 {
 h5 {
 	font-size: 0.7rem;
 	font-weight: normal;
-	color: #757575;
+	color: #606060;
 }
 h6 {
 	font-size: 0.7rem;
 	font-weight: normal;
-	color: #757575;
+	color: #606060;
 }
 h1 small,h2 small,h3 small,h4 small {
 	font-weight: normal;
 	line-height: 1;
-	color: #757575;
+	color: #606060;
 }
 h5 small,h6 small {
 	font-weight: normal;
 	line-height: 1;
-	color: #757575;
+	color: #606060;
 }
 h1 small,h2 small,h3 small {
 	font-size: 65%;
@@ -356,7 +356,7 @@ img {
 	color: #ffffff !important;
 }
 .cia-text-hui {
-	color: #757575 !important;
+	color: #606060 !important;
 }
 .cia-text-primary {
 	color: #00bcd4 !important;
@@ -905,7 +905,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .cia-list .cia-list-item-text {
     font-size: 0.7rem;
-    color: #757575;
+    color: #606060;
     position: relative;
     -webkit-box-sizing: border-box;
     		box-sizing: border-box;
@@ -929,7 +929,7 @@ input[type="search"]::-webkit-search-cancel-button {
 	max-width: 50%;
 	position: relative;
     font-size: 0.6rem;
-    color: #757575;
+    color: #606060;
     margin-left: 0.25rem;
 }
 .cia-list .cia-list-item-inner p {
@@ -1243,10 +1243,10 @@ input[type="search"]::-webkit-search-cancel-button {
 	position: relative;
 }
 .cia-card-list-user-name small {
-	color: #757575;
+	color: #606060;
 }
 .cia-card-list-user-info {
-	color: #757575;
+	color: #606060;
 	font-size: 0.6rem;
 }
 .cia-card-list-content {
@@ -1269,7 +1269,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .cia-card-list-footer {
 	font-size: 0.7rem;
-	color: #757575;
+	color: #606060;
 }
 .cia-card-list-footer > * {
 	position: relative;
@@ -1595,7 +1595,7 @@ input[type="search"]::-webkit-search-cancel-button {
 	bottom: 0;
 	table-layout: fixed;
 	background-color: #ffffff;
-	color: #757575;
+	color: #606060;
 }
 .cia-bar-tab .cia-bar-tab-item {
 	display: table-cell;
@@ -1867,7 +1867,7 @@ input[type="search"]::-webkit-search-cancel-button {
 	position: relative;
     padding: 0.5rem 0;
     font-size: 0.7rem;
-    color: #757575;
+    color: #606060;
     background-color: transparent;
     -webkit-box-sizing: border-box;
     		box-sizing: border-box;
@@ -2160,7 +2160,7 @@ input[type="search"]::-webkit-search-cancel-button {
     padding: 0.75rem;
     overflow: hidden;
     font-size: 0.875em;
-    color: #757575;
+    color: #606060;
 }
 .cia-dialog-body input {
 	border: 1px solid #dddddd;
@@ -2425,13 +2425,13 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .cia-sharebox.cia-grid .cia-grid-label {
     font-size: 0.6rem;
-    color: #757575;
+    color: #606060;
 }
 .cia-sharebox-close-btn {
     width: 100%;
     height: 2.2rem;
     line-height: 2.2rem;
-    color: #757575;
+    color: #606060;
     text-align: center;
     font-size: 0.7rem;
 }
@@ -2497,7 +2497,7 @@ input[type="search"]::-webkit-search-cancel-button {
     text-align: center;
     margin-bottom: 0.75rem;
     font-size: 0.6rem;
-    color: #757575;
+    color: #606060;
 }
 .cia-chat .cia-chat-left {
     float: left;
@@ -2571,7 +2571,7 @@ input[type="search"]::-webkit-search-cancel-button {
     width: 100%;
     position: relative;
     font-size: 0.6rem;
-    color: #757575;
+    color: #606060;
     margin-bottom: 0.25rem;
 }
 .cia-chat .cia-chat-left .cia-chat-name {

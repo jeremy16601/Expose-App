@@ -62,7 +62,7 @@ ul, li {
 }
 p {
 	font-size: 0.7rem;
-	color: #757575;
+	color: #606060;
 }
 a {
 	color: #f4ad03;
@@ -289,22 +289,22 @@ h4 {
 h5 {
 	font-size: 0.7rem;
 	font-weight: normal;
-	color: #757575;
+	color: #606060;
 }
 h6 {
 	font-size: 0.7rem;
 	font-weight: normal;
-	color: #757575;
+	color: #606060;
 }
 h1 small,h2 small,h3 small,h4 small {
 	font-weight: normal;
 	line-height: 1;
-	color: #757575;
+	color: #606060;
 }
 h5 small,h6 small {
 	font-weight: normal;
 	line-height: 1;
-	color: #757575;
+	color: #606060;
 }
 h1 small,h2 small,h3 small {
 	font-size: 65%;
@@ -870,7 +870,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .aui-list .aui-list-item-text {
     font-size: 0.7rem;
-    color: #757575;
+    color: #606060;
     position: relative;
     -webkit-box-sizing: border-box;
     		box-sizing: border-box;
@@ -894,7 +894,7 @@ input[type="search"]::-webkit-search-cancel-button {
 	max-width: 50%;
 	position: relative;
     font-size: 0.6rem;
-    color: #757575;
+    color: #606060;
     margin-left: 0.25rem;
 }
 .aui-list .aui-list-item-inner p {
@@ -1201,10 +1201,10 @@ input[type="search"]::-webkit-search-cancel-button {
 	position: relative;
 }
 .aui-card-list-user-name small {
-	color: #757575;
+	color: #606060;
 }
 .aui-card-list-user-info {
-	color: #757575;
+	color: #606060;
 	font-size: 0.6rem;
 }
 .aui-card-list-content {
@@ -1227,7 +1227,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .aui-card-list-footer {
 	font-size: 0.7rem;
-	color: #757575;
+	color: #606060;
 }
 .aui-card-list-footer > * {
 	position: relative;
@@ -1553,7 +1553,7 @@ input[type="search"]::-webkit-search-cancel-button {
 	bottom: 0;
 	table-layout: fixed;
 	background-color: #ffffff;
-	color: #757575;
+	color: #606060;
 }
 .aui-bar-tab .aui-bar-tab-item {
 	display: table-cell;
@@ -1695,7 +1695,7 @@ input[type="search"]::-webkit-search-cancel-button {
 	position: relative;
     padding: 0.5rem 0;
     font-size: 0.7rem;
-    color: #757575;
+    color: #606060;
     background-color: transparent;
     -webkit-box-sizing: border-box;
     		box-sizing: border-box;
@@ -1988,7 +1988,7 @@ input[type="search"]::-webkit-search-cancel-button {
     padding: 0.75rem;
     overflow: hidden;
     font-size: 0.875em;
-    color: #757575;
+    color: #606060;
 }
 .aui-dialog-body input {
 	border: 1px solid #dddddd;
@@ -2253,13 +2253,13 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .aui-sharebox.aui-grid .aui-grid-label {
     font-size: 0.6rem;
-    color: #757575;
+    color: #606060;
 }
 .aui-sharebox-close-btn {
     width: 100%;
     height: 2.2rem;
     line-height: 2.2rem;
-    color: #757575;
+    color: #606060;
     text-align: center;
     font-size: 0.7rem;
 }
@@ -2325,7 +2325,7 @@ input[type="search"]::-webkit-search-cancel-button {
     text-align: center;
     margin-bottom: 0.75rem;
     font-size: 0.6rem;
-    color: #757575;
+    color: #606060;
 }
 .aui-chat .aui-chat-left {
     float: left;
@@ -2396,7 +2396,7 @@ input[type="search"]::-webkit-search-cancel-button {
     width: 100%;
     position: relative;
     font-size: 0.6rem;
-    color: #757575;
+    color: #606060;
     margin-bottom: 0.25rem;
 }
 .aui-chat .aui-chat-left .aui-chat-name {

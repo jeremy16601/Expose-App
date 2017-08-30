@@ -6,13 +6,19 @@
           content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <title>用户登录</title>
     <link type="text/css" rel="stylesheet" href="../../css/reg_login.css">
+    <link type="text/css" rel="stylesheet" href="../../css/aui.css">
     <style type="text/css">
         html, body {
             height: 100%;
         }
 
-        .btnok .CIACloud-font {
+        .btnok {
             font-size: 20px;
+        }
+        .aui-iconfont {
+            position: relative;
+            font-family: "aui_iconfont" !important;
+            font-size: 2rem;
         }
     </style>
 </head>
@@ -51,7 +57,26 @@
         </div>
         <a id="login" class="btnok" onclick="login_1()">立即登录</a>
         <a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 登录中</a>
+
+
+        <div class="aui-row" style="text-align: center">
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-qq"></i>
+                <div class="aui-grid-label">QQ登录</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-wechat"></i>
+                <div class="aui-grid-label">微信登录</div>
+            </div>
+            <div class="aui-col-xs-3">
+                <i class="aui-iconfont aui-icon-weibo"></i>
+                <div class="aui-grid-label">微博登录</div>
+            </div>
+        </div>
+
     </div>
+
+
 </div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
@@ -63,7 +88,7 @@
         //加载用户账号缓存
         loadphone();
         var qq = api.require('qq');
-        qq.installed(function(ret, err) {
+        qq.installed(function (ret, err) {
 
         });
     }

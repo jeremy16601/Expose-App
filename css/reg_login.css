@@ -304,7 +304,7 @@ footer, header, section {
 	text-align: left
 }
 .reg_tip a {
-	color: #15A238
+	color: #606060
 }
 .btncancel, .btn, .btnok {
 	display: block;
@@ -315,12 +315,12 @@ footer, header, section {
 	font-size: 18px
 }
 .btn{
-	background: #15A238;
+	background: #606060;
 	color: #fff;
 	opacity: .4;
 }
 .btnok {
-	background: #15A238;
+	background: #606060;
 	color: #fff;
 }
 .btnok:active {
@@ -588,8 +588,8 @@ select {
 	display: none
 }
 #login_init_by_qq {
-	background-color: #15A238;
-	border-color: #15A238
+	background-color: #606060;
+	border-color: #606060
 }
 #login_init_by_wx {
 	background-color: #6fc620;
@@ -754,7 +754,7 @@ select {
 }
 .login_content_foot_tip a {
 	font-size: 12px;
-	color: #15A238;
+	color: #606060;
 	vertical-align: middle
 }
 #login_code_left_input {
@@ -782,7 +782,7 @@ select {
 	z-index: 10
 }
 .login_bindCode_right_clickable, .login_code_right_clickable, .getpin_clickable {
-	color: #15A238
+	color: #606060
 }
 .pinjsq_clickable {
 	color: #EE4000
@@ -897,7 +897,7 @@ select {
 	height: 17px;
 	line-height: 17px;
 	font-size: 11px;
-	color: #15A238
+	color: #606060
 }
 .login_quick_tip {
 	font-size: 12px;
@@ -906,7 +906,7 @@ select {
 	margin-top: 10px
 }
 .login_quick_tip a {
-	color: #15A238
+	color: #606060
 }
 .login_tele_header {
 	background: #f7f7f7;

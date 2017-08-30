@@ -11,7 +11,7 @@
 	background-color: #1a1a1a;
 }
  p {
-	color: #757575;
+	color: #606060;
 }
 a {
 	color: #0062cc;
@@ -129,7 +129,7 @@ a {
 /*底部工具栏*/
 .aui-bar-tab {
 	background-color: #ffffff;
-	color: #757575;
+	color: #606060;
 }
 /*底部工具栏选中时颜色*/
 .aui-bar-tab .active {
@@ -252,12 +252,12 @@ a {
 /*卡片列表底部*/
 .aui-card-list-footer {
 	font-size: 0.7rem;
-	color: #757575;
+	color: #606060;
 }
 /*信息条*/
 .aui-info {
 	font-size: 0.7rem;
-    color: #757575;
+    color: #606060;
     background-color: transparent;
 }
 /*输入框类字体颜色*/
