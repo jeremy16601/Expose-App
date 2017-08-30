@@ -124,7 +124,7 @@ function _Ajax(url, method, data, dataType, _callback, _callbackerr, headers, ca
 			   if ( typeof _callbackerr == "function") 
 			   {
 				  _callbackerr(err);
-				  _toast("连接服务器失败"+JSON.stringify(err));
+				  _toast("服务器被攻击，请等待~ 即将恢复！");
 			   }
 		   }
 	});

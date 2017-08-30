@@ -208,7 +208,7 @@
                             <div class="aui-info-item aui-font-size-12" v-if="a.created_at">{{a.created_at | time}}</div>
                         </div>
                     </div>
-                    <div class="aui-list-item-media">
+                    <div class="aui-list-item-media" v-if="a.small_image">
                         <img :src="a.small_image | ss">
                     </div>
                 </div>
@@ -232,7 +232,7 @@
                             <div class="aui-info-item aui-font-size-12">{{article.created_at | time}}</div>
                         </div>
                     </div>
-                    <div class="aui-list-item-media">
+                    <div class="aui-list-item-media" v-if="article.small_image">
                         <img :src="article.small_image | ss">
                     </div>
                 </div>
@@ -302,32 +302,30 @@
                                     'dotPosition': 'center'
                                 });
                             });
-                            //加载首页置顶
-                            Vue.nextTick(function () {
-                                _Ajax(UrlRouter.article + '?type=5', "get", {}, "json", function (ret) {
-                                    if (ret) {
-//                                        _Alert(ret)
-                                        vm.articlesTop = ret;
-                                        //加载首页数据
-                                        Vue.nextTick(function () {
-                                            _Ajax(UrlRouter.article + '?type=2', "get", {}, "json", function (ret2) {
-                                                api.hideProgress();
-                                                if (ret2) {
-                                                    vm.articles = ret2;
-                                                }
-                                            });
-                                        })
-                                    }
-                                });
-                            });
-
                             api.hideProgress();
                         }
                     }, function (err) {
 //                        alert(JSON.stringify(err))
                         api.hideProgress();
                     });
-
+                    //加载首页置顶
+                    Vue.nextTick(function () {
+                        _Ajax(UrlRouter.article + '?type=5', "get", {}, "json", function (ret) {
+                            if (ret) {
+//                                        _Alert(ret)
+                                vm.articlesTop = ret;
+                                //加载首页数据
+                                Vue.nextTick(function () {
+                                    _Ajax(UrlRouter.article + '?type=2', "get", {}, "json", function (ret2) {
+                                        api.hideProgress();
+                                        if (ret2) {
+                                            vm.articles = ret2;
+                                        }
+                                    });
+                                })
+                            }
+                        });
+                    });
                 },
                 openBanner: function (url) {
                     if (url == '0') {
