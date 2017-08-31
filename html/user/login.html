@@ -125,24 +125,41 @@
                             } else {
                                 gender = 1;
                             }
+                            var params = {
+                                name: ret.info.nickname,
+                                headimg: ret.info.figureurl_qq_2,
+                                password: '',
+                                score: 50,
+                                sex: gender,
+                                mobile: '',
+                                qq_openid: openId,
+                                level: ret.info.level,
+                                address: ret.info.province + ' ' + ret.info.city,
+                            };
                             //注册系统用户
-                            _Ajax(UrlRouter.user+'?type=qq', "post", {
-                                values: {
-                                    name: ret.info.nickname,
-                                    headimg: ret.info.figureurl_qq_2,
-                                    password: '',
-                                    score: 50,
-                                    sex: gender,
-                                    mobile: '',
-                                    qq_openid: openId,
-                                    level: ret.info.level,
-                                    address: ret.info.province + ' ' + ret.info.city,
+                            _Ajax(UrlRouter.user + '?type=qq', "post", {
+                                values: params
+                            }, "json", function (data) {
+                                if (data.code == '101') {
+                                    //已存在
+                                    _SetStorage('user', data.data[0]);
+                                    _SetStorage('logintype', 'normal');
+                                    _SendEvent("updateUser");
+                                } else {
+                                    //根据openid查询用户信息
+                                    _Ajax(UrlRouter.user + '?type=2&qq_openid=' + params.qq_openid, "get", "json", function (ret2) {
+                                        _Alert(ret2)
+                                        _SetStorage('user', ret2.data[0]);
+                                        _SetStorage('logintype', 'qq');
+                                        _SendEvent("updateUser");
+                                    });
                                 }
-                            }, "json", function (ret) {
-                                _SetStorage('user', ret[0]);
-                                _SetStorage('logintype','qq');
+
                                 _toast('登录成功！');
-                                GoLogin();
+                                api.closeWin({
+                                    name: 'login'
+                                });
+//                                GoLogin();
                             });
                         } else {
                             api.alert({msg: err.msg});
@@ -222,14 +239,15 @@
 
     //.去登录
     function GoLogin() {
-        api.openWin({
-            name: 'main',
-            url: 'widget://html/PublicWin.html',
-            pageParam: {
-                frameurl: 'widget://html/my.html',
-                title: '我的'
-            },
+        api.closeWin({
+            name: 'login'
         });
+        var pageParamData = {
+            name: "main",
+            title: "我的",
+            frameurl: 'widget://html/my.html'
+        };
+        LoadNewWin("main", pageParamData);
     }
 </script>
 </html>

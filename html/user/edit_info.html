@@ -197,6 +197,7 @@
                 if (ret) {
                     _toast('用户信息修改成功');
                     _SetStorage("isSetUser", true);
+                    _SetStorage("logintype", 'normal');
                     _SendEvent("updateUser");
                 }
             }, function (err) {

@@ -64,13 +64,13 @@
     </style>
 </head>
 <body>
-<div id="app" v-cloak>
+<div id="app" v-cloak v-if="user">
     <section class="aui-content " id="user-info">
         <div class="aui-list aui-media-list aui-list-noborder aui-bg-info aui-padded-b-15">
             <div class="aui-list-item aui-list-item-middle" @click="openDetail('myhome','个人主页')">
                 <div class="aui-media-list-item-inner ">
                     <div class="aui-list-item-media commentAvatarDiv">
-                        <img :src="user.headimg" id="qqimg" class="commentAvatarImage" v-if="logintype=='qq'">
+                        <img :src="user.headimg" class="commentAvatarImage" v-if="logintype=='qq'">
                         <img :src="user.headimg | imgs" class="commentAvatarImage" v-else>
                         <!--<img src="http://7jprpb.com1.z0.glb.clouddn.com/demo1.png" class="commentAvatarImage">-->
                     </div>
@@ -156,8 +156,8 @@
                 </div>
             </li>
             <li class="aui-list-item">
-                <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn" onclick="openWin(this)"
-                     Path="user" name="login" title="登录">
+                <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn"
+                     @click="exit()">
                     <div class="aui-btn aui-btn-danger aui-margin-t-10 aui-margin-b-10">注销登录</div>
                 </div>
             </li>
@@ -181,6 +181,10 @@
             return value + '?imageView2/1/w/200/h/200';
         });
         _AddEventListener("updateUser", function () {
+            //判断当前登录环境
+            if (_GetStorage("logintype") == 'qq') {
+                vm.logintype = 'qq';
+            }
             this.isSetUser = _GetStorage("isSetUser");
             //判断是否登陆状态
             _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
@@ -196,7 +200,11 @@
 
         vm = new Vue({
             el: '#app',
-            data: {user: "", isSetUser: true, logintype: ''},
+            data: {
+                user: "",
+                isSetUser: true,
+                logintype: '',//登录类型
+            },
             mounted: function () {
                 api.showProgress();
                 this.init();
@@ -205,7 +213,7 @@
             methods: {
                 init: function () {
 //                    alert(JSON.stringify(_GetStorage("user")));
-                    if (_GetStorage("user") != '' && _GetStorage("user") != undefined) {
+                    if (_GetStorage("user") != '' && _GetStorage("user") != undefined && _GetStorage("user") != 'undefined') {
                         //判断是否登陆状态
                         _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
                             if (ret) {
@@ -220,7 +228,7 @@
                         });
 
                     } else {
-                        alert("请登录!");
+                        _toast("请登录!");
                         var pageParamData = {
                             name: "login",
                             title: "登录",
@@ -237,6 +245,17 @@
                         frameurl: 'widget://html/user/' + value + '.html'
                     };
                     LoadNewWin(value, pageParamData);
+                },
+                exit: function () {
+                    //退出
+                    _RemoveStorage("user");
+                    _RemoveStorage("logintype");
+                    var pageParamData = {
+                        name: "login",
+                        title: "登录",
+                        frameurl: 'widget://html/user/login.html'
+                    };
+                    LoadNewWin("login", pageParamData);
                 }
             }
         })
