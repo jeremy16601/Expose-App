@@ -196,7 +196,7 @@
 //			var jointime = _GetNowDate();
 
 //			var MD5_pwd = hex_md5(pwd);
-        _Ajax(UrlRouter.user, "post", {
+        _Ajax(UrlRouter.user+'?type=normal', "post", {
             values: {
                 name: userid,
                 headimg: 'http://res-qiniu.12xue.com/%E5%A4%B4%E5%83%8F1.png',

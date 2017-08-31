@@ -6,7 +6,6 @@
           content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <title>用户登录</title>
     <link type="text/css" rel="stylesheet" href="../../css/reg_login.css">
-    <link type="text/css" rel="stylesheet" href="../../css/aui.css">
     <style type="text/css">
         html, body {
             height: 100%;
@@ -15,10 +14,13 @@
         .btnok {
             font-size: 20px;
         }
-        .aui-iconfont {
-            position: relative;
-            font-family: "aui_iconfont" !important;
-            font-size: 2rem;
+
+        .icon {
+            width: 2.5em;
+            height: 2.5em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -58,21 +60,28 @@
         <a id="login" class="btnok" onclick="login_1()">立即登录</a>
         <a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 登录中</a>
 
-
-        <div class="aui-row" style="text-align: center">
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-qq"></i>
-                <div class="aui-grid-label">QQ登录</div>
+        <secton class="aui-grid">
+            <div class="aui-row">
+                <div class="aui-col-xs-4" onclick="login_qq()">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                    <div class="aui-grid-label">QQ登录</div>
+                </div>
+                <div class="aui-col-xs-4" onclick="login_weixin()">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-weixin"></use>
+                    </svg>
+                    <div class="aui-grid-label">微信登录</div>
+                </div>
+                <div class="aui-col-xs-4" onclick="login_weibo()">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-weibo"></use>
+                    </svg>
+                    <div class="aui-grid-label">微博登录</div>
+                </div>
             </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-wechat"></i>
-                <div class="aui-grid-label">微信登录</div>
-            </div>
-            <div class="aui-col-xs-3">
-                <i class="aui-iconfont aui-icon-weibo"></i>
-                <div class="aui-grid-label">微博登录</div>
-            </div>
-        </div>
+        </secton>
 
     </div>
 
@@ -81,16 +90,15 @@
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/Base.js"></script>
+<script type="text/javascript" src="../../script/font_ali.js"></script>
 <script type="text/javascript" src="../../script/commjs/router.js"></script>
 <script type="text/javascript">
+    var openId;
     apiready = function () {
         api.parseTapmode();
         //加载用户账号缓存
         loadphone();
-        var qq = api.require('qq');
-        qq.installed(function (ret, err) {
 
-        });
     }
 
     //.加载用户手机号
@@ -99,6 +107,56 @@
         if (phone != null) {//.填充手机号码到登录表单
             $api.attr($api.byId("phone"), 'value', phone);
         }
+    }
+
+    function login_qq() {
+        var qq = api.require('qq');
+        qq.installed(function (ret, err) {
+            if (ret.status) {
+                qq.login(function (ret, err) {
+                    openId = ret.openId;
+                    //获取用户信息
+                    qq.getUserInfo(function (ret, err) {
+                        if (ret.status) {
+                            console.log('qq登录信息' + JSON.stringify(ret));
+                            var gender;//性别
+                            if (ret.info.gender == '男') {
+                                gender = 0;
+                            } else {
+                                gender = 1;
+                            }
+                            //注册系统用户
+                            _Ajax(UrlRouter.user+'?type=qq', "post", {
+                                values: {
+                                    name: ret.info.nickname,
+                                    headimg: ret.info.figureurl_qq_2,
+                                    password: '',
+                                    score: 50,
+                                    sex: gender,
+                                    mobile: '',
+                                    qq_openid: openId,
+                                    level: ret.info.level,
+                                    address: ret.info.province + ' ' + ret.info.city,
+                                }
+                            }, "json", function (ret) {
+                                _SetStorage('user', ret[0]);
+                                _SetStorage('logintype','qq');
+                                _toast('登录成功！');
+                                GoLogin();
+                            });
+                        } else {
+                            api.alert({msg: err.msg});
+                        }
+                    });
+//                    api.alert({
+//                        title: 'id和token',
+//                        msg: ret. + ret.accessToken
+//                    });
+                });
+            } else {
+                api.alert({msg: "没有安装qq"});
+            }
+        });
     }
 
     //.选择国家地区代码
@@ -162,5 +220,16 @@
         });
     }
 
+    //.去登录
+    function GoLogin() {
+        api.openWin({
+            name: 'main',
+            url: 'widget://html/PublicWin.html',
+            pageParam: {
+                frameurl: 'widget://html/my.html',
+                title: '我的'
+            },
+        });
+    }
 </script>
 </html>

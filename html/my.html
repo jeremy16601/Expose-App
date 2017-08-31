@@ -70,7 +70,8 @@
             <div class="aui-list-item aui-list-item-middle" @click="openDetail('myhome','个人主页')">
                 <div class="aui-media-list-item-inner ">
                     <div class="aui-list-item-media commentAvatarDiv">
-                        <img :src="user.headimg | imgs" class="commentAvatarImage">
+                        <img :src="user.headimg" id="qqimg" class="commentAvatarImage" v-if="logintype=='qq'">
+                        <img :src="user.headimg | imgs" class="commentAvatarImage" v-else>
                         <!--<img src="http://7jprpb.com1.z0.glb.clouddn.com/demo1.png" class="commentAvatarImage">-->
                     </div>
                     <div class="aui-list-item-inner aui-list-item-arrow aui-margin-l-15">
@@ -195,7 +196,7 @@
 
         vm = new Vue({
             el: '#app',
-            data: {user: "", isSetUser: true,},
+            data: {user: "", isSetUser: true, logintype: ''},
             mounted: function () {
                 api.showProgress();
                 this.init();
@@ -210,6 +211,10 @@
                             if (ret) {
                                 vm.user = ret[0];
                                 _SetStorage('user', ret[0]);
+                                if (_GetStorage("logintype") == 'qq') {
+                                    vm.logintype = 'qq';
+                                    //设置qq头像
+                                }
                             }
                             api.hideProgress();
                         });

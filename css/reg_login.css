@@ -964,3 +964,118 @@ select {
 	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg)
 }
+/*宫格布局*/
+.aui-grid {
+    width: 100%;
+    background-color: #ffffff;
+    display: table;
+    margin-top: 25px;
+    table-layout: fixed;
+}
+.aui-grid [class*=aui-col-] {
+    display: table-cell;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    padding: 1rem 0;
+}
+.aui-grid [class*=aui-col-xs-]:active {
+    background-color: #f5f5f5;
+}
+.aui-grid .aui-iconfont {
+    position: relative;
+    z-index: 20;
+    top: 0;
+    height: 1.4rem;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+}
+.aui-grid .aui-grid-label {
+    display: block;
+    font-size: 14px;
+    position: relative;
+    margin-top: 0.25rem;
+}
+.aui-grid .aui-badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 60%;
+    z-index: 99;
+}
+.aui-grid .aui-dot {
+    position: absolute;
+    top: 0.5rem;
+    right: 20%;
+    z-index: 99;
+}/*栅格类*/
+.aui-row {
+    overflow: hidden;
+    margin: 0;
+}
+.aui-row-padded {
+    margin-left: -0.125rem;
+    margin-right: -0.125rem;
+}
+.aui-row-padded [class*=aui-col-xs-] {
+    padding: 0.125rem;
+}
+.aui-col-xs-1,.aui-col-xs-2,.aui-col-xs-3,.aui-col-xs-4,.aui-col-xs-5,.aui-col-xs-6,.aui-col-xs-7,.aui-col-xs-8,.aui-col-xs-9,.aui-col-xs-10,.aui-col-xs-11,.aui-col-5 {
+    position: relative;
+    float: left;
+}
+.aui-col-xs-12 {
+    width: 100%;
+    position: relative;
+}
+.aui-col-xs-11 {
+    width: 91.66666667%;
+}
+.aui-col-xs-10 {
+    width: 83.33333333%;
+}
+.aui-col-xs-9 {
+    width: 75%;
+}
+.aui-col-xs-8 {
+    width: 66.66666667%;
+}
+.aui-col-xs-7 {
+    width: 58.33333333%;
+}
+.aui-col-xs-6 {
+    width: 50%;
+}
+.aui-col-xs-5 {
+    width: 41.66666667%;
+}
+.aui-col-xs-4 {
+    width: 33.33333333%;
+}
+.aui-col-xs-3 {
+    width: 25%;
+}
+.aui-col-xs-2 {
+    width: 16.66666667%;
+}
+.aui-col-xs-1 {
+    width: 8.33333333%;
+}
+.aui-col-5 {
+    width: 20%;
+}
+@-webkit-keyframes fadeIn {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+}
+@font-face {
+    font-family: "aui_iconfont";
+    src: url('aui-iconfont.ttf') format('truetype');
+}
+.aui-iconfont {
+    position: relative;
+    font-family:"aui_iconfont" !important;
+    font-size: 0.7rem;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
