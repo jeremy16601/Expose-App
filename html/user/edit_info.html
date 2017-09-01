@@ -183,6 +183,16 @@
     }
 
     function update() {
+        if(vm.user.realname==''&&vm.user.realname==null){
+            vm.user.realname='';
+        }
+        if(vm.user.email=='' && vm.user.email==null){
+            vm.user.email='';
+        }
+        if(vm.user.intro==''&& vm.user.intro==null){
+            vm.user.intro='';
+        }
+        console.log(JSON.stringify(vm.user))
         _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "put", {
                 values: {
                     name: vm.user.name,
@@ -197,7 +207,6 @@
                 if (ret) {
                     _toast('用户信息修改成功');
                     _SetStorage("isSetUser", true);
-                    _SetStorage("logintype", 'normal');
                     _SendEvent("updateUser");
                 }
             }, function (err) {

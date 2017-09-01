@@ -188,7 +188,7 @@
     };
 
     function add() {
-        if (_GetStorage("user")) {
+        if (_GetStorage("user") != 'undefined' && _GetStorage("user") != '' && _GetStorage("user") != undefined && _GetStorage("user") != null) {
             //判断是否登陆状态
             var pageParamData = {
                 name: "publish",
@@ -198,7 +198,7 @@
             };
             LoadNewWin("publish", pageParamData);
         } else {
-            alert("请登录!");
+            _toast("请登录!");
             var pageParamData = {
                 name: "login",
                 title: "登录",

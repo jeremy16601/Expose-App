@@ -109,6 +109,69 @@
         }
     }
 
+    function login_weibo() {
+        var weibo = api.require('weibo');
+        weibo.isInstalled(
+            function (ret) {
+                if (ret.status) {
+                    weibo.auth(function (ret1, err) {
+                        if (ret1.status) {
+                            weibo.getUserInfo({
+                                token: ret1.token,
+                                userId: ret1.userId
+                            }, function (ret2, err) {
+                                if (ret2.status) {
+                                    //获取用户信息
+                                    console.log('weibo登录信息' + JSON.stringify(ret2));
+                                    var gender;//性别
+                                    if (ret2.userInfo.gender == "m") {
+                                        gender = 0;
+                                    } else {
+                                        gender = 1;
+                                    }
+                                    var params = {
+                                        name: ret2.userInfo.screen_name,
+                                        headimg: ret2.userInfo.avatar_large,
+                                        password: '',
+                                        score: 50,
+                                        sex: gender,
+                                        mobile: '',
+                                        weibo_id: ret2.userInfo.id,
+                                        level: 0,
+                                        intro: ret2.userInfo.description,
+                                        address: ret2.userInfo.location,
+                                    };
+                                    //注册系统用户
+                                    _Ajax(UrlRouter.user + '?type=weibo', "post", {
+                                        values: params
+                                    }, "json", function (data) {
+                                        if (data.code == '101') {
+                                            //已存在
+                                            _SetStorage('user', data.data[0]);
+                                            _SendEvent("updateUser");
+                                        } else {
+                                            //根据openid查询用户信息
+                                            _Ajax(UrlRouter.user + '?type=weibo&weibo_id=' + params.weibo_id, "get", {}, "json", function (ret2) {
+                                                _SetStorage('user', ret2.data[0]);
+                                                _SendEvent("updateUser");
+                                            });
+                                        }
+                                        _toast('登录成功！');
+                                        api.closeWin({
+                                            name: 'login'
+                                        });
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    alert('未安装新浪微博客户端');
+                }
+            })
+    };
+
     function login_wx() {
         var wx = api.require('wx');
         wx.isInstalled(function (ret, err) {
@@ -142,29 +205,34 @@
                                             score: 50,
                                             sex: gender,
                                             mobile: '',
-                                            qq_openid: ret3.openid,
+                                            wx_openid: ret3.openid,
                                             level: 0,
                                             address: '',
                                         };
                                         //注册系统用户
-                                        _Ajax(UrlRouter.user + '?type=qq', "post", {
+                                        _Ajax(UrlRouter.user + '?type=wx', "post", {
                                             values: params
                                         }, "json", function (data) {
                                             if (data.code == '101') {
                                                 //已存在
                                                 _SetStorage('user', data.data[0]);
                                                 _SendEvent("updateUser");
+                                                _toast('登录成功！');
+                                                api.closeWin({
+                                                    name: 'login'
+                                                });
                                             } else {
                                                 //根据openid查询用户信息
-                                                _Ajax(UrlRouter.user + '?type=3&qq_openid=' + params.qq_openid, "get", {}, "json", function (ret2) {
+                                                _Ajax(UrlRouter.user + '?type=wx&wx_openid=' + params.wx_openid, "get", {}, "json", function (ret2) {
                                                     _SetStorage('user', ret2.data[0]);
                                                     _SendEvent("updateUser");
+                                                    _toast('登录成功！');
+                                                    api.closeWin({
+                                                        name: 'login'
+                                                    });
                                                 });
                                             }
-                                            _toast('登录成功！');
-                                            api.closeWin({
-                                                name: 'login'
-                                            });
+
                                         });
                                     }
                                 });
@@ -215,7 +283,7 @@
                                     _SendEvent("updateUser");
                                 } else {
                                     //根据openid查询用户信息
-                                    _Ajax(UrlRouter.user + '?type=3&qq_openid=' + params.qq_openid, "get", {}, "json", function (ret2) {
+                                    _Ajax(UrlRouter.user + '?type=qq&qq_openid=' + params.qq_openid, "get", {}, "json", function (ret2) {
                                         _SetStorage('user', ret2.data[0]);
                                         _SendEvent("updateUser");
                                     });
