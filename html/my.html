@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta charset="utf-8">
+    <meta name="referrer" content="never">
     <meta name="viewport"
           content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
@@ -70,8 +70,8 @@
             <div class="aui-list-item aui-list-item-middle" @click="openDetail('myhome','个人主页')">
                 <div class="aui-media-list-item-inner ">
                     <div class="aui-list-item-media commentAvatarDiv">
-                        <img :src="user.headimg" class="commentAvatarImage" v-if="logintype=='qq'">
-                        <img :src="user.headimg | imgs" class="commentAvatarImage" v-else>
+                        <!--<img :src="user.headimg" class="commentAvatarImage" v-if="logintype=='qq'">-->
+                        <img :src="user.headimg | imgs" class="commentAvatarImage" >
                         <!--<img src="http://7jprpb.com1.z0.glb.clouddn.com/demo1.png" class="commentAvatarImage">-->
                     </div>
                     <div class="aui-list-item-inner aui-list-item-arrow aui-margin-l-15">
@@ -180,12 +180,14 @@
         Vue.filter('imgs', function (value) {
             return value + '?imageView2/1/w/200/h/200';
         });
+        //监听第三方登录后
         _AddEventListener("updateUser", function () {
             //判断当前登录环境
-            if (_GetStorage("logintype") == 'qq') {
-                vm.logintype = 'qq';
-            }
+//            if (_GetStorage("logintype") == 'qq') {
+//                vm.logintype = 'qq';
+//            }
             this.isSetUser = _GetStorage("isSetUser");
+            _Alert(_GetStorage("user"))
             //判断是否登陆状态
             _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
                 if (ret) {
@@ -213,16 +215,16 @@
             methods: {
                 init: function () {
 //                    alert(JSON.stringify(_GetStorage("user")));
-                    if (_GetStorage("user") != '' && _GetStorage("user") != undefined && _GetStorage("user") != 'undefined') {
+                    if (_GetStorage("user") != 'undefined' && _GetStorage("user") != '' && _GetStorage("user") != undefined) {
                         //判断是否登陆状态
                         _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
                             if (ret) {
                                 vm.user = ret[0];
                                 _SetStorage('user', ret[0]);
-                                if (_GetStorage("logintype") == 'qq') {
-                                    vm.logintype = 'qq';
-                                    //设置qq头像
-                                }
+//                                if (_GetStorage("logintype") == 'qq') {
+//                                    vm.logintype = 'qq';
+//                                    //设置qq头像
+//                                }
                             }
                             api.hideProgress();
                         });
