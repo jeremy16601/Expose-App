@@ -181,7 +181,7 @@
         });
         //监听第三方登录后
         _AddEventListener("updateUser", function () {
-            this.isSetUser = _GetStorage("isSetUser");
+            this.isSetUser = _GetStorage("isSetUser"); //是否设置个人信息，小红点
             //判断是否登陆状态
             _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
                 if (ret) {
@@ -214,7 +214,6 @@
                                 vm.user = ret[0];
                                 _SetStorage('user', ret[0]);
                             }
-                            api.hideProgress();
                         });
                     } else {
                         _toast("请登录!");

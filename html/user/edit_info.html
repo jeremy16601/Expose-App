@@ -192,7 +192,6 @@
         if(vm.user.intro==''&& vm.user.intro==null){
             vm.user.intro='';
         }
-        console.log(JSON.stringify(vm.user))
         _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "put", {
                 values: {
                     name: vm.user.name,
