@@ -82,6 +82,7 @@
 <script type="text/javascript" src="../script/commjs/router.js"></script>
 <script type="text/javascript" src="../script/Base.js"></script>
 <script type="text/javascript" src="../script/aui-pull-refresh.js"></script>
+<script type="text/javascript" src="../script/aui-scroll.js"></script>
 <script type="text/javascript" src="../script/zepto.min.js"></script>
 <script type="text/javascript">
     var vm = null;
@@ -107,7 +108,9 @@
         vm = new Vue({
             el: '#app',
             data: {
-                page: 1,
+                offset: 0,
+                limit:15,
+                currentPage:1,
                 articles: [],
                 small_image: []
             },
@@ -121,7 +124,7 @@
             methods: {
                 //banner加载
                 initData: function () {
-                    _Ajax(UrlRouter.article + '?type=4&catalog=' + api.pageParam.catalog_id + '&offset=' + this.page, "get", {}, "json", function (ret) {
+                    _Ajax(UrlRouter.article + '?type=1&catalog=' + api.pageParam.catalog_id + '&offset=0&limit=15', "get", {}, "json", function (ret) {
                         api.hideProgress();
                         if (ret) {
                             vm.articles = ret;
@@ -176,9 +179,38 @@
                 //刷新
                 vm.articles = [];
                 vm.initData();
+                vm.offset=0;
+                vm.limit=15;
+                vm.currentPage = 1;
                 pullRefresh.cancelLoading(); //刷新成功后调用此方法隐藏
             }, 1000)
         }
     });
+
+    var scroll = new auiScroll({
+        listen: false, //是否监听滚动高度，开启后将实时返回滚动高度
+        distance: 20 //判断到达底部的距离，isToBottom为true
+    }, function (ret) {
+        if (ret.isToBottom) {
+            //到达底部，分页加载
+            api.showProgress();
+            vm.offset = vm.currentPage * vm.limit;
+            vm.currentPage = vm.currentPage + 1;
+            _Ajax(UrlRouter.article + '?type=1&offset=' + vm.offset + '&limit=' + vm.limit + '&catalog='+api.pageParam.catalog_id, "get", {}, "json", function (ret) {
+                api.hideProgress();
+                if (ret.length > 0) {
+                    for(var i=0;i<ret.length;i++){
+                        vm.articles.push(ret[i]);
+                    }
+                } else {
+                    _toast('已经是最后一条了~');
+                }
+
+            }, function () {
+                api.hideProgress();
+            });
+        }
+    });
+
 </script>
 </html>

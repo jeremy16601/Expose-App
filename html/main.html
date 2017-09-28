@@ -188,31 +188,7 @@
     <!--内容-->
     <div class="aui-content">
         <ul class="aui-list aui-media-list">
-            <!--置顶数据-->
-            <li class="aui-list-item" v-for="(a,index) in articlesTop" @click="openDetail(a)">
-                <div class="aui-media-list-item-inner">
-                    <div class="aui-list-item-inner">
-                        <div class="aui-list-item-text">
-                            <div class="aui-list-item-title aui-font-size-18 aui-ellipsis-2">{{a.title}}</div>
-                        </div>
-                        <div class="aui-list-item-text" v-if="a.title.length<15">
-                            <p class="aui-ellipsis-2">{{a.content}}</p>
-                        </div>
-                        <div class="aui-info aui-padded-b-0">
-                            <div class="aui-info-item aui-font-size-12">
-                                <img :src="a.authorImg | headimg" style="width:1rem" class="aui-img-round"/>
-                                <span class="aui-margin-l-5">{{a.author}}</span>
-                                <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5"
-                                >置顶</span>
-                            </div>
-                            <div class="aui-info-item aui-font-size-12" v-if="a.created_at">{{a.created_at | time}}</div>
-                        </div>
-                    </div>
-                    <div class="aui-list-item-media" v-if="a.small_image">
-                        <img :src="a.small_image | ss">
-                    </div>
-                </div>
-            </li>
+
             <!--普通数据-->
             <li class="aui-list-item" v-for="(article,index) in articles" @click="openDetail(article)">
                 <div class="aui-media-list-item-inner">
@@ -227,7 +203,8 @@
                             <div class="aui-info-item aui-font-size-12">
                                 <img :src="article.authorImg | headimg" style="width:1rem" class="aui-img-round"/>
                                 <span class="aui-margin-l-5">{{article.author}}</span>
-                                <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5">热</span>
+                                <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5" v-if="article.isTop==1">置顶</span>
+                                <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5" v-else>热</span>
                             </div>
                             <div class="aui-info-item aui-font-size-12">{{article.created_at | time}}</div>
                         </div>
@@ -271,7 +248,6 @@
             el: '#app',
             data: {
                 banners: '',
-                articlesTop: [],//置顶数据
                 articles: [], //普通数据
             },
             mounted: function () {
@@ -309,23 +285,23 @@
                         api.hideProgress();
                     });
                     //加载首页置顶
-                    Vue.nextTick(function () {
-                        _Ajax(UrlRouter.article + '?type=5', "get", {}, "json", function (ret) {
-                            if (ret) {
-//                                        _Alert(ret)
-                                vm.articlesTop = ret;
+//                    Vue.nextTick(function () {
+//                        _Ajax(UrlRouter.article + '?type=5', "get", {}, "json", function (ret) {
+//                            if (ret) {
+////                                        _Alert(ret)
+//                                vm.articlesTop = ret;
                                 //加载首页数据
                                 Vue.nextTick(function () {
-                                    _Ajax(UrlRouter.article + '?type=2', "get", {}, "json", function (ret2) {
+                                    _Ajax(UrlRouter.article + '?type=2&limit=20&offset=0', "get", {}, "json", function (ret2) {
                                         api.hideProgress();
                                         if (ret2) {
                                             vm.articles = ret2;
                                         }
                                     });
                                 })
-                            }
-                        });
-                    });
+//                            }
+//                        });
+//                    });
                 },
                 openBanner: function (url) {
                     if (url == '0') {

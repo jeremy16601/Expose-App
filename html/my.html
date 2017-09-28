@@ -123,16 +123,16 @@
                     <div class="aui-list-item-title">我的消息</div>
                 </div>
             </li>
-            <li class="aui-list-item" @click="_toast('即将上线~')">
-                <div class="aui-list-item-label-icon">
-                    <svg class="icon" style="font-size: 1.2em;color: #ac6f3d">
-                        <use xlink:href="#icon-gifts"></use>
-                    </svg>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">积分商城</div>
-                </div>
-            </li>
+            <!--<li class="aui-list-item" @click="_toast('即将上线~')">-->
+                <!--<div class="aui-list-item-label-icon">-->
+                    <!--<svg class="icon" style="font-size: 1.2em;color: #ac6f3d">-->
+                        <!--<use xlink:href="#icon-gifts"></use>-->
+                    <!--</svg>-->
+                <!--</div>-->
+                <!--<div class="aui-list-item-inner aui-list-item-arrow">-->
+                    <!--<div class="aui-list-item-title">积分商城</div>-->
+                <!--</div>-->
+            <!--</li>-->
         </ul>
 
         <ul class="aui-list aui-list-in">
@@ -200,7 +200,7 @@
                 user: "",
                 isSetUser: true,
             },
-            mounted: function () {
+            created: function () {
                 api.showProgress();
                 this.init();
                 this.isSetUser = _GetStorage("isSetUser");

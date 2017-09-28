@@ -66,6 +66,17 @@
             <li class="aui-list-item">
                 <div class="aui-list-item-inner">
                     <div class="aui-list-item-label">
+                        手机号：
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" v-model="user.mobile" placeholder="手机号">
+                    </div>
+                </div>
+            </li>
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
                         简介：
                     </div>
                     <div class="aui-list-item-input">
@@ -183,21 +194,25 @@
     }
 
     function update() {
-        if(vm.user.realname==''&&vm.user.realname==null){
-            vm.user.realname='';
+        if (vm.user.realname == '' && vm.user.realname == null) {
+            vm.user.realname = '';
         }
-        if(vm.user.email=='' && vm.user.email==null){
-            vm.user.email='';
+        if (vm.user.email == '' && vm.user.email == null) {
+            vm.user.email = '';
         }
-        if(vm.user.intro==''&& vm.user.intro==null){
-            vm.user.intro='';
+        if (vm.user.mobile == '' && vm.user.mobile == null) {
+            vm.user.mobile = '';
+        }
+        if (vm.user.intro == '' && vm.user.intro == null) {
+            vm.user.intro = '';
         }
         _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "put", {
                 values: {
                     name: vm.user.name,
                     realname: vm.user.realname,
                     email: vm.user.email,
-                    intro:vm.user.intro,
+                    mobile: vm.user.mobile,
+                    intro: vm.user.intro,
                     id: _GetStorage("user").id
                 }
             },
@@ -210,6 +225,7 @@
                 }
             }, function (err) {
                 api.hideProgress();
+                _SetStorage("isSetUser", false);
                 _Alert('服务器异常');
             }
         );
