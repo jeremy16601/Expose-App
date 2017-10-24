@@ -25,7 +25,7 @@
     </style>
 </head>
 <body>
-<div id="login_content_wrapper" style="display: block; opacity: 1;">
+<div id="app" style="display: block; opacity: 1;">
     <div id="login_tele_wrapper" style="display: block; opacity: 1;">
         <h3 class="login_content_h3 none">手机号登录</h3>
         <div class="login_input_div">
@@ -61,20 +61,34 @@
         <a class="btn none"><i class="CIACloud-font icon-icon20 fa-spin"></i> 登录中</a>
 
         <secton class="aui-grid">
-            <div class="aui-row">
-                <div class="aui-col-xs-4" onclick="login_wx()">
+            <div class="aui-row" v-if="isIOS">
+                <div class="aui-col-xs-6" onclick="login_wx()" v-if="isWx">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-weixin"></use>
                     </svg>
                     <div class="aui-grid-label">微信登录</div>
                 </div>
-                <div class="aui-col-xs-4" onclick="login_qq()">
+                <div class="aui-col-xs-6" onclick="login_qq()" v-if="isQQ">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-qq"></use>
                     </svg>
                     <div class="aui-grid-label">QQ登录</div>
                 </div>
-                <div class="aui-col-xs-4" onclick="login_weibo()">
+            </div>
+            <div class="aui-row" v-else>
+                <div class="aui-col-xs-4" onclick="login_wx()" v-if="isWx">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-weixin"></use>
+                    </svg>
+                    <div class="aui-grid-label">微信登录</div>
+                </div>
+                <div class="aui-col-xs-4" onclick="login_qq()" v-if="isQQ">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-qq"></use>
+                    </svg>
+                    <div class="aui-grid-label">QQ登录</div>
+                </div>
+                <div class="aui-col-xs-4" onclick="login_weibo()" v-if="isWeibo">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-weibo"></use>
                     </svg>
@@ -89,16 +103,53 @@
 </div>
 </body>
 <script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/vue.min.js"></script>
 <script type="text/javascript" src="../../script/Base.js"></script>
 <script type="text/javascript" src="../../script/font_ali.js"></script>
 <script type="text/javascript" src="../../script/commjs/router.js"></script>
 <script type="text/javascript">
     var openId;
+    var vm = null;
+    var wx;
+    var qq;
     apiready = function () {
         api.parseTapmode();
         //加载用户账号缓存
         loadphone();
-
+        wx = api.require('wx');
+        qq = api.require('qq');
+        vm = new Vue({
+            el: '#app',
+            data: {
+                isWx: true,
+                isQQ: true,
+                isWeibo: false,
+                isIOS: false
+            },
+            mounted: function () {
+                if (api.systemType == 'ios') {
+                    //ios暂时隐藏微博登录
+                    this.isIOS = true;
+                }
+                //检测是否按照微信和qq
+                qq.installed(function (ret, err) {
+                    if (ret.status) {
+                        this.isQQ = true;
+                    } else {
+                        this.isQQ = false;
+                    }
+                });
+                wx.isInstalled(function (ret, err) {
+                    if (ret.installed) {
+                        //安装
+                        this.isWx = true;
+                    } else {
+                        this.isWx = false;
+//                        alert('当前设备未安装微信客户端');
+                    }
+                });
+            },
+        })
     }
 
     //.加载用户手机号
@@ -173,83 +224,74 @@
     };
 
     function login_wx() {
-        var wx = api.require('wx');
-        wx.isInstalled(function (ret, err) {
-            if (ret.installed) {
-                //安装
-                wx.auth(function (ret1, err) {
-                    if (ret1.status) {
-                        //授权
-                        wx.getToken({
-                            code: ret1.code
-                        }, function (ret2, err2) {
-                            if (ret2.status) {
-                                //登录微信--获取用户信息
-                                wx.getUserInfo({
-                                    accessToken: ret2.accessToken,
-                                    openId: ret2.openId
-                                }, function (ret3, err3) {
-                                    if (ret3.status) {
-                                        //获取用户信息成功
-                                        console.log('wx登录信息' + JSON.stringify(ret3));
-                                        var gender;//性别
-                                        if (ret3.sex == 1) {
-                                            gender = 0;
-                                        } else {
-                                            gender = 1;
-                                        }
-                                        var params = {
-                                            name: ret3.nickname,
-                                            headimg: ret3.headimgurl,
-                                            password: '',
-                                            score: 50,
-                                            sex: gender,
-                                            mobile: '',
-                                            wx_openid: ret3.openid,
-                                            level: 0,
-                                            address: '',
-                                        };
-                                        //注册系统用户
-                                        _Ajax(UrlRouter.user + '?type=wx', "post", {
-                                            values: params
-                                        }, "json", function (data) {
-                                            if (data.code == '101') {
-                                                //已存在
-                                                _SetStorage('user', data.data[0]);
-                                                _SendEvent("updateUser");
-                                                _toast('登录成功！');
-                                                api.closeWin({
-                                                    name: 'login'
-                                                });
-                                            } else {
-                                                //根据openid查询用户信息
-                                                _Ajax(UrlRouter.user + '?type=wx&wx_openid=' + params.wx_openid, "get", {}, "json", function (ret2) {
-                                                    _SetStorage('user', ret2.data[0]);
-                                                    _SendEvent("updateUser");
-                                                    _toast('登录成功！');
-                                                    api.closeWin({
-                                                        name: 'login'
-                                                    });
-                                                });
-                                            }
 
+        wx.auth(function (ret1, err) {
+            if (ret1.status) {
+                //授权
+                wx.getToken({
+                    code: ret1.code
+                }, function (ret2, err2) {
+                    if (ret2.status) {
+                        //登录微信--获取用户信息
+                        wx.getUserInfo({
+                            accessToken: ret2.accessToken,
+                            openId: ret2.openId
+                        }, function (ret3, err3) {
+                            if (ret3.status) {
+                                //获取用户信息成功
+                                console.log('wx登录信息' + JSON.stringify(ret3));
+                                var gender;//性别
+                                if (ret3.sex == 1) {
+                                    gender = 0;
+                                } else {
+                                    gender = 1;
+                                }
+                                var params = {
+                                    name: ret3.nickname,
+                                    headimg: ret3.headimgurl,
+                                    password: '',
+                                    score: 50,
+                                    sex: gender,
+                                    mobile: '',
+                                    wx_openid: ret3.openid,
+                                    level: 0,
+                                    address: '',
+                                };
+                                //注册系统用户
+                                _Ajax(UrlRouter.user + '?type=wx', "post", {
+                                    values: params
+                                }, "json", function (data) {
+                                    if (data.code == '101') {
+                                        //已存在
+                                        _SetStorage('user', data.data[0]);
+                                        _SendEvent("updateUser");
+                                        _toast('登录成功！');
+                                        api.closeWin({
+                                            name: 'login'
+                                        });
+                                    } else {
+                                        //根据openid查询用户信息
+                                        _Ajax(UrlRouter.user + '?type=wx&wx_openid=' + params.wx_openid, "get", {}, "json", function (ret2) {
+                                            _SetStorage('user', ret2.data[0]);
+                                            _SendEvent("updateUser");
+                                            _toast('登录成功！');
+                                            api.closeWin({
+                                                name: 'login'
+                                            });
                                         });
                                     }
+
                                 });
                             }
                         });
                     }
                 });
-            } else {
-                alert('当前设备未安装微信客户端');
             }
         });
+
     }
 
     function login_qq() {
-        var qq = api.require('qq');
-        qq.installed(function (ret, err) {
-            if (ret.status) {
                 qq.login(function (ret, err) {
                     openId = ret.openId;
                     //获取用户信息
@@ -302,10 +344,6 @@
 //                        msg: ret. + ret.accessToken
 //                    });
                 });
-            } else {
-                api.alert({msg: "没有安装qq"});
-            }
-        });
     }
 
     //.选择国家地区代码

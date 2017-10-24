@@ -67,7 +67,8 @@
 <div id="app" v-cloak v-if="user">
     <section class="aui-content " id="user-info">
         <div class="aui-list aui-media-list aui-list-noborder aui-bg-info aui-padded-b-15">
-            <div class="aui-list-item aui-list-item-middle" @click="openDetail('myhome','个人主页')">
+            <!--@click="openDetail('myhome','个人主页')"-->
+            <div class="aui-list-item aui-list-item-middle" >
                 <div class="aui-media-list-item-inner ">
                     <div class="aui-list-item-media commentAvatarDiv">
                         <img :src="user.headimg | imgs" class="commentAvatarImage">
@@ -219,7 +220,7 @@
                         _toast("请登录!");
                         var pageParamData = {
                             name: "login",
-                            title: "登录",
+                            title: "我的",
                             frameurl: 'widget://html/user/login.html'
                         };
                         LoadNewWin("login", pageParamData);

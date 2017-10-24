@@ -15,6 +15,7 @@
         margin: 0.5rem 0;
         min-height: 12rem;
     }
+
     * {
         -webkit-touch-callout: none; /*系统默认菜单被禁用*/
         -webkit-user-select: none; /*webkit浏览器*/
@@ -29,6 +30,13 @@
         margin: 0px;
         padding: 0px;
         outline: none;
+    }
+
+    .aui-text-warning{
+        font-size: 0.7rem;
+        margin-top: 1rem;
+        margin-left: 0.5rem;
+        padding-bottom: 5rem;
     }
 </style>
 <body>
@@ -97,7 +105,11 @@
             <div class="progress"></div>
             <img id="imgContent" src="" alt="">
             <div class="uploaded-result"></div>
-
+            <div class="aui-text-warning">
+                • 请勿言语粗俗或提供虚假信息。 <br>
+                • 请勿公开任何个人隐私(重要信息打码警告即可，防止被用心不良的人使用身份证、手机号等隐私信息)。 <br>
+                • 根据相关法律，您将被记录IP，并对提交的信息承担责任。
+            </div>
         </ul>
     </div>
 </div>
@@ -114,7 +126,7 @@
     apiready = function () {
         var bMap = api.require('bMap');
         var td = api.require('talkingData');
-        td.onPageStart({pageName:'发布'});
+        td.onPageStart({pageName: '发布'});
         Vue.filter('imgf', function (value) {
             return value + '?imageView2/1/w/200/h/200';
         });
@@ -269,7 +281,7 @@
                         authorImg: _GetStorage("user").headimg,
                         content: vm.content,
                         zan: 0,
-                        isTop:0,
+                        isTop: 0,
                         location: vm.location.address,
                         view_times: 1,
                         catalog_id: vm.selected,//默认分类
