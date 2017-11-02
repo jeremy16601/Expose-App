@@ -347,7 +347,7 @@
             api.showProgress();
             vm.offset = vm.currentPage * vm.limit;
             vm.currentPage = vm.currentPage + 1;
-            _Ajax(UrlRouter.article + '?type=1&offset=' + vm.offset + '&limit=' + vm.limit + '&catalog=all', "get", {}, "json", function (ret) {
+            _Ajax(UrlRouter.article + '?type=1&offset=' + vm.offset + '&limit=' + vm.limit + '&catalog=byuid&uid=' + api.pageParam.uid, "get", {}, "json", function (ret) {
                 api.hideProgress();
                 if (ret.length > 0) {
                     for (var i = 0; i < ret.length; i++) {
