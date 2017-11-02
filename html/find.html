@@ -33,7 +33,7 @@
                 <ul class="aui-list aui-media-list">
                     <li class="aui-list-item" v-for="a in articles">
                         <div class="aui-media-list-item-inner">
-                            <div class="aui-list-item-media" @click="openDetail(a)">
+                            <div class="aui-list-item-media" @click="openHome(a.uid)">
                                 <img class="img1 aui-img-round" :src="a.authorImg | imgf"/>
                             </div>
                             <div class="aui-list-item-inner">
@@ -168,6 +168,16 @@
                     });
 
 
+                },
+                //打开个人主页
+                openHome: function (uid) {
+                    var pageParamData = {
+                        name: "myhome",
+                        title: "个人主页",
+                        uid: uid,
+                        frameurl: 'widget://html/user/myhome.html'
+                    };
+                    LoadNewWin("myhome", pageParamData);
                 }
             }
         });

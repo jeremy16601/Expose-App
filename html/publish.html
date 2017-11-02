@@ -32,7 +32,7 @@
         outline: none;
     }
 
-    .aui-text-warning{
+    .aui-text-warning {
         font-size: 0.7rem;
         margin-top: 1rem;
         margin-left: 0.5rem;
@@ -125,6 +125,7 @@
 
     apiready = function () {
         var bMap = api.require('bMap');
+
         var td = api.require('talkingData');
         td.onPageStart({pageName: '发布'});
         Vue.filter('imgf', function (value) {
@@ -153,7 +154,16 @@
                             vm.catalog = ret;
                         }
                     });
-                }
+                };
+
+                bMap.initMapSDK(function(ret,err) {
+                    if (ret.status) {
+                        alert('地图初始化成功，可以从百度地图服务器检索信息了！');
+                    }else{
+                        _Alert(err)
+                    }
+                });
+
                 bMap.getLocation({
                     accuracy: '100m',
                     autoStop: true,
@@ -163,10 +173,12 @@
                         bMap.getNameFromCoords({
                             lon: ret.lon,
                             lat: ret.lat
-                        }, function (ret, err) {
-                            if (ret.status) {
+                        }, function (ret1, err1) {
+                            if (ret1.status) {
                                 //获取的位置
-                                vm.location = ret;
+                                vm.location = ret1;
+                            } else {
+                                _Alert(err1);
                             }
                         });
                     } else {

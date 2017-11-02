@@ -9,38 +9,358 @@
     <link rel="stylesheet" type="text/css" href="../../css/aui.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
     <style type="text/css">
-        html, body {
-            background: rgba(0, 0, 0, 0);
+        .bg {
+            background-image: url('http://res-qiniu.12xue.com/549d0121tw1egm1kjly3jj20hs0hsq4f.jpg');
         }
 
+        .profile-cover {
+            position: relative;
+            height: 11.25rem;
+            background-repeat: no-repeat;
+            background-position: 50%;
+            background-size: cover;
+            text-align: center;
+        }
+        img1 {
+            width: 40px;
+            height: 40px;
+            overflow: hidden;
+        }
+        .mod-fil-img {
+            padding-top: .625rem;
+        }
+
+        .m-avatar-box .m-img-box {
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .mod-fil-img span, .mod-fil-img span img {
+            border-radius: 999px;
+            border-radius: 50%;
+            width: 4.375rem;
+            height: 4.375rem;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            /*border: 1px solid rgba(0, 0, 0, .05);*/
+            /*border-radius: 50%;*/
+        }
+
+        .mod-fil-img span {
+            display: inline-block;
+            padding: .25rem;
+            width: 4.375rem;
+            height: 4.375rem;
+        }
+
+        .mod-fil-name {
+            padding: .625rem 0;
+            font-size: 0;
+        }
+
+        .mod-fil-n {
+            font-size: 0;
+            margin-right: .3125rem;
+        }
+
+        .mod-fil-n .txt-shadow {
+            font-size: 1rem;
+            vertical-align: middle;
+            margin-right: .3125rem;
+        }
+
+        .txt-shadow {
+            font-size: 0.7rem;
+            color: #fff;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+        }
+
+        .mod-fil-desc {
+            padding: 0 .75rem;
+            line-height: 1.125rem;
+            font-size: .7rem;
+            color: #fff;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, .5);
+        }
+
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.5em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+
+        .sex1 {
+            margin-left: 0.3rem;
+            font-size: 1rem;
+            color: #19b4ff;
+            background-position: -1em -13em;
+        }
+
+        .sex2 {
+            margin-left: 0.3rem;
+            font-size: 1rem;
+            color: #dd1144;
+            background-position: -1em -13em;
+        }
     </style>
 </head>
 <body>
 
 <div v-cloak id="app">
+    <div class=" bg profile-cover">
+        <div class="mod-fil-img m-avatar-box">
+            <span class="m-img-box">
+                <img :src="user.headimg | imgs">
+                <i class="m-icon m-icon-yellowv"></i>
+            </span>
+        </div>
+        <div class="item-list" style="position: relative;">
+            <div class="mod-fil-name m-txt-cut">
+                <span class="mod-fil-n">
+                    <span class="txt-shadow">{{user.name}}</span>
+             <svg class="icon sex1" v-if="user.sex==0">
+                <use xlink:href="#icon-nan"></use>
+            </svg>
+            <svg class="icon sex2" v-else>
+                <use xlink:href="#icon-nv"></use>
+            </svg>
+                </span>
+                <a href=""><i class="m-icon m-icon-vipl6"></i></a>
+            </div>
+            <div class="mod-fil-fans">
+                <div class="txt-shadow">关注0| 粉丝 0</div>
+            </div>
+            <p class="mod-fil-desc m-text-cut">
+            <div v-if="user.intro">{{user.intro}}</div>
+            <div v-else>简介：暂无个性签名~</div>
+            </p>
+        </div>
 
+    </div>
+
+    <div class="aui-content">
+        <div id="demo">
+            <ul class="aui-list aui-media-list">
+                <li class="aui-list-header">
+                    发布内容
+                </li>
+                <li class="aui-list-item" v-for="a in articles">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-media" @click="openDetail(a)">
+                            <img class="img1 aui-img-round" :src="a.authorImg | imgf"/>
+                        </div>
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-text" @click="openDetail(a)">
+                                <div class="aui-list-item-title" style="color:#4c5276">{{a.author}}</div>
+                            </div>
+                            <!--标题-->
+                            <b @click="openDetail(a)">
+                                <div class="aui-list-item-text title1 aui-ellipsis-2" style="color:#333;"
+                                     v-html="a.title">
+                                </div>
+                            </b>
+                            <!--内容-->
+                            <div @click="openDetail(a)" class="aui-list-item-text aui-ellipsis-2"
+                                 style="color:#333;"
+                                 v-html="highlight(a.content)">
+                            </div>
+                            <div class="aui-list-item-text">
+                                <div class="aui-row-padded" style="max-width:90%;">
+                                    <div class="aui-col-xs-4" v-for="(sm,index) in  eval(a.small_image)  ">
+                                        <img :src="sm | ss" @click="openImg(a.small_image,index)"/>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <p class="aui-margin-t-5 aui-font-size-12">{{a.location}}</p>
+                            <div class="aui-info aui-font-size-12" style="padding-top:0; padding-bottom:0"
+                                 @click="openDetail(a)">
+                                <div class="aui-info-item">
+                                    {{a.created_at | time}}
+                                </div>
+                                <div class="aui-info-item" v-if="a.zan > 0">
+                                    {{a.zan}} &nbsp;<i class="aui-iconfont aui-icon-laud" style="color:#4c5276"></i>
+                                </div>
+                                <div class="aui-info-item">
+                                    <i class="aui-iconfont aui-icon-comment" style="color:#4c5276"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+
+    <footer class="aui-bar aui-bar-tab footer1" id="footer">
+
+        <div class="aui-bar-tab-item aui-active" tapmode>
+            <div class="aui-bar-tab-label"><i class="aui-iconfont aui-icon-plus"></i>&nbsp;&nbsp;关注</div>
+        </div>
+    </footer>
 </div>
-
 </body>
+<style>
+    body {
+        background-color: white;
+    }
+
+    .aui-list-header {
+        margin: 0;
+    }
+
+    .footer1 {
+        background-color: #f9f9f9;
+        box-shadow: inset 0 1px 0 0 #fff, 0 -2px 2px -1px rgba(0, 0, 0, .15);
+    }
+
+    .aui-list .aui-list-item-media {
+        width: 3rem;
+    }
+
+    img1 {
+        width: 40px;
+        height: 40px;
+        overflow: hidden;
+    }
+</style>
 <script type="text/javascript" src="../../script/api.js"></script>
 <script type="text/javascript" src="../../script/Base.js"></script>
-<script type="text/javascript" src="../../script/vue.js"></script>
+<script type="text/javascript" src="../../script/vue.min.js"></script>
 <script type="text/javascript" src="../../script/zepto.min.js"></script>
 <script type="text/javascript" src="../../script/font_ali.js"></script>
+<script type="text/javascript" src="../../script/aui-pull-refresh.js"></script>
+<script type="text/javascript" src="../../script/aui-scroll.js"></script>
 <script type="text/javascript" src="../../script/moment.min.js"></script>
 <script type="text/javascript" src="../../script/commjs/router.js"></script>
 <script type="text/javascript">
     var vm = null;
     apiready = function () {
         api.parseTapmode();
+        Vue.filter('time', function (value) {
+            return _GetDateDiff(value);
+        });
+        Vue.filter('ss', function (value) {
+            return 'http://res.bbaaoo.cn/' + value + '?imageView2/1/w/200/h/200';
+        });
+        Vue.filter('imgf', function (value) {
+            return value + '?imageView2/1/w/200/h/200';
+        });
+        Vue.prototype.highlight = function (value) {
+            if (value.length > 100) {
+                return value.substring(0, 98) + '... .. 全文 ';
+            } else {
+                return value;
+            }
+        };
         vm = new Vue({
             el: '#app',
-            data: {},
-            mounted: function () {
-
+            data: {
+                offset: 0,
+                limit: 15,
+                currentPage: 1,
+                user: '',
+                articles: [],
+                small_image: []
             },
-            methods: {}
-        })
+            mounted: function () {
+                api.showProgress({
+                    title: '加载中',
+                    modal: false
+                });
+                this.initData();
+            },
+            methods: {
+                //banner加载
+                initData: function () {
+                    _Ajax(UrlRouter.user + '/' + api.pageParam.uid, "get", {}, "json", function (ret) {
+                        if (ret) {
+                            vm.user = ret[0];
+                            Vue.nextTick(function () {
+                                _Ajax(UrlRouter.article + '?type=1&offset=0&limit=15&catalog=byuid&uid=' + api.pageParam.uid, "get", {}, "json", function (ret1) {
+                                    api.hideProgress();
+                                    if (ret1) {
+                                        vm.articles = ret1;
+                                    }
+                                }, function () {
+                                    api.hideProgress();
+                                });
+                            });
+                        }
+                        api.hideProgress();
+                    }, function (err) {
+                        api.hideProgress();
+                    });
+
+                },
+                //打开详情
+                openDetail: function (article) {
+                    var pageParamData = {
+                        name: "article_detail",
+                        title: "文章详情",
+                        type: 'Detail',
+                        article: article,
+                        frameurl: 'widget://html/article/article_detail.html'
+                    };
+                    LoadNewWin("article_detail", pageParamData);
+                },
+                //打开图片
+                openImg: function (images, index) {
+                    var photoBrowser = api.require('photoBrowser');
+                    var newImg = [];
+                    for (var i = 0; i < eval(images).length; i++) {
+                        newImg.push('http://res.bbaaoo.cn/' + eval(images)[i]);
+                    }
+
+                    photoBrowser.open({
+                        images: newImg,
+                        activeIndex: index,
+                        bgColor: '#000'
+                    }, function (ret, err) {
+                        if (ret.eventType == 'click') {
+                            photoBrowser.close();
+                        }
+                    });
+
+
+                }
+            }
+        });
+
+        var td = api.require('talkingData');
+        td.onPageStart({pageName: '个人中心'});
     }
+
+
+    var scroll = new auiScroll({
+        listen: false, //是否监听滚动高度，开启后将实时返回滚动高度
+        distance: 20 //判断到达底部的距离，isToBottom为true
+    }, function (ret) {
+        if (ret.isToBottom) {
+            //到达底部，分页加载
+            api.showProgress();
+            vm.offset = vm.currentPage * vm.limit;
+            vm.currentPage = vm.currentPage + 1;
+            _Ajax(UrlRouter.article + '?type=1&offset=' + vm.offset + '&limit=' + vm.limit + '&catalog=all', "get", {}, "json", function (ret) {
+                api.hideProgress();
+                if (ret.length > 0) {
+                    for (var i = 0; i < ret.length; i++) {
+                        vm.articles.push(ret[i]);
+                    }
+                } else {
+                    _toast('已经是最后一条了~');
+                }
+
+            }, function () {
+                api.hideProgress();
+            });
+        }
+    });
 </script>
 </html>
