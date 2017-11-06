@@ -156,14 +156,6 @@
                     });
                 };
 
-                bMap.initMapSDK(function(ret,err) {
-                    if (ret.status) {
-                        alert('地图初始化成功，可以从百度地图服务器检索信息了！');
-                    }else{
-                        _Alert(err)
-                    }
-                });
-
                 bMap.getLocation({
                     accuracy: '100m',
                     autoStop: true,

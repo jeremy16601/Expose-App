@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>搜索</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <style>
+        .highlight-yellow {
+            background-color: yellow;
+        }
+
+        .aui-list .aui-list-item-text {
+            display: -webkit-box;
+        }
+
+        .aui-list .aui-list-item-inner {
+            width: auto;
+        }
+
+        .nodata {
+            text-align: center;
+            height: 100%;
+            background: white;
+        }
+
+        .aui-grid-label {
+            padding: 1em;
+        }
+        .aui-list .aui-list-item:active {
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div class="aui-searchbar" id="search">
+        <div class="aui-searchbar-input aui-border-radius" tapmode @click="doSearch()">
+            <i class="aui-iconfont aui-icon-search"></i>
+            <form action="javascript:dosave();">
+                <input type="search" v-model="s_value" placeholder="请输入搜索内容" id="search-input">
+            </form>
+        </div>
+        <div class="aui-searchbar-cancel" @click="save()" tapmod>{{btn}}</div>
+    </div>
+
+    <div class="aui-content">
+        <ul class="aui-list aui-media-list">
+            <li class="aui-list-item" v-for="a in articles">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media" @click="openHome(a.uid)">
+                        <img class="img1 aui-img-round" :src="a.authorImg | imgf"/>
+                    </div>
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text" @click="openDetail(a)">
+                            <div class="aui-list-item-title" style="color:#4c5276">{{a.author}}</div>
+                        </div>
+                        <!--标题-->
+                        <b @click="openDetail(a)">
+                            <div id="title" class="aui-list-item-text title1 aui-ellipsis-2" style="color:#333;"
+                                 v-html="highlightKeyword(a.title)">
+                            </div>
+                        </b>
+                        <!--内容-->
+                        <div @click="openDetail(a)" class="aui-list-item-text aui-ellipsis-2"
+                             style="color:#333;"
+                             v-html="highlight(a.content)">
+                        </div>
+                        <p class="aui-margin-t-5 aui-font-size-12">{{a.location}}</p>
+                        <div class="aui-info aui-font-size-12" style="padding-top:0; padding-bottom:0"
+                             @click="openDetail(a)">
+                            <div class="aui-info-item">
+                                {{a.created_at | time}}
+                            </div>
+                            <div class="aui-info-item" v-if="a.zan > 0">
+                                {{a.zan}} &nbsp;<i class="aui-iconfont aui-icon-laud" style="color:#4c5276"></i>
+                            </div>
+                            <div class="aui-info-item">
+                                <i class="aui-iconfont aui-icon-comment" style="color:#4c5276"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+    <div v-if="articles.length==0" class="nodata">
+        <section class="aui-grid aui-margin-b-15">
+            <div class="aui-row">
+                <div class="aui-col-xs-12">
+                    <i class="aui-iconfont aui-icon-info"></i>
+                    <div class="aui-grid-label">搜索不到你要找的内容，试试发布举报吧，曝光骗子，让更多的 人防止被骗！</div>
+                    <p>
+                    <div class="aui-btn aui-btn-warning" @click="publish()">去发布</div>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="../script/vue.min.js"></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/commjs/router.js"></script>
+<script type="text/javascript" src="../script/Base.js"></script>
+<script type="text/javascript" src="../script/zepto.min.js"></script>
+<script type="text/javascript" src="../script/aui-slide.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script>
+    var vm = null;
+    var toast = new auiToast({})
+    apiready = function () {
+        api.parseTapmode();
+        var td = api.require('talkingData');
+        td.onPageStart({pageName: '搜索'});
+
+        Vue.filter('time', function (value) {
+            return _GetDateDiff(value);
+        });
+        Vue.filter('ss', function (value) {
+            return 'http://res.bbaaoo.cn/' + value + '?imageView2/1/w/200/h/200';
+        });
+        Vue.filter('imgf', function (value) {
+            return value + '?imageView2/1/w/200/h/200';
+        });
+        Vue.prototype.highlight = function (value) {
+            if (value.length > 100) {
+                return value.substring(0, 98) + '... .. 全文 ';
+            } else {
+                return value;
+            }
+        };
+
+        vm = new Vue({
+            el: '#app',
+            data: {
+                btn: ' 取消 ',
+                articles: [],
+                s_value: ''
+            },
+            mounted: function () {
+                this.s_value = api.pageParam.s_value;
+                api.showProgress();
+                this.init(this.s_value);
+            },
+            methods: {
+                init: function (v) {
+                    _Ajax(UrlRouter.search + '?s_value=' + v, "get", {}, "json", function (ret) {
+                        if (ret) {
+                            vm.articles = ret;
+                        }
+                        api.hideProgress();
+                    });
+                },
+                doSearch: function () {
+                    this.btn = ' 确定 ';
+                },
+                save: function () {
+                    dosave();
+                },
+                publish: function () {
+                    if (_GetStorage("user") != 'undefined' && _GetStorage("user") != '' && _GetStorage("user") != undefined && _GetStorage("user") != null) {
+                        //判断是否登陆状态
+                        var pageParamData = {
+                            name: "publish",
+                            title: "发布曝光",
+                            type: 'Add',
+                            frameurl: 'widget://html/publish.html'
+                        };
+                        LoadNewWin("publish", pageParamData);
+                    } else {
+                        _toast("请登录!");
+                        var pageParamData = {
+                            name: "login",
+                            title: "登录",
+                            frameurl: 'widget://html/user/login.html'
+                        };
+                        LoadNewWin("login", pageParamData);
+                    }
+                },
+                //打开详情
+                openDetail: function (article) {
+                    var pageParamData = {
+                        name: "article_detail",
+                        title: "文章详情",
+                        type: 'Detail',
+                        article: article,
+                        frameurl: 'widget://html/article/article_detail.html'
+                    };
+                    LoadNewWin("article_detail", pageParamData);
+                },
+                //打开个人主页
+                openHome: function (uid) {
+                    var pageParamData = {
+                        name: "myhome",
+                        title: "个人主页",
+                        uid: uid,
+                        frameurl: 'widget://html/user/myhome.html'
+                    };
+                    LoadNewWin("myhome", pageParamData);
+                },
+                highlightKeyword: function (str) {
+                    var hi = [vm.s_value];
+                    return str.replace(new RegExp('(.)(' + hi.join('|') + ')(.)', 'g'), '$1<span class="highlight-yellow">$2</span>$3');
+                }
+            }
+        });
+    }
+
+
+    function dosave() {
+        if (!vm.s_value) {
+            _toast('请输入内容')
+            return;
+        }
+
+        vm.articles = [];
+        api.showProgress();
+        _Ajax(UrlRouter.search + '?s_value=' + vm.s_value, "get", {}, "json", function (ret) {
+            if (ret) {
+                vm.articles = ret;
+            }
+            api.hideProgress();
+        });
+    }
+
+
+</script>
+</html>
