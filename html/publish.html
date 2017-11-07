@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport"
@@ -32,6 +32,10 @@
         outline: none;
     }
 
+    .catalog_color {
+        color: #ff8f0b;
+    }
+
     .aui-text-warning {
         font-size: 0.7rem;
         margin-top: 1rem;
@@ -52,14 +56,21 @@
                 </div>
             </li>
             <li class="aui-list-item">
-                <div class="aui-list-item-inner">
-                    <div class="aui-list-item-label">
-                        选择分类
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-label " style="color: #ff8f0b">
+                        选择分类：
                     </div>
                     <div class="aui-list-item-input">
-                        <select v-model="selected">
-                            <option v-bind:value="c.id" v-for="c in catalog">{{c.name}}</option>
+                        <select v-model="selected" class="catalog_color" @change="selectVal">
+                            <option v-bind:value="key" v-for="(c,key) in catalog">{{c.name}}</option>
                         </select>
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-input">
+                        <input v-model="catalog_txt" type="text" :placeholder="catalog_placeholder">
                     </div>
                 </div>
             </li>
@@ -135,8 +146,8 @@
         vm = new Vue({
             el: '#app',
             data: {
-                title: "", content: "", imgList: [], imgData: [], uptoken: '', catalog: '', selected: 5,
-                location: '', ip: ''
+                title: "", content: "", imgList: [], imgData: [], uptoken: '', catalog: '', selected: 1,
+                location: '', ip: '', catalog_txt: '', catalog_placeholder: '', catalog_id: 1,
             },
             mounted: function () {
                 //获取七牛token
@@ -146,7 +157,7 @@
                     }
                 });
                 this.catalog = _GetStorage("catalog");
-
+                this.catalog_placeholder = '请输入' + this.catalog[this.selected].name;
                 if (_GetStorage("catalog") == undefined) {
                     //获取分类列表
                     _Ajax(UrlRouter.catalog + "?type=1", "get", {}, "json", function (ret) {
@@ -178,12 +189,13 @@
                         alert(err.code);
                     }
                 });
-                setTimeout(getip(), 500);
+                setTimeout(getip(), 1000);
 
             },
             methods: {
-                selectT: function () {
-                    alert()
+                selectVal: function (ele) {
+                    vm.catalog_placeholder = '请输入' + vm.catalog[ele.target.value].name;
+                    vm.catalog_id = vm.catalog[ele.target.value].id;
                 },
                 openImg: function () {
                     //最多选9张
@@ -277,6 +289,10 @@
                 _toast('请输入内容');
                 return;
             }
+            if (vm.catalog_txt == '') {
+                _toast('请输入详细内容!');
+                return;
+            }
             api.showProgress();
             //保存
             _Ajax(UrlRouter.article, "post", {
@@ -292,7 +308,8 @@
                         location: vm.location,
                         view_times: 1,
                         catalog_id: vm.selected,//默认分类
-                        small_image: vm.imgList
+                        small_image: vm.imgList,
+                        catalog_txt: vm.catalog_txt
                     }
                 },
                 "json", function (ret) {
@@ -320,11 +337,11 @@
             url: 'http://www.geoplugin.net/json.gp',
             success: function (data) {
                 vm.ip = data.geoplugin_request;
-                if(vm.location==''){
-                    vm.location=data.geoplugin_region;
+                if (vm.location == '') {
+                    vm.location = data.geoplugin_region;
                 }
             },
-            timeout: 2000
+            timeout: 3000
         }).fail(function (xhr, status) {
 
         });

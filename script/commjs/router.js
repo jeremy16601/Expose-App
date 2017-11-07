@@ -1,8 +1,8 @@
 /**
  * 路由
  */
-var host = "http://api.bbaaoo.cn/";
-// var host = "http://192.168.0.160:7001/";
+// var host = "http://api.bbaaoo.cn/";
+var host = "http://192.168.0.160:7001/";
 var v = "api/v1/";
 
 var UrlRouter = {
