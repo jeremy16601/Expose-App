@@ -74,7 +74,7 @@
                 <div class="aui-list-item-inner aui-list-item-arrow">
                     <div class="aui-list-item-title"><i class="aui-iconfont aui-icon-location"></i> &nbsp;位置</div>
                     <div class=" aui-ellipsis-1 " style="font-size: 0.7rem;color:#5B7AA6;padding-right: 25px">
-                        {{location.address}}
+                        {{location}}
                     </div>
                     <!--<div class="aui-ellipsis-1 " style="font-size: 0.7rem;color:#CE272D;padding-right: 25px" v-else>-->
                     <!--无法获取位置，请检查gps是否打开-->
@@ -114,6 +114,7 @@
     </div>
 </div>
 </body>
+<script type="text/JavaScript" src="http://counter.sina.com.cn/ip/" charset="gb2312"></script>
 <script type="text/javascript" src="../script/vue.min.js"></script>
 <script type="text/javascript" src="../script/moment.min.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -135,7 +136,7 @@
             el: '#app',
             data: {
                 title: "", content: "", imgList: [], imgData: [], uptoken: '', catalog: '', selected: 5,
-                location: '',
+                location: '', ip: ''
             },
             mounted: function () {
                 //获取七牛token
@@ -154,7 +155,7 @@
                             vm.catalog = ret;
                         }
                     });
-                };
+                }
 
                 bMap.getLocation({
                     accuracy: '100m',
@@ -168,7 +169,7 @@
                         }, function (ret1, err1) {
                             if (ret1.status) {
                                 //获取的位置
-                                vm.location = ret1;
+                                vm.location = ret1.address;
                             } else {
                                 _Alert(err1);
                             }
@@ -177,6 +178,7 @@
                         alert(err.code);
                     }
                 });
+                setTimeout(getip(), 500);
 
             },
             methods: {
@@ -286,7 +288,8 @@
                         content: vm.content,
                         zan: 0,
                         isTop: 0,
-                        location: vm.location.address,
+                        ip: vm.ip,
+                        location: vm.location,
                         view_times: 1,
                         catalog_id: vm.selected,//默认分类
                         small_image: vm.imgList
@@ -308,6 +311,23 @@
             );
         });
 
+
+    }
+
+    function getip() {
+        $.ajax({
+            dataType: "json",
+            url: 'http://www.geoplugin.net/json.gp',
+            success: function (data) {
+                vm.ip = data.geoplugin_request;
+                if(vm.location==''){
+                    vm.location=data.geoplugin_region;
+                }
+            },
+            timeout: 2000
+        }).fail(function (xhr, status) {
+
+        });
     }
 
     //base 64 图片上传
