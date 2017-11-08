@@ -168,27 +168,27 @@
                     });
                 }
 
-                bMap.getLocation({
-                    accuracy: '100m',
-                    autoStop: true,
-                    filter: 1
-                }, function (ret, err) {
-                    if (ret.status) {
-                        bMap.getNameFromCoords({
-                            lon: ret.lon,
-                            lat: ret.lat
-                        }, function (ret1, err1) {
-                            if (ret1.status) {
-                                //获取的位置
-                                vm.location = ret1.address;
-                            } else {
-                                _Alert(err1);
-                            }
-                        });
-                    } else {
-                        alert(err.code);
-                    }
-                });
+//                bMap.getLocation({
+//                    accuracy: '100m',
+//                    autoStop: true,
+//                    filter: 1
+//                }, function (ret, err) {
+//                    if (ret.status) {
+//                        bMap.getNameFromCoords({
+//                            lon: ret.lon,
+//                            lat: ret.lat
+//                        }, function (ret1, err1) {
+//                            if (ret1.status) {
+//                                //获取的位置
+//                                vm.location = ret1.address;
+//                            } else {
+//                                _Alert(err1);
+//                            }
+//                        });
+//                    } else {
+//                        alert(err.code);
+//                    }
+//                });
                 setTimeout(getip(), 1000);
 
             },
@@ -307,7 +307,7 @@
                         ip: vm.ip,
                         location: vm.location,
                         view_times: 1,
-                        catalog_id: vm.selected,//默认分类
+                        catalog_id: vm.catalog_id,
                         small_image: vm.imgList,
                         catalog_txt: vm.catalog_txt
                     }
