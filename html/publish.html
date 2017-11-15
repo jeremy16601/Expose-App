@@ -136,8 +136,7 @@
     var vm = null;
 
     apiready = function () {
-        var bMap = api.require('bMap');
-
+        var aMap = api.require('aMap');
         var td = api.require('talkingData');
         td.onPageStart({pageName: '发布'});
         Vue.filter('imgf', function (value) {
@@ -146,50 +145,63 @@
         vm = new Vue({
             el: '#app',
             data: {
-                title: "", content: "", imgList: [], imgData: [], uptoken: '', catalog: '', selected: 1,
-                location: '', ip: '', catalog_txt: '', catalog_placeholder: '', catalog_id: 1,
+                title: "",
+                content: "",
+                imgList: [],
+                imgData: [],
+                uptoken: '',
+                catalog: '',
+                selected: 1,
+                location: '',
+                ip: '',
+                catalog_txt: '',
+                catalog_placeholder: '',
+                catalog_id: 1,
+                longitude: 0,
+                latitude: 0,
             },
             mounted: function () {
+                api.showProgress();
                 //获取七牛token
                 _Ajax(UrlRouter.uploadToken, "get", {}, "json", function (ret) {
                     if (ret) {
                         vm.uptoken = ret.uptoken;
                     }
+                },function (err) {
+                  alert('获取上传图片token失败！')
                 });
                 this.catalog = _GetStorage("catalog");
-                this.catalog_placeholder = '请输入' + this.catalog[this.selected].name;
-                if (_GetStorage("catalog") == undefined) {
+                if (_GetStorage("catalog") == undefined || _GetStorage("catalog") == '') {
                     //获取分类列表
                     _Ajax(UrlRouter.catalog + "?type=1", "get", {}, "json", function (ret) {
 //                        _Alert(ret)
                         if (ret) {
                             vm.catalog = ret;
+                            vm.catalog_placeholder = '请输入' + ret[vm.selected].name;
                         }
                     });
+                } else {
+                    this.catalog_placeholder = '请输入' + _GetStorage("catalog")[this.selected].name;
                 }
 
-//                bMap.getLocation({
-//                    accuracy: '100m',
-//                    autoStop: true,
-//                    filter: 1
-//                }, function (ret, err) {
-//                    if (ret.status) {
-//                        bMap.getNameFromCoords({
-//                            lon: ret.lon,
-//                            lat: ret.lat
-//                        }, function (ret1, err1) {
-//                            if (ret1.status) {
-//                                //获取的位置
-//                                vm.location = ret1.address;
-//                            } else {
-//                                _Alert(err1);
-//                            }
-//                        });
-//                    } else {
-//                        alert(err.code);
-//                    }
-//                });
-                setTimeout(getip(), 1000);
+                aMap.getLocation(function (ret) {
+                    if (ret.status) {
+                        vm.longitude = ret.lon;
+                        vm.latitude = ret.lat;
+                        aMap.getNameFromCoords({
+                            lon: ret.lon,
+                            lat: ret.lat
+                        }, function (ret1, err) {
+                            if (ret1.status) {
+                                vm.location = ret1.address;
+                                setTimeout(getip(), 1000);
+                            } else {
+//                                alert(JSON.stringify(err));
+                            }
+                            api.hideProgress();
+                        });
+                    }
+                });
 
             },
             methods: {
@@ -306,6 +318,8 @@
                         isTop: 0,
                         ip: vm.ip,
                         location: vm.location,
+                        longitude: vm.longitude,
+                        latitude: vm.latitude,
                         view_times: 1,
                         catalog_id: vm.catalog_id,
                         small_image: vm.imgList,
@@ -334,16 +348,19 @@
     function getip() {
         $.ajax({
             dataType: "json",
-            url: 'http://www.geoplugin.net/json.gp',
+            url: 'http://freegeoip.net/json/', //http://pv.sohu.com/cityjson?ie=utf-8
             success: function (data) {
-                vm.ip = data.geoplugin_request;
+                vm.ip = data.ip;
                 if (vm.location == '') {
-                    vm.location = data.geoplugin_region;
+                    vm.location = data.region_name;
+                    vm.latitude = data.latitude;
+                    vm.longitude = data.longitude;
                 }
+                api.hideProgress();
             },
             timeout: 3000
         }).fail(function (xhr, status) {
-
+            api.hideProgress();
         });
     }
 

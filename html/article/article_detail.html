@@ -166,8 +166,9 @@
         }
 
         .collect {
-            width: 100px;
+            width: 100%;
             margin: 0 auto;
+            text-align: center;
             margin-top: 150px;
             line-height: 45px;
             padding: 0 20px;
@@ -222,17 +223,20 @@
 
         <div class="collect" @click="zan(1)" v-if="!isZan">
             <svg class=" icn icon" style="width: 1.8rem;height: 1.8rem;" aria-hidden="true">
-                <use xlink:href="#icon-good"></use>
+                <use xlink:href="#icon-good">
+                    <div class="num">{{article.zan}}</div>
+                </use>
             </svg>
-            <div class="num">{{article.zan}}</div>
+
+            <div class="author">本站声明：所有信息仅供参考,曝光吧平台不对任何误导负责.如有侵权,请联系我们,我们会尽快处理！</div>
         </div>
-        <div class="author">本站声明：所有信息仅供参考,曝光吧平台不对任何误导负责.如有侵权,请联系我们,我们会尽快处理！</div>
         <div class="collect" @click="zan(2)" v-else>
             <svg class=" icn icon" style="color: #F1141C;width:1.8rem;height: 1.8rem;" aria-hidden="true">
-                <use xlink:href="#icon-good"></use>
+                <use xlink:href="#icon-good">
+                    <div class="num">{{article.zan}}</div>
+                </use>
             </svg>
-            <div class="num">{{article.zan}}</div>
-
+            <div class="author">本站声明：所有信息仅供参考,曝光吧平台不对任何误导负责.如有侵权,请联系我们,我们会尽快处理！</div>
         </div>
     </div>
     <div class="listen-scroll" id="scrollDiv">
