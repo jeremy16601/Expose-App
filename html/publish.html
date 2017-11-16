@@ -125,7 +125,6 @@
     </div>
 </div>
 </body>
-<script type="text/JavaScript" src="http://counter.sina.com.cn/ip/" charset="gb2312"></script>
 <script type="text/javascript" src="../script/vue.min.js"></script>
 <script type="text/javascript" src="../script/moment.min.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -136,6 +135,7 @@
     var vm = null;
 
     apiready = function () {
+        api.showProgress();
         var aMap = api.require('aMap');
         var td = api.require('talkingData');
         td.onPageStart({pageName: '发布'});
@@ -161,47 +161,60 @@
                 latitude: 0,
             },
             mounted: function () {
-                api.showProgress();
                 //获取七牛token
-                _Ajax(UrlRouter.uploadToken, "get", {}, "json", function (ret) {
-                    if (ret) {
-                        vm.uptoken = ret.uptoken;
-                    }
-                },function (err) {
-                  alert('获取上传图片token失败！')
-                });
-                this.catalog = _GetStorage("catalog");
-                if (_GetStorage("catalog") == undefined || _GetStorage("catalog") == '') {
-                    //获取分类列表
-                    _Ajax(UrlRouter.catalog + "?type=1", "get", {}, "json", function (ret) {
-//                        _Alert(ret)
+                Vue.nextTick(function () {
+                    _Ajax(UrlRouter.uploadToken, "get", {}, "json", function (ret) {
+                        _toast('获取token')
                         if (ret) {
-                            vm.catalog = ret;
-                            vm.catalog_placeholder = '请输入' + ret[vm.selected].name;
+                            vm.uptoken = ret.uptoken;
+                        }
+                    }, function (err) {
+                        console.log('获取上传图片token失败！')
+                    });
+                })
+
+                Vue.nextTick(function () {
+                    vm.catalog = _GetStorage("catalog");
+                    if (_GetStorage("catalog") == undefined || _GetStorage("catalog") == '') {
+                        _toast('获取分类')
+                        //获取分类列表
+                        _Ajax(UrlRouter.catalog + "?type=1", "get", {}, "json", function (ret) {
+//                        _Alert(ret)
+                            if (ret) {
+                                vm.catalog = ret;
+                                vm.catalog_placeholder = '请输入' + ret[vm.selected].name;
+                            }
+                        });
+                    } else {
+                        _toast('获取本地分类')
+                        vm.catalog_placeholder = '请输入' + _GetStorage("catalog")[vm.selected].name;
+                    }
+                });
+
+                Vue.nextTick(function () {
+                    aMap.getLocation(function (ret) {
+                        if (ret.status) {
+                            vm.longitude = ret.lon;
+                            vm.latitude = ret.lat;
+                            aMap.getNameFromCoords({
+                                lon: ret.lon,
+                                lat: ret.lat
+                            }, function (ret1, err) {
+                                if (ret1.status) {
+                                    vm.location = ret1.address;
+//                                setTimeout(getip(), 1000);
+                                } else {
+//                                alert(JSON.stringify(err));
+                                }
+                                api.hideProgress();
+                            });
                         }
                     });
-                } else {
-                    this.catalog_placeholder = '请输入' + _GetStorage("catalog")[this.selected].name;
-                }
-
-                aMap.getLocation(function (ret) {
-                    if (ret.status) {
-                        vm.longitude = ret.lon;
-                        vm.latitude = ret.lat;
-                        aMap.getNameFromCoords({
-                            lon: ret.lon,
-                            lat: ret.lat
-                        }, function (ret1, err) {
-                            if (ret1.status) {
-                                vm.location = ret1.address;
-                                setTimeout(getip(), 1000);
-                            } else {
-//                                alert(JSON.stringify(err));
-                            }
-                            api.hideProgress();
-                        });
-                    }
                 });
+
+                Vue.nextTick(function () {
+                    getip();
+                })
 
             },
             methods: {
@@ -346,22 +359,27 @@
     }
 
     function getip() {
-        $.ajax({
-            dataType: "json",
-            url: 'http://freegeoip.net/json/', //http://pv.sohu.com/cityjson?ie=utf-8
-            success: function (data) {
-                vm.ip = data.ip;
+        api.ajax({
+            url: 'http://pv.sohu.com/cityjson?ie=utf-8',
+            method: 'get',
+            dataType: 'text',
+            data: {}
+        }, function (ret, err) {
+            if (ret) {
+                var data = JSON.parse(ret.substring(18, ret.length - 1));
+                vm.ip = data.cip;
                 if (vm.location == '') {
-                    vm.location = data.region_name;
-                    vm.latitude = data.latitude;
-                    vm.longitude = data.longitude;
+                    vm.location = data.cname;
+//                    vm.latitude = data.latitude;
+//                    vm.longitude = data.longitude;
                 }
                 api.hideProgress();
-            },
-            timeout: 3000
-        }).fail(function (xhr, status) {
+            } else {
+                api.alert({msg: JSON.stringify(err)});
+            }
             api.hideProgress();
         });
+
     }
 
     //base 64 图片上传
