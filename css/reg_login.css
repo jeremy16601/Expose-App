@@ -281,7 +281,7 @@ footer, header, section {
 	z-index: 10
 }
 #catch_code_btn {
-	background-color: #4fa541;
+	background-color: #707070;
 	color: #fff;
 	z-index: 11
 }
@@ -325,7 +325,7 @@ footer, header, section {
 }
 .btnok:active {
 	color: #fff !important;
-	background-color: #2ea203 !important;
+	background-color: #606060 !important;
 	/*
 	 * opacity: .4
 	 */

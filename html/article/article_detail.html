@@ -364,9 +364,10 @@
                                     }
                                 }, function (err) {
                                     _toast("点赞失败")
+                                    _SetErrors('article_detail', '点赞失败' + JSON.stringify(err));
                                 });
                             } else {
-                                _toast("点赞失败")
+                                _SetErrors('article_detail', '点赞失败');
                             }
                         });
 //
@@ -386,6 +387,7 @@
                                 getList();
                             }
                         }, function (err) {
+                            _SetErrors('article_detail', '回复失败' + JSON.stringify(err));
                             _toast("发送失败！");
                         });
                     },

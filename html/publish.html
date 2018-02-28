@@ -16,6 +16,13 @@
         min-height: 12rem;
     }
 
+    .aui-list .aui-list-item-title {
+        font-size: 0.8rem;
+        position: relative;
+        width: 25%;
+        color: #212121;
+    }
+
     * {
         -webkit-touch-callout: none; /*系统默认菜单被禁用*/
         -webkit-user-select: none; /*webkit浏览器*/
@@ -164,19 +171,17 @@
                 //获取七牛token
                 Vue.nextTick(function () {
                     _Ajax(UrlRouter.uploadToken, "get", {}, "json", function (ret) {
-                        _toast('获取token')
                         if (ret) {
                             vm.uptoken = ret.uptoken;
                         }
                     }, function (err) {
-                        console.log('获取上传图片token失败！')
+                        _SetErrors('publish', '获取上传图片token失败' + JSON.stringify(err));
                     });
                 })
 
                 Vue.nextTick(function () {
                     vm.catalog = _GetStorage("catalog");
                     if (_GetStorage("catalog") == undefined || _GetStorage("catalog") == '') {
-                        _toast('获取分类')
                         //获取分类列表
                         _Ajax(UrlRouter.catalog + "?type=1", "get", {}, "json", function (ret) {
 //                        _Alert(ret)
@@ -186,7 +191,6 @@
                             }
                         });
                     } else {
-                        _toast('获取本地分类')
                         vm.catalog_placeholder = '请输入' + _GetStorage("catalog")[vm.selected].name;
                     }
                 });
@@ -204,6 +208,7 @@
                                     vm.location = ret1.address;
 //                                setTimeout(getip(), 1000);
                                 } else {
+                                    _SetErrors('publish', 'getlocation' + JSON.stringify(err));
 //                                alert(JSON.stringify(err));
                                 }
                                 api.hideProgress();
@@ -273,7 +278,7 @@
 //                                    $('.uploaded-result').html(vm.imgList[0]);
                                 },
                                 error: function (res) {
-                                    _toast("失败:" + JSON.stringify(res));
+                                    _SetErrors('publish', '上传图片失败' + JSON.stringify(res));
                                 }
                             });
 
@@ -334,6 +339,7 @@
                         longitude: vm.longitude,
                         latitude: vm.latitude,
                         view_times: 1,
+                        device: api.systemType,
                         catalog_id: vm.catalog_id,
                         small_image: vm.imgList,
                         catalog_txt: vm.catalog_txt
@@ -350,7 +356,7 @@
                     }
                 }, function (err) {
                     api.hideProgress();
-                    _Alert('服务器异常');
+                    _SetErrors('publish', '发布失败' + JSON.stringify(err));
                 }
             );
         });
@@ -375,7 +381,7 @@
                 }
                 api.hideProgress();
             } else {
-                api.alert({msg: JSON.stringify(err)});
+                _SetErrors('publish', 'getip()' + JSON.stringify(err));
             }
             api.hideProgress();
         });

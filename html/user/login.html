@@ -249,7 +249,10 @@
                                 var params = {
                                     name: ret3.nickname,
                                     headimg: ret3.headimgurl,
-                                    password: '',
+                                    password: '1',
+                                    login_type: 'wx',
+                                    grant_type: 'password',
+                                    username: 'null',
                                     score: 50,
                                     sex: gender,
                                     mobile: '',
@@ -258,30 +261,23 @@
                                     address: '',
                                 };
                                 //注册系统用户
-                                _Ajax(UrlRouter.user + '?type=wx', "post", {
-                                    values: params
-                                }, "json", function (data) {
-                                    if (data.code == '101') {
-                                        //已存在
-                                        _SetStorage('user', data.data[0]);
-                                        _SendEvent("updateUser");
-                                        _toast('登录成功！');
-                                        api.closeWin({
-                                            name: 'login'
-                                        });
-                                    } else {
-                                        //根据openid查询用户信息
-                                        _Ajax(UrlRouter.user + '?type=wx&wx_openid=' + params.wx_openid, "get", {}, "json", function (ret2) {
-                                            _SetStorage('user', ret2.data[0]);
+                                _Ajax(UrlRouter.login_new, "post", {
+                                        values: params
+                                    }, "json", function (data) {
+                                        if (data.code == 0) {
+                                            //已存在
+                                            _SetStorage('user', data.data.user);
                                             _SendEvent("updateUser");
                                             _toast('登录成功！');
                                             api.closeWin({
                                                 name: 'login'
                                             });
-                                        });
-                                    }
-
-                                });
+                                        } else {
+                                            alert('登录失败' + data.info);
+                                            _SetErrors('login--wx', data.info);
+                                        }
+                                    }, {authorization: 'Basic bGI3ZmNiOWFjZS04ZTE4LTQ4MjYtOWZlNS0zYjc5MmQwMjFjYzc6MDk5OTMyN2RhM2I2ZDY4ZDM1MDk1YmQ4ZDYxZDE2MjA='}
+                                );
                             }
                         });
                     }
@@ -292,58 +288,60 @@
     }
 
     function login_qq() {
-                qq.login(function (ret, err) {
-                    openId = ret.openId;
-                    //获取用户信息
-                    qq.getUserInfo(function (ret, err) {
-                        if (ret.status) {
-                            console.log('qq登录信息' + JSON.stringify(ret));
-                            var gender;//性别
-                            if (ret.info.gender == '男') {
-                                gender = 0;
-                            } else {
-                                gender = 1;
-                            }
-                            var params = {
-                                name: ret.info.nickname,
-                                headimg: ret.info.figureurl_qq_2,
-                                password: '',
-                                score: 50,
-                                sex: gender,
-                                mobile: '',
-                                qq_openid: openId,
-                                level: ret.info.level,
-                                address: ret.info.province + ' ' + ret.info.city,
-                            };
-                            //注册系统用户
-                            _Ajax(UrlRouter.user + '?type=qq', "post", {
-                                values: params
-                            }, "json", function (data) {
-                                if (data.code == '101') {
-                                    //已存在
-                                    _SetStorage('user', data.data[0]);
-                                    _SendEvent("updateUser");
-                                } else {
-                                    //根据openid查询用户信息
-                                    _Ajax(UrlRouter.user + '?type=qq&qq_openid=' + params.qq_openid, "get", {}, "json", function (ret2) {
-                                        _SetStorage('user', ret2.data[0]);
-                                        _SendEvent("updateUser");
-                                    });
-                                }
+        qq.login(function (ret, err) {
+            openId = ret.openId;
+            if (openId == '') return;
+            //获取用户信息
+            qq.getUserInfo(function (ret, err) {
+                if (ret.status) {
+                    console.log('qq登录信息' + JSON.stringify(ret));
+                    var gender;//性别
+                    if (ret.info.gender == '男') {
+                        gender = 0;
+                    } else {
+                        gender = 1;
+                    }
+                    var params = {
+                        name: ret.info.nickname,
+                        headimg: ret.info.figureurl_qq_2,
+                        password: 'null',
+                        score: 50,
+                        sex: gender,
+                        login_type: 'qq',
+                        grant_type: 'password',
+                        username: 'null',
+                        qq_openid: openId,
+                        level: ret.info.level,
+                        address: ret.info.province + ' ' + ret.info.city,
+                    };
+                    //注册系统用户
+                    _Ajax(UrlRouter.login_new, "post", {
+                            values: params
+                        }, "json", function (data) {
+                            if (data.code == 0) {
+                                //已存在
+                                _SetStorage('user', data.data.user);
+                                _SendEvent("updateUser");
                                 _toast('登录成功！');
                                 api.closeWin({
                                     name: 'login'
                                 });
-                            });
-                        } else {
-                            api.alert({msg: err.msg});
-                        }
-                    });
+                            } else {
+                                alert('登录失败！' + data.info);
+                                _SetErrors('login--qq', data.info);
+                            }
+
+                        }, {authorization: 'Basic bGI3ZmNiOWFjZS04ZTE4LTQ4MjYtOWZlNS0zYjc5MmQwMjFjYzc6MDk5OTMyN2RhM2I2ZDY4ZDM1MDk1YmQ4ZDYxZDE2MjA='}
+                    );
+                } else {
+                    api.alert({msg: err.msg});
+                }
+            });
 //                    api.alert({
 //                        title: 'id和token',
 //                        msg: ret. + ret.accessToken
 //                    });
-                });
+        });
     }
 
     //.选择国家地区代码
@@ -375,36 +373,37 @@
         _ChangeBtn('status');
         //.MD5加密
 //			var MD5_pwd = hex_md5(pwd);
-        _Ajax(UrlRouter.login, "post", {
-            values: {mobile: phone, password: pwd}
-        }, "json", function (ret) {
-            api.hideProgress();
-            if (ret.code == 401) {
-                _toast('账号或密码错误！');
-                //.更改按钮状态
-                _ChangeBtn('err');
-                return;
-            }
-            if (ret[0]) {
-                //存储用户信息
-                _SetStorage('user', ret[0]);
-                //广播事件：用户登录成功
-                _SendEvent('updateUser');
-                _SendEvent('UserLogin', ret.mtypeid);
-                setTimeout(function () {
-                    _toast('登录成功！');
-                }, 100)
-                setTimeout(function () {
-                    api.closeToWin({
-                        name: 'root'
-                    });
-                }, 100)
-            }
-        }, function (err) {
-            setTimeout(function () {
-                _ChangeBtn('err');
-            }, 100)
-        });
+        _Ajax(UrlRouter.login_new, "post", {
+                values: {username: phone, password: pwd, grant_type: 'password', login_type: 'normal'}
+            }, "json", function (ret) {
+                api.hideProgress();
+                _Alert(ret);
+                if (ret.code == 5400) {
+                    _toast('账号或密码错误！');
+                    //.更改按钮状态
+                    _ChangeBtn('err');
+                    return;
+                }
+                if (ret.code == 0) {
+                    //存储用户信息
+                    _SetStorage('user', ret.data.user);
+                    //广播事件：用户登录成功
+                    _SendEvent('updateUser');
+//                    _SendEvent('UserLogin', ret.mtypeid);
+                    setTimeout(function () {
+                        _toast('登录成功！');
+                    }, 100)
+                    setTimeout(function () {
+                        api.closeToWin({
+                            name: 'root'
+                        });
+                    }, 100)
+                } else {
+                    alert('登录失败' + data.info);
+                    _SetErrors('login--normal', data.info);
+                }
+            }, {authorization: 'Basic bGI3ZmNiOWFjZS04ZTE4LTQ4MjYtOWZlNS0zYjc5MmQwMjFjYzc6MDk5OTMyN2RhM2I2ZDY4ZDM1MDk1YmQ4ZDYxZDE2MjA='}
+        )
     }
 
     //.去登录

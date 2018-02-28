@@ -36,6 +36,41 @@
             </ul>
             <div>
                 <div class="aui-btn aui-btn-danger  aui-btn-block aui-btn-sm" @click="save()">保存</div>
+
+                <section class="aui-chat" v-for="item in items">
+                    <div class="aui-chat-item aui-chat-left">
+                        <div class="aui-chat-media">
+                            <img :src="userimg" />
+                        </div>
+                        <div class="aui-chat-inner">
+                            <div class="aui-chat-name">{{user_name}}
+                                <!-- <span class="aui-label aui-label-warning">等级</span> -->
+                            </div>
+                            <div class="aui-chat-content">
+                                <div class="aui-chat-arrow"></div>
+                                {{item.content}}
+                            </div>
+                            <div class="aui-chat-status aui-chat-status-refresh">
+                                <i class="aui-iconfont aui-icon-correct aui-text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="aui-chat-item aui-chat-right" v-if="item.is_look==1">
+                        <div class="aui-chat-media">
+                            <img src="http://res-qiniu.12xue.com/bao.png" />
+                        </div>
+                        <div class="aui-chat-inner">
+                            <div class="aui-chat-name">管理员</div>
+                            <div class="aui-chat-content">
+                                <div class="aui-chat-arrow"></div>
+                                {{item.admin_send}}
+                            </div>
+                            <!-- <div class="aui-chat-status">
+                            <i class="aui-iconfont aui-icon-info aui-text-danger"></i>
+                            </div> -->
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
@@ -51,7 +86,19 @@
         vm = new Vue({
             el: '#app',
             data: {
+                items: [],
+                userimg: _GetStorage("user").headimg,
+                user_name: _GetStorage("user").name,
                 content: ''
+            },
+            mounted: function () {
+                //根据uid查询反馈列表
+                _Ajax(UrlRouter.feedback_Byuid + '?uid=' + _GetStorage("user").id, "get", {}, "json",
+                    function (ret) {
+                        if (ret.code == 0) {
+                            vm.items = ret.data.rows;
+                        }
+                    });
             },
             methods: {
                 save: function () {
@@ -62,10 +109,7 @@
                         }
                     }, "json", function (ret) {
                         if (ret) {
-                            _toast('提交成功,即将关闭...');
-                            setTimeout(function () {
-                                api.closeWin();
-                            }, 2500);
+                            _toast('提交成功!请耐心等待回复~');
                         }
                     }, function () {
 

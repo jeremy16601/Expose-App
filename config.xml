@@ -1,1 +1,100 @@
-<widget id="A6947373852621" version="0.0.1">    <name>曝光吧</name>    <description>    </description>    <author email="developer@apicloud.com" href="http://www.apicloud.com">    </author>    <content src="index.html"/>    <access origin="*"/>    <preference name="pageBounce" value="false"/>    <preference name="appBackground" value="rgba(0,0,0,0.0)"/>    <preference name="windowBackground" value="rgba(0,0,0,0.0)"/>    <preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>    <preference name="hScrollBarEnabled" value="true"/>    <preference name="vScrollBarEnabled" value="true"/>    <preference name="softInputMode" value="resize"/>    <preference name="autoLaunch" value="true"/>    <preference name="fullScreen" value="false"/>    <preference name="autoUpdate" value="true"/>    <preference name="smartUpdate" value="true"/>    <preference name="debug" value="true"/>    <preference name="statusBarAppearance" value="true"/>    <permission name="readPhoneState"/>    <permission name="camera"/>    <permission name="record"/>    <permission name="location"/>    <permission name="fileSystem"/>    <permission name="internet"/>    <permission name="bootCompleted"/>    <permission name="hardware"/>    <feature name="smsVerify">        <param name="android_app_key" value="2065f08cc3e4c"/>        <param name="android_app_secret" value="bac21ff8dabe293c5f8b4eba754e9fe2"/>        <param name="ios_app_key" value="2065f08cc3e4c"/>        <param name="ios_app_secret" value="bac21ff8dabe293c5f8b4eba754e9fe2"/>    </feature>    <feature name="aMap">        <param name="android_api_key" value="07bfd8331b9966b43231effa4660971c" />        <param name="ios_api_key" value="e5615ee4ec399735eb4316141b9e862b" />    </feature>    <!--<feature name="bMap">-->        <!--<param name="android_api_key" value="plHbuayBhsrnWYn09peIsK0EXQiTBC7D"/>-->        <!--<param name="ios_api_key" value="GdZLmTaqnxC6NpvPoRuVXu15UTHGh6sM"/>-->    <!--</feature>-->    <feature name="TalkingData">        <param name="logEnable" value="false"/>        <param name="exceptionReportEnabled" value="true"/>        <param name="channel" value="xiaomi"/>        <!--<param name="channel" value="AppStore"/>-->    </feature>    <feature name="tencentPush">        <param name="android_accessId" value="2100265758"/>        <param name="android_accessKey" value="AW3FBN32L99W"/>        <param name="ios_accessId" value="2200265761"/>        <param name="ios_accessKey" value="AZ4EZQ533X9A"/>    </feature>    <feature name="qq">        <param name="urlScheme" value="tencent1106348038"/>        <param name="apiKey" value="1106348038"/>    </feature>    <feature name="rongCloud2">        <param name="appKey" value="sfci50a7s4qmi"/>    </feature>    <feature name="wx">        <param name="urlScheme" value="wx8efe71e71ea188a8"/>        <param name="apiKey" value="wx8efe71e71ea188a8"/>        <param name="apiSecret" value="14259d96c393e4b7611d7a10974cb45b"/>    </feature>    <feature name="weibo">        <param name="urlScheme" value="wb4201480" />        <param name="apiKey" value="4201480" />        <param name="registUrl" value="http://bbaaoo.cn/" />    </feature>    <!--appid:1276889536--></widget>
+<widget id="A6947373852621" version="0.0.1">
+
+    <name>曝光吧</name>
+
+    <description>
+    </description>
+
+    <author email="developer@apicloud.com" href="http://www.apicloud.com">
+    </author>
+
+    <content src="index.html"/>
+
+    <access origin="*"/>
+
+    <preference name="pageBounce" value="false"/>
+
+    <preference name="appBackground" value="rgba(0,0,0,0.0)"/>
+
+    <preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
+
+    <preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
+
+    <preference name="hScrollBarEnabled" value="true"/>
+
+    <preference name="vScrollBarEnabled" value="true"/>
+    <preference name="softInputMode" value="resize"/>
+    <preference name="autoLaunch" value="true"/>
+
+    <preference name="fullScreen" value="false"/>
+
+    <preference name="autoUpdate" value="true"/>
+
+    <preference name="smartUpdate" value="true"/>
+
+    <preference name="debug" value="true"/>
+
+    <preference name="statusBarAppearance" value="true"/>
+
+    <permission name="readPhoneState"/>
+
+    <permission name="camera"/>
+
+    <permission name="record"/>
+
+    <permission name="location"/>
+
+    <permission name="fileSystem"/>
+
+    <permission name="internet"/>
+
+    <permission name="bootCompleted"/>
+
+    <permission name="hardware"/>
+    <feature name="smsVerify">
+        <param name="android_app_key" value="2065f08cc3e4c"/>
+        <param name="android_app_secret" value="bac21ff8dabe293c5f8b4eba754e9fe2"/>
+        <param name="ios_app_key" value="2065f08cc3e4c"/>
+        <param name="ios_app_secret" value="bac21ff8dabe293c5f8b4eba754e9fe2"/>
+    </feature>
+
+    <feature name="aMap">
+        <param name="android_api_key" value="07bfd8331b9966b43231effa4660971c" />
+        <param name="ios_api_key" value="e5615ee4ec399735eb4316141b9e862b" />
+    </feature>
+    <!--<feature name="bMap">-->
+        <!--<param name="android_api_key" value="plHbuayBhsrnWYn09peIsK0EXQiTBC7D"/>-->
+        <!--<param name="ios_api_key" value="GdZLmTaqnxC6NpvPoRuVXu15UTHGh6sM"/>-->
+    <!--</feature>-->
+    <feature name="TalkingData">
+        <param name="logEnable" value="false"/>
+        <param name="exceptionReportEnabled" value="true"/>
+        <param name="channel" value="xiaomi"/>
+        <!--<param name="channel" value="AppStore"/>-->
+    </feature>
+    <feature name="tencentPush">
+        <param name="android_accessId" value="2100265758"/>
+        <param name="android_accessKey" value="AW3FBN32L99W"/>
+        <param name="ios_accessId" value="2200265761"/>
+        <param name="ios_accessKey" value="AZ4EZQ533X9A"/>
+    </feature>
+    <feature name="qq">
+        <param name="urlScheme" value="tencent1106348038"/>
+        <param name="apiKey" value="1106348038"/>
+    </feature>
+    <feature name="rongCloud2">
+        <param name="appKey" value="sfci50a7s4qmi"/>
+    </feature>
+    <feature name="wx">
+        <param name="urlScheme" value="wx247bc99daab66fe1"/>
+        <param name="apiKey" value="wx247bc99daab66fe1"/>
+        <param name="apiSecret" value="949e5fbabb159e19d5624f1f55edf8f9"/>
+    </feature>
+    <feature name="weibo">
+        <param name="urlScheme" value="wb4201480" />
+        <param name="apiKey" value="4201480" />
+        <param name="registUrl" value="http://bbaaoo.cn/" />
+    </feature>
+    <!--appid:1276889536-->
+</widget>
+

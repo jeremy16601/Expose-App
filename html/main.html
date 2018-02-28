@@ -1,15 +1,16 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport"
-          content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"
+    />
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
     <title>首页</title>
-    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
     <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" type="text/css" href="../css/aui-slide.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui-slide.css" />
 
     <style>
         .content {
@@ -172,63 +173,65 @@
         }
     </style>
 </head>
+
 <body>
-<div id="app" v-cloak>
-    <div class="aui-searchbar" id="search">
-        <div class="aui-searchbar-input aui-border-radius" tapmode @click="doSearch()">
-            <i class="aui-iconfont aui-icon-search"></i>
-            <form action="javascript:dosave();">
-                <input type="search" v-model="s_value" placeholder="请输入搜索内容" id="search-input">
-            </form>
-        </div>
-        <div class="aui-searchbar-cancel" tapmod @click="save()">{{btn}}</div>
-    </div>
-
-    <div id="aui-slide1" v-if="banners.length>0">
-        <div class="aui-slide-wrap">
-            <div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center" v-for=" item in banners">
-                <img :src="item.image | imgF75" @click="openBanner(item.open)"/>
+    <div id="app" v-cloak>
+        <div class="aui-searchbar" id="search">
+            <div class="aui-searchbar-input aui-border-radius" tapmode @click="doSearch()">
+                <i class="aui-iconfont aui-icon-search"></i>
+                <form action="javascript:dosave();">
+                    <input type="search" v-model="s_value" placeholder="请输入搜索内容" id="search-input">
+                </form>
             </div>
-
+            <div class="aui-searchbar-cancel" tapmod @click="save()">{{btn}}</div>
         </div>
-        <div class="aui-slide-page-wrap"><!--分页容器--></div>
-    </div>
 
-    <!--内容-->
-    <div class="aui-content">
-        <ul class="aui-list aui-media-list">
-
-            <!--普通数据-->
-            <li class="aui-list-item" v-for="(article,index) in articles" @click="openDetail(article)">
-                <div class="aui-media-list-item-inner">
-                    <div class="aui-list-item-inner">
-                        <div class="aui-list-item-text">
-                            <div class="aui-list-item-title aui-font-size-18 aui-ellipsis-2">{{article.title}}</div>
-                        </div>
-                        <div class="aui-list-item-text" v-if="article.title.length<15">
-                            <p class="aui-ellipsis-2">{{article.content}}</p>
-                        </div>
-                        <div class="aui-info aui-padded-b-0">
-                            <div class="aui-info-item aui-font-size-12">
-                                <img :src="article.authorImg | headimg" style="width:1rem" class="aui-img-round"/>
-                                <span class="aui-margin-l-5">{{article.author}}</span>
-                                <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5"
-                                      v-if="article.isTop==1">置顶</span>
-                                <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5"
-                                      v-else>热</span>
-                            </div>
-                            <div class="aui-info-item aui-font-size-12">{{article.created_at | time}}</div>
-                        </div>
-                    </div>
-                    <div class="aui-list-item-media" v-if="article.small_image">
-                        <img :src="article.small_image | ss">
-                    </div>
+        <div id="aui-slide1" v-if="banners.length>0">
+            <div class="aui-slide-wrap">
+                <div class="aui-slide-node bg-dark aui-slide-node-middle aui-slide-node-center" v-for=" item in banners">
+                    <img :src="item.image | imgF75" @click="openBanner(item.open)" />
                 </div>
-            </li>
-        </ul>
-    </div>
 
-</div>
+            </div>
+            <div class="aui-slide-page-wrap">
+                <!--分页容器-->
+            </div>
+        </div>
+
+        <!--内容-->
+        <div class="aui-content">
+            <ul class="aui-list aui-media-list">
+
+                <!--普通数据-->
+                <li class="aui-list-item" v-for="(article,index) in articles" @click="openDetail(article)">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-18 aui-ellipsis-2">{{article.title}}</div>
+                            </div>
+                            <div class="aui-list-item-text" v-if="article.title.length<15">
+                                <p class="aui-ellipsis-2">{{article.content}}</p>
+                            </div>
+                            <div class="aui-info aui-padded-b-0">
+                                <div class="aui-info-item aui-font-size-12">
+                                    <img :src="article.authorImg | headimg" style="width:1rem" class="aui-img-round" />
+                                    <span class="aui-margin-l-5">{{article.author}}</span>
+                                    <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5" v-if="article.isTop==1">置顶</span>
+                                    <span class="aui-label aui-label-danger aui-label-outlined aui-margin-l-5" v-else>热</span>
+                                </div>
+                                <div class="aui-info-item aui-font-size-12">{{article.created_at | time}}</div>
+                            </div>
+                        </div>
+                        <div class="aui-list-item-media" v-if="article.small_image">
+                            <img :src="article.small_image | ss">
+                        </div>
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
 </body>
 <script type="text/javascript" src="../script/vue.min.js"></script>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -241,7 +244,9 @@
 
     apiready = function () {
         var td = api.require('talkingData');
-        td.onPageStart({pageName: '首页'});
+        td.onPageStart({
+            pageName: '首页'
+        });
         Vue.filter('time', function (value) {
             return _GetDateDiff(value);
         });
@@ -277,10 +282,11 @@
                     _Ajax(UrlRouter.banner, "get", {}, "json", function (ret) {
                         if (ret) {
                             vm.banners = ret;
-//                            alert(JSON.stringify(ret))
+                            //                            alert(JSON.stringify(ret))
                             Vue.nextTick(function () {
                                 new auiSlide({
-                                    container: document.getElementById("aui-slide1"),
+                                    container: document.getElementById(
+                                        "aui-slide1"),
                                     // "width":300,
                                     "height": 200,
                                     "speed": 300,
@@ -294,27 +300,29 @@
                             api.hideProgress();
                         }
                     }, function (err) {
-//                        alert(JSON.stringify(err))
+                        //                        alert(JSON.stringify(err))
                         api.hideProgress();
                     });
                     //加载首页置顶
-//                    Vue.nextTick(function () {
-//                        _Ajax(UrlRouter.article + '?type=5', "get", {}, "json", function (ret) {
-//                            if (ret) {
-////                                        _Alert(ret)
-//                                vm.articlesTop = ret;
+                    //                    Vue.nextTick(function () {
+                    //                        _Ajax(UrlRouter.article + '?type=5', "get", {}, "json", function (ret) {
+                    //                            if (ret) {
+                    ////                                        _Alert(ret)
+                    //                                vm.articlesTop = ret;
                     //加载首页数据
                     Vue.nextTick(function () {
-                        _Ajax(UrlRouter.article + '?type=2&limit=20&offset=0', "get", {}, "json", function (ret2) {
-                            api.hideProgress();
-                            if (ret2) {
-                                vm.articles = ret2;
-                            }
-                        });
+                        _Ajax(UrlRouter.article + '?type=2&limit=20&offset=0', "get", {},
+                            "json",
+                            function (ret2) {
+                                api.hideProgress();
+                                if (ret2) {
+                                    vm.articles = ret2;
+                                }
+                            });
                     })
-//                            }
-//                        });
-//                    });
+                    //                            }
+                    //                        });
+                    //                    });
                 },
                 openBanner: function (url) {
                     if (url == '0') {
@@ -357,15 +365,19 @@
             if (ret.status) {
                 console.log("注册成功，token为：" + ret.token);
                 var resultCallback = function (ret, err) {
-//                    alert("收到通知被展示的回调，title：" + ret.title + "，content：" + ret.content + "，customContent：" + ret.customContent + ",activity:" + ret.activity + ",actionType:" + ret.actionType + ",msgid:" + ret.msgid);
+                    //                    alert("收到通知被展示的回调，title：" + ret.title + "，content：" + ret.content + "，customContent：" + ret.customContent + ",activity:" + ret.activity + ",actionType:" + ret.actionType + ",msgid:" + ret.msgid);
                 };
-                var params = {name: "notifactionShow"};
+                var params = {
+                    name: "notifactionShow"
+                };
                 tencentPush.setListener(params, resultCallback);
 
                 var dlresultCallback = function (ret, err) {
-//                    alert("收到通知被点击的回调，title：" + ret.title + "，content：" + ret.content + "，customContent：" + ret.customContent + ",activity:" + ret.activity + ",actionType:" + ret.actionType + ",msgid:" + ret.msgid);
+                    //                    alert("收到通知被点击的回调，title：" + ret.title + "，content：" + ret.content + "，customContent：" + ret.customContent + ",activity:" + ret.activity + ",actionType:" + ret.actionType + ",msgid:" + ret.msgid);
                 }
-                var params = {name: "notifactionClick"};
+                var params = {
+                    name: "notifactionClick"
+                };
                 tencentPush.setListener(params, dlresultCallback);
 
             }
@@ -387,6 +399,6 @@
             LoadNewWin("search", pageParamData);
         }
     }
-
 </script>
+
 </html>
