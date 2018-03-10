@@ -9,6 +9,7 @@ var UrlRouter = {
     login: host + 'login', //登陆接口
     login_new: host + 'v1/login', // 带token的接口
     user: host + v + 'user', //用户信息
+    setParent: host + v + 'user/parent', //邀请码设置
     catalog: host + v + 'catalog', //分类
     collection: host + v + 'collection', //收藏
     article: host + v + 'article', //
