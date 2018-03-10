@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="referrer" content="never">
-    <meta name="viewport"
-          content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"/>
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"
+    />
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
     <title>我的</title>
     <link rel="stylesheet" href="../css/aui.css">
@@ -40,8 +41,10 @@
             width: 4.5rem;
             max-height: 4.5rem;
             line-height: 0;
-            display: inline-block; /* circle wraps image */
-            border-radius: 50%; /* relative value */
+            display: inline-block;
+            /* circle wraps image */
+            border-radius: 50%;
+            /* relative value */
             -moz-border-radius: 50%;
             -webkit-border-radius: 50%;
         }
@@ -51,11 +54,16 @@
         }
 
         .icon {
-            width: 1em;
-            height: 1em;
+            width: 1.2em;
+            height: 1.2em;
             vertical-align: -0.15em;
             fill: currentColor;
             overflow: hidden;
+        }
+
+        .yue {
+            color: #ff8000;
+
         }
 
         [v-cloak] {
@@ -63,109 +71,113 @@
         }
     </style>
 </head>
+
 <body>
-<div id="app" v-cloak v-if="user">
-    <section class="aui-content " id="user-info">
-        <div class="aui-list aui-media-list aui-list-noborder aui-bg-info aui-padded-b-15"
-             @click="openDetail('myhome','个人主页')">
-            <div class="aui-list-item aui-list-item-middle">
-                <div class="aui-media-list-item-inner ">
-                    <div class="aui-list-item-media commentAvatarDiv">
-                        <img :src="user.headimg | imgs" class="commentAvatarImage">
-                        <!--<img src="http://7jprpb.com1.z0.glb.clouddn.com/demo1.png" class="commentAvatarImage">-->
-                    </div>
-                    <div class="aui-list-item-inner aui-list-item-arrow aui-margin-l-15">
-                        <div class="aui-list-item-text text-white aui-font-size-18">{{user.name}}</div>
-                        <div class="aui-list-item-text text-white">
-                            <div><i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>{{user.mobile}} &nbsp;&nbsp;
+    <div id="app" v-cloak v-if="user">
+        <section class="aui-content " id="user-info">
+            <div class="aui-list aui-media-list aui-list-noborder aui-bg-info aui-padded-b-15" @click="openDetail('myhome','个人主页')">
+                <div class="aui-list-item aui-list-item-middle">
+                    <div class="aui-media-list-item-inner ">
+                        <div class="aui-list-item-media commentAvatarDiv">
+                            <img :src="user.headimg | imgs" class="commentAvatarImage">
+                            <!--<img src="http://7jprpb.com1.z0.glb.clouddn.com/demo1.png" class="commentAvatarImage">-->
+                        </div>
+                        <div class="aui-list-item-inner aui-list-item-arrow aui-margin-l-15">
+                            <div class="aui-list-item-text text-white aui-font-size-18">{{user.name}}</div>
+                            <div class="aui-list-item-text text-white">
+                                <div>
+                                    <i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>{{user.mobile}} &nbsp;&nbsp;
+                                </div>
+                            </div>
+                            <div class="aui-list-item-text text-white" style="width: 50%">
+                                <svg class="icon yue">
+                                    <use xlink:href="#icon-yue1"></use>
+                                </svg>
+                                {{user.balance}}
                                 <svg class="icon">
                                     <use xlink:href="#icon-score"></use>
                                 </svg>
                                 {{user.score}}
                             </div>
-                        </div>
 
-                        <div class="aui-list-item-text text-white aui-ellipsis-1 " style="margin-top: 3px;">
-                            <div v-if="user.intro">{{user.intro}}</div>
-                            <div v-else>简介：暂无个性签名~</div>
+                            <div class="aui-list-item-text text-white aui-ellipsis-1 " style="margin-top: 3px;">
+                                <div v-if="user.intro">{{user.intro}}</div>
+                                <div v-else>简介：暂无个性签名~</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="aui-content">
-        <ul class="aui-list aui-list-in aui-margin-b-15">
-            <li class="aui-list-item" @click="openDetail('edit_info','个人信息')">
-                <div class="aui-list-item-label-icon">
-                    <i class="aui-iconfont aui-icon-edit aui-text-warning"></i>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">个人设置</div>
-                    <div class="aui-list-item-right" v-if="!isSetUser">
-                        <div class="aui-dot" style="position:relative;top:0; right:0"></div>
+        <section class="aui-content">
+            <ul class="aui-list aui-list-in aui-margin-b-15">
+                <li class="aui-list-item" @click="openDetail('edit_info','个人信息')">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-edit aui-text-warning"></i>
                     </div>
-                </div>
-            </li>
-            <li class="aui-list-item" @click="openDetail('collection','我的收藏')">
-                <div class="aui-list-item-label-icon">
-                    <i class="aui-iconfont aui-icon-star aui-text-pink"></i>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">我的收藏</div>
-                </div>
-            </li>
-            <li class="aui-list-item" @click="openDetail('message','我的消息')">
-                <div class="aui-list-item-label-icon">
-                    <i class="aui-iconfont aui-icon-comment aui-text-danger"></i>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow">
-                    <div class="aui-list-item-title">我的消息</div>
-                </div>
-            </li>
-            <!--<li class="aui-list-item" @click="_toast('即将上线~')">-->
-            <!--<div class="aui-list-item-label-icon">-->
-            <!--<svg class="icon" style="font-size: 1.2em;color: #ac6f3d">-->
-            <!--<use xlink:href="#icon-gifts"></use>-->
-            <!--</svg>-->
-            <!--</div>-->
-            <!--<div class="aui-list-item-inner aui-list-item-arrow">-->
-            <!--<div class="aui-list-item-title">积分商城</div>-->
-            <!--</div>-->
-            <!--</li>-->
-        </ul>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-title">个人设置</div>
+                        <div class="aui-list-item-right" v-if="!isSetUser">
+                            <div class="aui-dot" style="position:relative;top:0; right:0"></div>
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item" @click="openDetail('collection','我的收藏')">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-star aui-text-pink"></i>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-title">我的收藏</div>
+                    </div>
+                </li>
+                <li class="aui-list-item" @click="openDetail('message','我的消息')">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-comment aui-text-danger"></i>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-title">我的消息</div>
+                    </div>
+                </li>
+                <li class="aui-list-item" @click="openInvitation('invitation','邀请好友')">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-share aui-text-primary"></i>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-title">邀请好友</div>
+                    </div>
+                </li>
+            </ul>
 
-        <ul class="aui-list aui-list-in">
-            <li class="aui-list-item">
-                <div class="aui-list-item-label-icon">
-                    <i class="aui-iconfont aui-icon-pencil aui-text-info"></i>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow" @click="openDetail('feedback','提交反馈')">
-                    <div class="aui-list-item-title">意见反馈</div>
-                    <div class="aui-list-item-right">可以提出你的需求哦</div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-label-icon">
-                    <i class="aui-iconfont aui-icon-info aui-text-warning"></i>
-                </div>
-                <div class="aui-list-item-inner aui-list-item-arrow" @click="openDetail('timeline','关于我们')">
-                    <div class="aui-list-item-title">关于我们</div>
-                    <div class="aui-list-item-right">加入我们吧！</div>
-                </div>
-            </li>
-            <li class="aui-list-item">
-                <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn"
-                     @click="exit()">
-                    <div class="aui-btn aui-btn-danger aui-margin-t-10 aui-margin-b-10">注销登录</div>
-                </div>
-            </li>
-        </ul>
-    </section>
+            <ul class="aui-list aui-list-in">
+                <li class="aui-list-item">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-pencil aui-text-purple"></i>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow" @click="openDetail('feedback','提交反馈')">
+                        <div class="aui-list-item-title">意见反馈</div>
+                        <div class="aui-list-item-right">可以提出你的需求哦</div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-info aui-text-warning"></i>
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow" @click="openDetail('timeline','关于我们')">
+                        <div class="aui-list-item-title">关于我们</div>
+                        <div class="aui-list-item-right">加入我们吧！</div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn" @click="exit()">
+                        <div class="aui-btn aui-btn-danger aui-margin-t-10 aui-margin-b-10">注销登录</div>
+                    </div>
+                </li>
+            </ul>
+        </section>
 
 
-</div>
+    </div>
 
 </body>
 <script type="text/javascript" src="../script/vue.min.js"></script>
@@ -208,14 +220,20 @@
             },
             methods: {
                 init: function () {
-                    if (_GetStorage("user") != 'undefined' && _GetStorage("user") != '' && _GetStorage("user") != undefined && _GetStorage("user") != null) {
+                    if (_GetStorage("user") != 'undefined' && _GetStorage("user") != '' && _GetStorage(
+                            "user") != undefined && _GetStorage("user") != null) {
                         //判断是否登陆状态
-                        _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json", function (ret) {
-                            if (ret) {
-                                vm.user = ret[0];
-                                _SetStorage('user', ret[0]);
-                            }
-                        });
+                        _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "get", {}, "json",
+                            function (ret) {
+                                if (ret) {
+                                    vm.user = ret[0];
+                                    if (vm.user.mobile == '') {
+                                        //设置手机号
+                                        setMobile();
+                                    }
+                                    _SetStorage('user', ret[0]);
+                                }
+                            });
                     } else {
                         _toast("请登录!");
                         var pageParamData = {
@@ -226,6 +244,15 @@
                         LoadNewWin("login", pageParamData);
                     }
                     api.hideProgress();
+                },
+                openInvitation: function (value, title) {
+                    var pageParamData = {
+                        name: value,
+                        title: title,
+                        type: 'Share',
+                        frameurl: 'widget://html/user/' + value + '.html'
+                    };
+                    LoadNewWin(value, pageParamData);
                 },
                 openDetail: function (value, title) {
                     var pageParamData = {
@@ -247,11 +274,102 @@
                     LoadNewWin("login", pageParamData);
                 }
             }
-        })
-        ;
+        });
         var td = api.require('talkingData');
-        td.onPageStart({pageName: '我的'});
-    }
+        td.onPageStart({
+            pageName: '我的'
+        });
 
+        function IsMerber(phone) {
+            _Ajax(UrlRouter.user + '/new?mobile=' + phone, "get", {}, "json", function (ret) {
+                if (ret.msg.code == -1) {
+                    vm.isMobile = true;
+                    alert('该手机号已被绑定');
+                }
+                if (ret.msg.code == 0) {
+                    var dialogBox = api.require('dialogBox');
+                    dialogBox.close({
+                        dialogName: 'input'
+                    });
+                    var pageParamData = {
+                        name: 'bind_mobile',
+                        title: '绑定手机号',
+                        mobile: phone,
+                        frameurl: 'widget://html/user/bind_mobile.html'
+                    };
+                    LoadNewWin('bind_mobile', pageParamData);
+                }
+            });
+        }
+
+        function checkPhone(mobile) {
+            if (!mobile) return false;
+            if (!(/^1[34578]\d{9}$/.test(mobile))) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function setMobile() {
+            var dialogBox = api.require('dialogBox');
+            dialogBox.input({
+                keyboardType: 'number',
+                texts: {
+                    title: '绑定手机号',
+                    placeholder: '输入手机号',
+                    leftBtnTitle: '取消',
+                    rightBtnTitle: '确定'
+                },
+                styles: {
+                    bg: '#fff',
+                    corner: 2,
+                    w: 300,
+                    h: 140,
+                    title: {
+                        alignment: 'center',
+                        size: 18,
+                        color: '#000'
+                    },
+                    input: {
+                        marginT: 2,
+                        textSize: 16,
+                        textColor: '#000'
+                    },
+                    dividingLine: { //（可选项）JSON对象；按钮与输入框之间的分割线的配置
+                        width: 0, //（可选项）数字类型；分割线粗细；默认：0.5
+                        color: '#696969' //（可选项）字符串类型；分割线颜色，支持rgb、rgba、#；默认：#696969
+                    },
+                    right: {
+                        bg: 'rgba(0,0,0,0)',
+                        color: '#007FFF',
+                        size: 12
+                    },
+                    left: {
+                        bg: 'rgba(0,0,0,0)',
+                        color: '#007FFF',
+                        size: 12
+                    }
+                }
+            }, function (ret) {
+                if (ret.eventType == 'left') {
+                    vm.isMobile = true;
+                    var dialogBox = api.require('dialogBox');
+                    dialogBox.close({
+                        dialogName: 'input'
+                    });
+                }
+                if (ret.eventType == 'right') {
+                    if (checkPhone(ret.text)) {
+                        //判断手机号是否存在
+                        IsMerber(ret.text)
+                    } else {
+                        alert('请输入正确手机号！')
+                    }
+                }
+            });
+        }
+    }
 </script>
+
 </html>

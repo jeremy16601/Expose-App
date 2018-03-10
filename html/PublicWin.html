@@ -1,38 +1,41 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"
+    />
     <title>曝光吧</title>
-    <link rel="stylesheet" type="text/css" href="../css/ciacloud.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
-    <link rel="stylesheet" type="text/css" href="../css/publicWin.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/ciacloud.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/publicWin.css" />
     <style>
-
     </style>
 
 </head>
 
 <body>
 
-<!-- DefaultHeader 公共头部-->
-<header id="DefaultHeader" class="cia-bar cia-bar-nav DefaultHeader none">
-    <!-- 窗口名称 -->
-    <div class="cia-title" id="DefaultHeadertitle">新窗口</div>
-    <!-- 左侧返回按钮 -->
-    <a class="cia-btn cia-pull-left" tapmode onclick="_CloseWin()">
-        <span class="CIACloud-font icon-zuojiantou"></span></a>
-    <!-- 右侧分享按钮 -->
-    <a id="ShareBtn" class="cia-btn cia-pull-right HeaderBtn-Share none" tapmode onclick="actionMenu()">
-        <span class="CIACloud-font icon-share"></span></a>
-    <!-- 右侧新增按钮 -->
-    <a class="cia-btn cia-pull-right HeaderBtn-FeedBackAdd none" onclick="openWin(this);" type="Submit" Path="Setting"
-       name="FeedBack_Add" title="意见反馈">新增</a>
-    <!-- 右侧发送按钮 -->
-    <a id="save" class="cia-btn cia-pull-right HeaderBtn-Submit none" tapmode onclick="SubmitBtn()">
-        <i class="aui-iconfont aui-icon-correct"></i></a>
-</header>
+    <!-- DefaultHeader 公共头部-->
+    <header id="DefaultHeader" class="cia-bar cia-bar-nav DefaultHeader none">
+        <!-- 窗口名称 -->
+        <div class="cia-title" id="DefaultHeadertitle">新窗口</div>
+        <!-- 左侧返回按钮 -->
+        <a class="cia-btn cia-pull-left" tapmode onclick="_CloseWin()">
+            <span class="CIACloud-font icon-zuojiantou"></span>
+        </a>
+        <!-- 右侧分享按钮 -->
+        <a id="ShareBtn" class="cia-btn cia-pull-right HeaderBtn-Share none" tapmode onclick="actionMenu()">
+            <span class="CIACloud-font icon-share"></span>
+        </a>
+        <!-- 右侧新增按钮 -->
+        <a class="cia-btn cia-pull-right HeaderBtn-FeedBackAdd none" onclick="openWin(this);" type="Submit" Path="Setting" name="FeedBack_Add"
+            title="意见反馈">新增</a>
+        <!-- 右侧发送按钮 -->
+        <a id="save" class="cia-btn cia-pull-right HeaderBtn-Submit none" tapmode onclick="SubmitBtn()">
+            <i class="aui-iconfont aui-icon-correct"></i>
+        </a>
+    </header>
 
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
@@ -43,7 +46,7 @@
     var wx;
     apiready = function () {
         api.parseTapmode();
-         wx = api.require('wx');
+        wx = api.require('wx');
         //获取新窗口属性
         var type = api.pageParam.type;
         //选择新窗口容器
@@ -51,7 +54,8 @@
         dialogBox = api.require('dialogBox');
         _AddEventListener("actionMenu", function (data) {
             if (data != '' && data != undefined) {
-                actionMenu(data);
+                alert(data)
+                // actionMenu(data);
             } else {
                 _toast('获取参数失败，请重新点击分享按钮~！')
             }
@@ -72,6 +76,13 @@
                 openFrame(headerPos, frameheight, pageParamData);
                 break;
             case 'Detail':
+                $api.removeCls($api.dom('.DefaultHeader'), 'none');
+                $api.removeCls($api.dom('#ShareBtn'), 'none');
+                var headerPos = $api.offset(DefaultHeader);
+                var frameheight = api.winHeight - headerPos.h;
+                openFrame(headerPos, frameheight, pageParamData);
+                break;
+            case 'Share':
                 $api.removeCls($api.dom('.DefaultHeader'), 'none');
                 $api.removeCls($api.dom('#ShareBtn'), 'none');
                 var headerPos = $api.offset(DefaultHeader);
@@ -121,13 +132,23 @@
 
     //openFrame end
     function actionMenu() {
-        var data = api.pageParam.article;
-        var sleng=data.content.length-(data.content.length/2);
-        if(data.content.length>100){
-            sleng=100;
+        var data = {};
+        var sleng = '';
+        if (api.pageParam.type == 'Share') {
+            //邀请码分享模式 
+            data.title = "曝光吧-邀请好友"
+            data.content = "下载曝光吧app，并输入邀请码" + _GetStorage('user').share_code +
+                ",邀请好友即可获取奖金！下载地址：http://api.bbaaoo.cn/public/download.html";
+        } else {
+            data = api.pageParam.article;
+            sleng = data.content.length - (data.content.length / 2);
+            if (data.content.length > 100) {
+                sleng = 100;
+            }
         }
-//        console.log(data.authorImg)
-//        _Alert(data)
+
+        //        console.log(data.authorImg)
+        //        _Alert(data)
         dialogBox.share({
             rect: {
                 w: 330,
@@ -149,8 +170,8 @@
                 text: '微博',
                 icon: 'widget://image/shouye/wb.png'
             }, {
-                text: '支付宝',
-                icon: 'widget://image/shouye/zfb.png'
+                text: '钉钉',
+                icon: 'widget://image/shouye/dingding.jpg'
             }],
 
             styles: {
@@ -169,66 +190,109 @@
             },
             tapClose: true
         }, function (ret) {
-            switch (ret.index) {
-                case 0:
-                    wx.shareWebpage({
-                        scene: 'timeline',
-                        title: data.title,
-                        description: data.content.substring(0,sleng),
-                        thumb: 'widget://icon//icon.png',//data.authorImg+ '?imageView2/size-limit/32k!'
-                        contentUrl: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id
-                    }, function (ret, err) {
+            if (api.pageParam.type == 'Share') {
+                //分享文本模式
+                switch (ret.index) {
+                    case 0:
+                        wx.shareText({
+                            scene: 'timeline',
+                            text: data.content
+                        }, function (ret, err) {});
+                        break;
+                    case 1:
+                        wx.shareText({
+                            scene: 'session',
+                            text: data.content
+                        }, function (ret, err) {});
+                        break;
+                    case 2:
+                        var qq = api.require('qq');
+                        qq.shareText({
+                            text: data.content,
+                            type: "QFriend"
+                        });
+                        break;
+                    case 3:
+                        var qq = api.require('qq');
+                        qq.shareText({
+                            text: data.content,
+                            type: "QFriend"
+                        });
+                        break;
+                    case 4:
+                        var weibo = api.require('weibo');
+                        weibo.shareText({
+                            text: data.content,
+                        }, function (ret, err) {});
+                        break;
+                    case 5:
+                        var dingding = api.require('dingding');
+                        dingding.shareText({
+                            text: data.content
+                        }, function (ret, err) {});
+                        break;
+                }
+            } else {
+                switch (ret.index) {
+                    case 0:
+                        wx.shareWebpage({
+                            scene: 'timeline',
+                            title: data.title,
+                            description: data.content.substring(0, sleng),
+                            thumb: 'widget://icon//icon.png', //data.authorImg+ '?imageView2/size-limit/32k!'
+                            contentUrl: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id
+                        }, function (ret, err) {
 
-                    });
-                    break;
-                case 1:
-                    wx.shareWebpage({
-                        scene: 'session',
-                        title: data.title,
-                        description: data.content.substring(0,sleng),
-                        thumb: 'widget://icon//icon.png',
-                        contentUrl: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id
-                    }, function (ret, err) {
+                        });
+                        break;
+                    case 1:
+                        wx.shareWebpage({
+                            scene: 'session',
+                            title: data.title,
+                            description: data.content.substring(0, sleng),
+                            thumb: 'widget://icon//icon.png',
+                            contentUrl: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id
+                        }, function (ret, err) {
 
-                    });
-                    break;
-                case 2:
-                    var qq = api.require('qq');
-                    qq.shareNews({
-                        url: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id,
-                        title: data.title,
-                        description: data.content.substring(0,sleng),
-                        imgUrl: 'widget://icon//icon.png',
-                        type: "QFriend"
-                    });
+                        });
+                        break;
+                    case 2:
+                        var qq = api.require('qq');
+                        qq.shareNews({
+                            url: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id,
+                            title: data.title,
+                            description: data.content.substring(0, sleng),
+                            imgUrl: 'widget://icon//icon.png',
+                            type: "QFriend"
+                        });
 
-                    break;
-                case 3:
-                    var qq = api.require('qq');
-                    qq.shareNews({
-                        url: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id,
-                        title: data.title,
-                        description: data.content.substring(0,sleng),
-                        imgUrl: 'widget://icon//icon.png'
-                    });
-                    break;
-                case 4:
-                    var weibo = api.require('weibo');
-//                    weibo.shareImage({
-//                        text:  data.title,
-//                        imageUrl: 'widget://icon//icon.png'
-//                    });
-                    weibo.shareWebPage({
-                        title: data.title,
-                        description: data.content.substring(0,sleng),
-                        thumb:'widget://icon//icon.png' ,//data.authorImg+ '?imageView2/1/w/100/h/100'
-                        contentUrl: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id
-                    }, function(ret, err) {
-                    });
-                    break;
-                case 5:
-                    alert('即将接入~');
-                    break;
+                        break;
+                    case 3:
+                        var qq = api.require('qq');
+                        qq.shareNews({
+                            url: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id,
+                            title: data.title,
+                            description: data.content.substring(0, sleng),
+                            imgUrl: 'widget://icon//icon.png'
+                        });
+                        break;
+                    case 4:
+                        var weibo = api.require('weibo');
+                        //                    weibo.shareImage({
+                        //                        text:  data.title,
+                        //                        imageUrl: 'widget://icon//icon.png'
+                        //                    });
+                        weibo.shareWebPage({
+                            title: data.title,
+                            description: data.content.substring(0, sleng),
+                            thumb: 'widget://icon//icon.png', //data.authorImg+ '?imageView2/1/w/100/h/100'
+                            contentUrl: 'http://api.bbaaoo.cn/public/article_detail.html?aid=' + data.id
+                        }, function (ret, err) {});
+                        break;
+                    case 5:
+                        alert('即将接入~');
+                        break;
+                }
             }
         });
     }

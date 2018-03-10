@@ -1,55 +1,29 @@
 <widget id="A6947373852621" version="0.0.1">
-
     <name>曝光吧</name>
-
-    <description>
-    </description>
-
-    <author email="developer@apicloud.com" href="http://www.apicloud.com">
-    </author>
-
+    <description></description>
+    <author email="developer@apicloud.com" href="http://www.apicloud.com"></author>
     <content src="index.html"/>
-
     <access origin="*"/>
-
     <preference name="pageBounce" value="false"/>
-
     <preference name="appBackground" value="rgba(0,0,0,0.0)"/>
-
     <preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
-
     <preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
-
     <preference name="hScrollBarEnabled" value="true"/>
-
     <preference name="vScrollBarEnabled" value="true"/>
     <preference name="softInputMode" value="resize"/>
     <preference name="autoLaunch" value="true"/>
-
     <preference name="fullScreen" value="false"/>
-
     <preference name="autoUpdate" value="true"/>
-
     <preference name="smartUpdate" value="true"/>
-
     <preference name="debug" value="true"/>
-
     <preference name="statusBarAppearance" value="true"/>
-
     <permission name="readPhoneState"/>
-
     <permission name="camera"/>
-
     <permission name="record"/>
-
     <permission name="location"/>
-
     <permission name="fileSystem"/>
-
     <permission name="internet"/>
-
     <permission name="bootCompleted"/>
-
     <permission name="hardware"/>
     <feature name="smsVerify">
         <param name="android_app_key" value="2065f08cc3e4c"/>
@@ -57,14 +31,13 @@
         <param name="ios_app_key" value="2065f08cc3e4c"/>
         <param name="ios_app_secret" value="bac21ff8dabe293c5f8b4eba754e9fe2"/>
     </feature>
-
     <feature name="aMap">
         <param name="android_api_key" value="07bfd8331b9966b43231effa4660971c" />
         <param name="ios_api_key" value="e5615ee4ec399735eb4316141b9e862b" />
     </feature>
     <!--<feature name="bMap">-->
-        <!--<param name="android_api_key" value="plHbuayBhsrnWYn09peIsK0EXQiTBC7D"/>-->
-        <!--<param name="ios_api_key" value="GdZLmTaqnxC6NpvPoRuVXu15UTHGh6sM"/>-->
+    <!--<param name="android_api_key" value="plHbuayBhsrnWYn09peIsK0EXQiTBC7D"/>-->
+    <!--<param name="ios_api_key" value="GdZLmTaqnxC6NpvPoRuVXu15UTHGh6sM"/>-->
     <!--</feature>-->
     <feature name="TalkingData">
         <param name="logEnable" value="false"/>
@@ -95,6 +68,11 @@
         <param name="apiKey" value="4201480" />
         <param name="registUrl" value="http://bbaaoo.cn/" />
     </feature>
+    <feature name="dingding">
+        <param name="appID" value="dingoadrvxen6glmdr8rzr" />
+        <param name="urlScheme" value="dingoadrvxen6glmdr8rzr" />
+    </feature>
+    <preference name="querySchemes" value="dingtalk,dingtalk-open" />
     <!--appid:1276889536-->
 </widget>
 

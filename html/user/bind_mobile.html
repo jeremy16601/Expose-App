@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width"
+    />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <link type="text/css" rel="stylesheet" href="../../css/reg_login.css">
+    <title>绑定手机号</title>
+    <style>
+        .btn {
+            margin-top: 30px;
+            display: block;
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <div class="aui-content aui-margin-b-15">
+            <div class="login_input_div">
+                <span class="input_title">验证码</span>
+                <input type="tel" id="PIN" class="login_input" placeholder="填写验证码" maxlength="4">
+                <!--获取验证码 计时器-->
+                <div id="getpin" class="getpin_clickable right c_txt rel getpin" onclick="sendSMS()">
+                    获取验证码
+                </div>
+                <div id="pinjsq" class="pinjsq_clickable right c_txt rel pinjsq none">
+
+                </div>
+                <!--/-->
+            </div>
+
+
+            <a class="btnok" onclick="Submit()">点击确认</a>
+            <a class="btn none">
+                <i class="CIACloud-font icon-icon20 fa-spin"></i> 请稍后...</a>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/zepto.min.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/Base.js"></script>
+<script type="text/javascript" src="../../script/commjs/router.js"></script>
+
+<script>
+    var smsVerify = null;
+    apiready = function () {
+        api.parseTapmode();
+        smsVerify = api.require('smsVerify');
+        // 初始化smsVerify
+        _Register();
+        sendSMS();
+    }
+
+    function sendSMS() {
+        _SendSmsPIN(api.pageParam.mobile, function () {
+            showtime(60);
+        });
+    }
+
+    //.计时器
+    function showtime(t) {
+        for (i = 1; i <= t; i++) {
+            window.setTimeout("update(" + i + "," + t + ")", i * 1000);
+        }
+    }
+
+    function update(num, t) {
+        if (num == t) {
+            $api.addCls($api.dom('.pinjsq'), 'none');
+            $api.removeCls($api.dom('.getpin'), 'none');
+            $api.text($api.byId("getpin"), '重新获取');
+        } else {
+            printnr = t - num;
+            $api.addCls($api.dom('.getpin'), 'none');
+            $api.removeCls($api.dom('.pinjsq'), 'none');
+            $api.text($api.byId("pinjsq"), '发送' + printnr + "秒");
+        }
+    }
+
+    // 初始化smsVerify
+    function _Register() {
+        smsVerify.register(function (ret, err) {
+            if (ret.status) {
+                //_toast('初始化成功');
+            } else {
+                //_toast('初始化失败');
+            }
+        });
+    }
+
+    //.短信验证码
+    function _SendSmsPIN(phone, _callback) {
+        if (typeof _callback == "function") { //.回调函数，倒计时
+            _callback();
+        }
+        smsVerify.sms({
+            phone: phone,
+        }, function (ret, err) {
+            if (ret.status) { //.新增安卓智能验证功能
+                if (ret.smart == true) { //.安卓智能验证成功
+                    $api.val($api.byId('PIN'), '0000');
+                    _toast('智能验证成功，开发者可以为用户直接跳转到手机号验证成功之后的操作');
+                } else {
+                    _toast('验证码发送成功');
+                }
+            } else { //.错误
+                api.alert({
+                    msg: err.code + ' 验证码发送失败'
+                });
+            }
+        });
+    }
+
+    function Submit() {
+        var PIN = $api.byId('PIN').value;
+        if (PIN.length <= 0) {
+            _toast('请输入验证码');
+        } else if (PIN.length < 4) {
+            _toast('验证码格式有误');
+        } else { //.更改按钮状态
+            _ChangeBtn('status');
+            if (PIN = '0000') {
+                //智能验证
+                BindPhone(api.pageParam.mobile);
+            } else {
+                _Verify(api.pageParam.mobile, PIN, function () {
+                    BindPhone(api.pageParam.mobile);
+                }, function () {
+                    //.更改按钮状态
+                    _ChangeBtn('err');
+                });
+            }
+        }
+
+    }
+    //绑定号码
+    function BindPhone() {
+        //邀请码设置
+        _Ajax(UrlRouter.user + '/' + _GetStorage("user").id, "put", {
+            values: {
+                id: _GetStorage("user").id,
+                mobile: api.pageParam.mobile,
+            }
+        }, "json", function (ret) {
+            if (ret) {
+                _SendEvent("updateUser");
+                _toast('绑定成功！');
+                setTimeout(function () {
+                    api.closeWin();
+                }, 1000);
+            } else {
+                _toast('绑定失败');
+            }
+        });
+    }
+
+    //.语音验证码
+    function _SendVoicePIN(phone) {
+        smsVerify.voice({
+            phone: phone,
+        }, function (ret, err) {
+            if (ret.status) { //.
+                api.alert({
+                    msg: ' 操作成功！请注意接听来电'
+                });
+            } else {
+                api.alert({
+                    msg: err.code + ' 语音发送失败'
+                });
+            }
+        });
+    }
+
+    //.校验验证码
+    function _Verify(phone, PIN, _callback, _callbackerr) {
+        smsVerify.verify({
+            phone: phone,
+            code: PIN,
+        }, function (ret, err) {
+            if (ret.status) { //.回调函数·验证成功，执行注册操作
+                if (typeof _callback == "function") { //.回调函数·执行注册
+                    _callback();
+                }
+            } else { //.回调函数·验证错误
+                if (typeof _callbackerr == "function") {
+                    _callbackerr();
+                }
+                _toast('验证码错误');
+            }
+        });
+    }
+</script>
+
+</html>
